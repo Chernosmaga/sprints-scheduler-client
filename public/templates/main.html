@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sprint Scheduler X</title>
+    <link rel="icon" href="/icons/rocket-solid-icon.svg" type="image/x-icon" loading="lazy">
+    <link rel="stylesheet" href="/css/styles.css" media="all">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+<div class="flex h-screen overflow-hidden">
+    <!-- меню -->
+    <div id="sidebar-placeholder"></div>
+
+    <!-- основной контент -->
+    <div id="main-content" class="main-content flex-1 flex flex-col overflow-hidden">
+        <!-- верхняя панель -->
+        <header class="bg-white shadow-sm">
+            <div class="px-4 py-3 flex justify-between items-center">
+                <div class="text-xl font-semibold text-gray-800" id="page-title"></div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <button class="flex items-center space-x-2 focus:outline-none">
+                            <img id="user-photo-for-header" class="h-8 w-8 rounded-full" alt="">
+                            <span id="user-name-for-header" class="text-sm font-medium text-gray-700">Пользователь</span>
+                        </button>
+                    </div>
+
+                    <!-- контейнер уведомлений -->
+                    <div id="notification-container" class="fixed top-4 right-4 space-y-2 w-80">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- контект страницы -->
+        <main class="flex-1 overflow-y-auto p-6 bg-gray-100">
+            <!-- контенкт текущего спринта -->
+            <div id="sprint-placeholder"></div>
+
+            <!-- контент бэклога -->
+            <div id="backlog-placeholder"></div>
+
+            <!-- контент создания спринта -->
+            <div id="create-sprint-placeholder"></div>
+
+            <!-- контент обновления спринта
+            <div id="update-sprint-content" class="hidden">
+                <div class="max-w-3xl mx-auto">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Обновить текущий спринт</h2>
+
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <div class="p-6">
+                            <div class="mb-6">
+                                <h3 class="text-lg font-semibold text-gray-800">Sprint #24 - Feature Development</h3>
+                                <p class="text-gray-600">May 15, 2023 - May 29, 2023</p>
+                            </div>
+
+                            <div class="space-y-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Статус спринта</label>
+                                    <div class="mt-2 space-y-2">
+                                        <div class="flex items-center">
+                                            <input id="status-active" type="radio" name="sprint-status" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" checked>
+                                            <label for="status-active" class="ml-2 block text-sm text-gray-700">
+                                                Активный
+                                            </label>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <input id="status-completed" type="radio" name="sprint-status" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
+                                            <label for="status-completed" class="ml-2 block text-sm text-gray-700">
+                                                Завершен
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="sprint-progress" class="block text-sm font-medium text-gray-700">Прогресс</label>
+                                    <input type="range" id="sprint-progress" min="0" max="100" value="65" class="mt-2 w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                                    <div class="mt-1 flex justify-between text-sm text-gray-500">
+                                        <span>0%</span>
+                                        <span>65%</span>
+                                        <span>100%</span>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Добавить задачи в спринт</label>
+                                    <div class="mt-2 space-y-2">
+                                        <div class="flex items-center">
+                                            <input id="add-task-1" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                            <label for="add-task-1" class="ml-2 block text-sm text-gray-700">
+                                                TASK-130: Реализовать кэширование API (8h)
+                                            </label>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <input id="add-task-2" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                            <label for="add-task-2" class="ml-2 block text-sm text-gray-700">
+                                                TASK-131: Обновить документацию (4h)
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Удалить задачи из спринта</label>
+                                    <div class="mt-2 space-y-2">
+                                        <div class="flex items-center">
+                                            <input id="remove-task-1" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                                            <label for="remove-task-1" class="ml-2 block text-sm text-gray-700">
+                                                TASK-126: API performance optimization (16h)
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-8 flex justify-end space-x-3">
+                                <button type="button" class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    Отмена
+                                </button>
+                                <button type="button" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                    Обновить спринт
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- контент истории спринтов -->
+            <div id="history-content" class="hidden">
+                <div class="max-w-6xl mx-auto">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">История спринтов</h2>
+
+                    <div id="history-sprint-content" class="space-y-4"></div>
+                </div>
+            </div>
+
+            <!-- контент настроек -->
+            <div id="settings-placeholder"></div>
+        </main>
+    </div>
+</div>
+<script>
+    fetch('/templates/sidebar.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('sidebar-placeholder').innerHTML = data;
+        });
+
+    fetch('/templates/sprint.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('sprint-placeholder').innerHTML = data;
+        });
+
+    fetch('/templates/backlog.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('backlog-placeholder').innerHTML = data;
+        });
+
+    fetch('/templates/create-sprint.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('create-sprint-placeholder').innerHTML = data;
+        });
+
+    fetch('/templates/settings.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('settings-placeholder').innerHTML = data;
+        });
+</script>
+<script src="/js/util/main.js"></script>
+<script type="module" src="/js/app.js"></script>
+<script type="module" src="/js/auth/logout.js"></script>
+<script>
+    window.onload = function () {
+        var sprintStartDate = document.getElementById("start-date");
+        var sprintEndDate = document.getElementById("end-date");
+
+        // установка дат по умолчанию при загрузке страницы
+        if (!sprintStartDate.value) {
+            var today = new Date();
+            var formattedToday = formatDate(today);
+            sprintStartDate.value = formattedToday;
+        }
+
+        if (!sprintEndDate.value) {
+            var endDate = new Date();
+            endDate.setDate(endDate.getDate() + 14);
+            var formattedEndDate = formatDate(endDate);
+            sprintEndDate.value = formattedEndDate;
+        }
+    };
+
+    // вспомогательная функция для форматирования даты
+    function formatDate(date) {
+        var year = date.getFullYear();
+        var month = String(date.getMonth() + 1).padStart(2, '0');
+        var day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+</script>
+</body>
+</html>

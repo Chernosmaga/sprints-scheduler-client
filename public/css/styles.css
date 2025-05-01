@@ -1,0 +1,294 @@
+/* общие стили */
+body {
+    margin: 0; /* убираем отступы по умолчанию */
+    font-family: sans-serif;
+    background-color: #f3f4f6; /* цвет фона */
+}
+
+/* родительский контейнер */
+.flex.h-screen {
+    height: 100vh; /* высота равна высоте экрана */
+    display: flex;
+    overflow: hidden; /* скрываем переполнение */
+}
+
+/* меню */
+.sidebar {
+    height: 100%; /* занимает всю высоту родительского контейнера */
+    min-height: 100vh; /* минимальная высота равна высоте экрана */
+    width: 190px; /* ширина меню */
+    background-color: #4f46e5; /* цвет фона (indigo-800) */
+    color: white; /* цвет текста */
+    display: flex;
+    flex-direction: column;
+}
+
+/* стиль для скрытия текста при сворачивании меню */
+.sidebar.w-14 span {
+    display: none; /* скрываем текст */
+}
+
+.sidebar.w-14 img {
+    margin-right: 0; /* убираем отступ справа для иконки */
+}
+
+/* основной контент */
+.main-content {
+    flex: 1; /* занимает оставшееся пространство */
+    overflow-y: auto; /* добавляет прокрутку, если содержимое выходит за пределы */
+    transition: margin-left 0.3s; /* анимация */
+}
+
+/* верхняя панель */
+header {
+    background-color: white; /* цвет фона */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* тень */
+    padding: 0.5rem 1rem; /* уменьшаем отступы */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    top: 0;
+    height: 4rem; /* фиксированная высота хедера */
+}
+
+/* диаграммы */
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 300px; /* высота диаграмм */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.chart-container canvas {
+    max-width: 100%;
+    max-height: 100%;
+    margin: 0 auto;
+}
+
+/* уведомления */
+.notification {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 0.375rem;
+    color: white;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    max-width: 300px;
+    animation: fadeInOut 5s ease-in-out forwards;
+}
+
+.notification.success {
+    background-color: #16a34a; /* цвет успешного уведомления */
+}
+
+.notification.error {
+    background-color: #dc2626; /* цвет ошибки */
+}
+
+.notification-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.75rem;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    10% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    90% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+/* эффекты при наведении */
+.task-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.sprint-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+.input-focus-effect:focus {
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
+
+/* стили таблицы */
+table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+thead th {
+    padding: 8px;
+    font-size: 12px;
+}
+
+tbody td {
+    padding: 8px;
+    font-size: 12px;
+}
+
+/* ячейки таблицы */
+.client-cell {
+    position: relative;
+    z-index: auto;
+}
+
+.subject {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #f9fafb;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    white-space: normal;
+    max-width: 500px;
+    display: inline-block;
+}
+
+/* позиционирование кнопки "Назад" */
+.absolute.top-4.left-4 {
+    position: absolute;
+    top: 1rem; /* 16px */
+    left: 1rem; /* 16px */
+}
+
+/* позиционирование статуса спринта */
+.absolute.top-4.right-4 {
+    position: absolute;
+    top: 1rem; /* 16px */
+    right: 1rem; /* 16px */
+}
+
+/* модальное окно */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* полупрозрачный фон */
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+/* стиль для скрытия модального окна */
+.hidden {
+    display: none;
+}
+
+/* стили для модального окна */
+.edit-modal {
+    position: fixed;
+    inset: 0; /* занимает всю ширину и высоту экрана */
+    background-color: rgba(0, 0, 0, 0.5); /* полупрозрачный фон */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* стили для контента модального окна */
+#modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+}
+
+/* финальное состояние контента */
+#edit-modal:not(.hidden) #modal-content {
+    transform: scale(1); /* полный размер */
+    opacity: 1; /* полностью видимо */
+}
+
+/* стиль для кнопок */
+button {
+    cursor: pointer;
+}
+
+/* экран загрузки */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.content {
+  padding: 20px;
+  text-align: center;
+}
+
+/* стиль для экрана загрузки */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* полупрозрачный фон */
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* чтобы экран был поверх всего */
+}
+
+.loading-content {
+  text-align: center;
+  color: white;
+}
+
+/* анимация спиннера */
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 10px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* стиль для подсветки поля */
+input.error {
+    border-color: red;
+}

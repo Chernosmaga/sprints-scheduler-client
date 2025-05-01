@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Страница не найдена</title>
+    <link rel="icon" href="/icons/rocket-solid-icon.svg" type="image/x-icon" loading="lazy">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #f8f8f8; /* indigo-200 */
+            color: #1e1b4b; /* indigo-900 для контраста */
+            font-family: Arial, sans-serif;
+            position: relative;
+            height: 100vh;
+        }
+
+        .star {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: twinkle 2s infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes twinkle {
+            0% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .content {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            margin-top: 20%;
+        }
+
+        .rocket {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        p {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .home-button {
+            background-color: #432dd7; /* indigo-700 */
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .home-button:hover {
+            background-color: #4f39f6; /* indigo-600 при наведении */
+        }
+    </style>
+</head>
+<body>
+<!-- контейнер для звезд -->
+<div id="stars-container"></div>
+
+<!-- основной контент страницы -->
+<div class="content">
+    <img src="/icons/rocket-solid-icon.svg" alt="Rocket" class="rocket" loading="lazy">
+    <p>Кажется вы потерялись</p>
+    <a href="/current/sprint" class="home-button">На главную</a>
+</div>
+
+<script>
+    function createStars(count) {
+        let container = document.getElementById('stars-container');
+        let docWidth = document.documentElement.scrollWidth;
+        let docHeight = document.documentElement.scrollHeight;
+
+        container.style.position = 'fixed';
+        container.style.top = '0';
+        container.style.left = '0';
+        container.style.width = '100%';
+        container.style.height = '100%';
+        container.style.overflow = 'hidden';
+        container.style.pointerEvents = 'none';
+
+        container.innerHTML = '';
+
+        for (let i = 0; i < count; i++) {
+            let star = document.createElement('img');
+            star.src = '/icons/star-solid.svg';
+            star.alt = 'star';
+            star.style.position = 'absolute';
+
+            let x = Math.random() * docWidth;
+            let y = Math.random() * docHeight;
+
+            let size = Math.random() * 7 + 3;
+            let opacity = Math.random() * 0.5 + 0.3;
+            let duration = Math.random() * 3 + 2;
+
+            star.style.left = `${x}px`;
+            star.style.top = `${y}px`;
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            star.style.opacity = opacity;
+            star.style.animation = `twinkle ${duration}s infinite alternate`;
+
+            container.appendChild(star);
+        }
+    }
+
+    createStars(100);
+</script>
+</body>
+</html>
