@@ -55,13 +55,18 @@ async function loginUser(userEmail, userPassword) {
             },
             body: JSON.stringify(userJSON)
         });
+        
+        let data = await response.json();
 
-        if (!response.ok) {
-            showNotification('Ошибка при входе в систему', 'error');
+        if (response.status === 401 && data.message.includes("Account is inactive")) {
+            showNotification('Ваш аккаунт деактивирован, обратитесь в отдел разработки', 'error');
+            return;
+        } else if (!response.ok) {
+            showNotification('Ошибка при входе в аккаунт', 'error');
             return;
         }
 
-        let data = await response.json();
+        console.log(JSON.stringify(data, null, 2));
 
         let role = data.userRole;
         let token = data.accessToken;

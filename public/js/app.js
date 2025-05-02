@@ -4,6 +4,7 @@ import * as Settings from "../js/settings.js";
 import * as CreateSprint from "../js/create-sprint.js";
 import * as History from "../js/history.js";
 import * as Sidebar from "../js/sidebar.js";
+import * as Team from "../js/team.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     // инициализация страниц
@@ -13,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
         createSprint: document.getElementById("create-sprint-content"),
         history: document.getElementById("history-content"),
         settings: document.getElementById("settings-content"),
-        teamSettings: document.getElementById("team-settings"),
+        teamSettings: document.getElementById("team-settings-content"),
     };
 
     let token = localStorage.getItem('accessToken');
@@ -23,14 +24,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let getUserSettingsButton = document.getElementById("user-settings-btn");
     let saveUserDataButton = document.getElementById("user-save-data");
-    let teamTabButton = document.getElementById("team-tab");
     let getHistoryButton = document.getElementById("history-sprint-btn");
     let getCurrentSprintData = document.getElementById("get-sprint-btn");
     let userRole = localStorage.getItem("userRole");
 
     Sidebar.setupSidebar();
     Sidebar.setupNavigation(userRole);
-    Sidebar.setupSettingsTabs();
     Sprint.loadSprintData();
     Settings.fetchUserData();
 
@@ -77,7 +76,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         Settings.fetchUserData();
                         break;
                     case "teamSettings":
-                        Settings.renderUserList();
+                        Team.renderUserList();
+                        Team.initializeSearch();
+                        Team.renderCreateUserButton();
                         break;
                 }
             } else if (userRole === "USER" || userRole === "GUEST") {
@@ -96,7 +97,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         Settings.fetchUserData();
                         break;
                     case "teamSettings":
-                        Settings.renderUserList();
+                        Team.renderUserList();
+                        Team.initializeSearch();
                         break;
                 }
             }
@@ -133,6 +135,16 @@ document.addEventListener("DOMContentLoaded", () => {
             e.preventDefault();
             updateUrlAndShowPage("createSprint", "/create/sprint");
         });
+
+        document.getElementById("create-user-button-container").addEventListener("click", (e) => {
+            e.preventDefault();
+            Team.openCreateUserModal();
+        });
+
+        document.getElementById("cancel-modal-btn").addEventListener("click", (e) => {
+            e.preventDefault();
+            Team.closeCreateUserModal();
+        });
     }
 
     // функция для инициализации страницы на основе URL
@@ -142,7 +154,8 @@ document.addEventListener("DOMContentLoaded", () => {
             "/backlog": "backlog",
             "/history": "history",
             "/account/settings": "settings",
-            "/create/sprint": "createSprint"
+            "/create/sprint": "createSprint",
+            "/team/settings": "teamSettings"
         };
 
         const currentPath = window.location.pathname;
@@ -194,17 +207,17 @@ document.addEventListener("DOMContentLoaded", () => {
         updateUrlAndShowPage("settings", "/account/settings");
     });
 
+    document.getElementById("team-settings-link").addEventListener("click", (e) => {
+        e.preventDefault();
+        updateUrlAndShowPage("teamSettings", "/team/settings");
+    });
+
     getUserSettingsButton.addEventListener("click", () => {
         Settings.fetchUserData();
     });
 
     saveUserDataButton.addEventListener("click", async () => {
         Settings.sendUserDataToSave();
-    });
-
-    teamTabButton.addEventListener("click", async () => {
-        Settings.renderUserList();
-        Settings.initializeSearch();
     });
 
     // нажатие на кнопку истории спринтов

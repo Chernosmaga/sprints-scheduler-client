@@ -23,6 +23,11 @@ const navLinksForAdmin = {
         content: 'settings-content',
         title: 'Настройки',
         path: '/account/settings'
+    },
+    'team-settings-link': {
+        content: 'team-settings-content',
+        title: 'Команда',
+        path: '/team/settings'
     }
 };
 
@@ -46,6 +51,11 @@ const navLinksForUser = {
         content: 'settings-content',
         title: 'Настройки',
         path: '/account/settings'
+    },
+    'team-settings-link': {
+        content: 'team-settings-content',
+        title: 'Команда',
+        path: '/team/settings'
     }
 };
 
@@ -191,56 +201,4 @@ function createSprintButton() {
 
     // возвращаем готовую кнопку
     return button;
-}
-
-// функция для настройки вкладок в настройках
-export function setupSettingsTabs() {
-    let settingsTabs = {
-        'account-tab': 'account-settings',
-        'team-tab': 'team-settings',
-    };
-
-    Object.keys(settingsTabs).forEach((tabId) => {
-        let tab = document.getElementById(tabId);
-        if (tab) {
-            tab.addEventListener('click', () => {
-                // скрываем все контенты вкладок
-                Object.values(settingsTabs).forEach((contentId) => {
-                    let contentElement = document.getElementById(contentId);
-                    if (contentElement) {
-                        contentElement.classList.add('hidden');
-                    }
-                });
-
-                // сбрасываем стили всех вкладок
-                Object.keys(settingsTabs).forEach((tabId) => {
-                    let tabElement = document.getElementById(tabId);
-                    if (tabElement) {
-                        tabElement.classList.remove('border-indigo-500', 'text-indigo-600');
-                        tabElement.classList.add(
-                            'border-transparent',
-                            'text-gray-500',
-                            'hover:text-gray-700',
-                            'hover:border-gray-300'
-                        );
-                    }
-                });
-
-                // показываем выбранный контент
-                let selectedContent = document.getElementById(settingsTabs[tabId]);
-                if (selectedContent) {
-                    selectedContent.classList.remove('hidden');
-                }
-
-                // добавляем активные стили для выбранной вкладки
-                tab.classList.remove(
-                    'border-transparent',
-                    'text-gray-500',
-                    'hover:text-gray-700',
-                    'hover:border-gray-300'
-                );
-                tab.classList.add('border-indigo-500', 'text-indigo-600');
-            });
-        }
-    });
 }

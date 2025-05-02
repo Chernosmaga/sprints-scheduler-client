@@ -47,91 +47,6 @@
             <!-- контент создания спринта -->
             <div id="create-sprint-placeholder"></div>
 
-            <!-- контент обновления спринта
-            <div id="update-sprint-content" class="hidden">
-                <div class="max-w-3xl mx-auto">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Обновить текущий спринт</h2>
-
-                    <div class="bg-white rounded-lg shadow overflow-hidden">
-                        <div class="p-6">
-                            <div class="mb-6">
-                                <h3 class="text-lg font-semibold text-gray-800">Sprint #24 - Feature Development</h3>
-                                <p class="text-gray-600">May 15, 2023 - May 29, 2023</p>
-                            </div>
-
-                            <div class="space-y-6">
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Статус спринта</label>
-                                    <div class="mt-2 space-y-2">
-                                        <div class="flex items-center">
-                                            <input id="status-active" type="radio" name="sprint-status" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" checked>
-                                            <label for="status-active" class="ml-2 block text-sm text-gray-700">
-                                                Активный
-                                            </label>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <input id="status-completed" type="radio" name="sprint-status" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300">
-                                            <label for="status-completed" class="ml-2 block text-sm text-gray-700">
-                                                Завершен
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label for="sprint-progress" class="block text-sm font-medium text-gray-700">Прогресс</label>
-                                    <input type="range" id="sprint-progress" min="0" max="100" value="65" class="mt-2 w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-                                    <div class="mt-1 flex justify-between text-sm text-gray-500">
-                                        <span>0%</span>
-                                        <span>65%</span>
-                                        <span>100%</span>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Добавить задачи в спринт</label>
-                                    <div class="mt-2 space-y-2">
-                                        <div class="flex items-center">
-                                            <input id="add-task-1" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
-                                            <label for="add-task-1" class="ml-2 block text-sm text-gray-700">
-                                                TASK-130: Реализовать кэширование API (8h)
-                                            </label>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <input id="add-task-2" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
-                                            <label for="add-task-2" class="ml-2 block text-sm text-gray-700">
-                                                TASK-131: Обновить документацию (4h)
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700">Удалить задачи из спринта</label>
-                                    <div class="mt-2 space-y-2">
-                                        <div class="flex items-center">
-                                            <input id="remove-task-1" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
-                                            <label for="remove-task-1" class="ml-2 block text-sm text-gray-700">
-                                                TASK-126: API performance optimization (16h)
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mt-8 flex justify-end space-x-3">
-                                <button type="button" class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                    Отмена
-                                </button>
-                                <button type="button" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                                    Обновить спринт
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
-
             <!-- контент истории спринтов -->
             <div id="history-content" class="hidden">
                 <div class="max-w-6xl mx-auto">
@@ -140,6 +55,9 @@
                     <div id="history-sprint-content" class="space-y-4"></div>
                 </div>
             </div>
+
+            <!-- контент пользователей -->
+            <div id="team-placeholder"></div>
 
             <!-- контент настроек -->
             <div id="settings-placeholder"></div>
@@ -169,6 +87,12 @@
         .then(response => response.text())
         .then(data => {
             document.getElementById('create-sprint-placeholder').innerHTML = data;
+        });
+        
+    fetch('/templates/team.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('team-placeholder').innerHTML = data;
         });
 
     fetch('/templates/settings.html')
