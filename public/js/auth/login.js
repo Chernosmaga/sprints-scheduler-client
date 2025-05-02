@@ -66,8 +66,6 @@ async function loginUser(userEmail, userPassword) {
             return;
         }
 
-        console.log(JSON.stringify(data, null, 2));
-
         let role = data.userRole;
         let token = data.accessToken;
         localStorage.setItem('accessToken', token);

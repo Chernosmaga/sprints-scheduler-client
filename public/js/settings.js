@@ -164,5 +164,6 @@ document.getElementById('file-input').addEventListener('change', (event) => {
 });
 
 document.getElementById('upload-photo-btn').addEventListener('click', () => {
-    fileInput.click(); // имитируем клик по скрытому input
+    let fileInput = document.getElementById('file-input');
+    fileInput.click();
 });
