@@ -1,6 +1,6 @@
-import { showNotification } from '/js/util/notification.js';
-import { createButton } from '/js/util/util.js';
-import { showLoadingScreen, hideLoadingScreen } from '/js/util/loading-screen.js';
+import { showNotification } from '../js/util/notification.js';
+import { createButton } from '../js/util/util.js';
+import { showLoadingScreen, hideLoadingScreen } from '../js/util/loading-screen.js';
 
 const simpleOneUrl = 'https://fmlogistic.simpleone.ru/record/itsm_change_request/';
 const backendUrl = 'http://localhost:8080';

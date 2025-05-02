@@ -1,4 +1,4 @@
-import { showNotification } from '/js/util/notification.js';
+import { showNotification } from '../js/util/notification.js';
 
 const backendUrl = 'http://localhost:8080';
 const simpleOneUrl = 'https://fmlogistic.simpleone.ru/record/itsm_change_request/';

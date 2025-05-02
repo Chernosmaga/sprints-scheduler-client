@@ -1,7 +1,7 @@
-import { showNotification } from '/js/util/notification.js';
-import { getProgressPercentage, parseDate, createButton } from '/js/util/util.js';
-import { showLoadingScreen, hideLoadingScreen } from '/js/util/loading-screen.js';
-import * as Chart from '/js/chart.js';
+import { showNotification } from '../js/util/notification.js';
+import { getProgressPercentage, parseDate, createButton } from '../js/util/util.js';
+import { showLoadingScreen, hideLoadingScreen } from '../js/util/loading-screen.js';
+import * as Chart from '../js/chart.js';
 
 const simpleOneUrl = 'https://fmlogistic.simpleone.ru/record/itsm_change_request/';
 const backendUrl = 'http://localhost:8080';
@@ -41,6 +41,7 @@ export async function loadSprintData() {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('userRole');
             window.location.href = loginPage;
+            console.log("redirect");
             return;
         }
 
@@ -140,6 +141,7 @@ function createCharts(sprint) {
     chartsContainer.innerHTML = chartsHTML;
 }
 
+/*
 // функция для отрисовки всех задач
 export async function renderTasksForSprint() {
     let token = localStorage.getItem('accessToken');
@@ -187,6 +189,7 @@ export async function renderTasksForSprint() {
         showNotification('Ошибка при получении спринта', 'error');
     }
 }
+*/
 
 // функция для синхронизации с SimpleOne
 export async function synchronizeTasksWithSimpleOne() {

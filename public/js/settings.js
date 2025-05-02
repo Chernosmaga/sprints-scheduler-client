@@ -1,5 +1,5 @@
-import { showNotification } from '/js/util/notification.js';
-import { parseDate } from '/js/util/util.js';
+import { showNotification } from '../js/util/notification.js';
+import { parseDate } from '../js/util/util.js';
 const backendUrl = 'http://localhost:8080';
 const loginPage = '/account/login';
 

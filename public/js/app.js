@@ -1,9 +1,9 @@
-import * as Sprint from "/js/sprint.js";
-import * as Backlog from "/js/backlog.js";
-import * as Settings from "/js/settings.js";
-import * as CreateSprint from "/js/create-sprint.js";
-import * as History from "/js/history.js";
-import * as Sidebar from "/js/sidebar.js";
+import * as Sprint from "../js/sprint.js";
+import * as Backlog from "../js/backlog.js";
+import * as Settings from "../js/settings.js";
+import * as CreateSprint from "../js/create-sprint.js";
+import * as History from "../js/history.js";
+import * as Sidebar from "../js/sidebar.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     // инициализация страниц
@@ -15,6 +15,11 @@ document.addEventListener("DOMContentLoaded", () => {
         settings: document.getElementById("settings-content"),
         teamSettings: document.getElementById("team-settings"),
     };
+
+    let token = localStorage.getItem('accessToken');
+    if (!token) {
+        window.location.href = '/account/login';
+    }
 
     let getUserSettingsButton = document.getElementById("user-settings-btn");
     let saveUserDataButton = document.getElementById("user-save-data");
@@ -56,7 +61,8 @@ document.addEventListener("DOMContentLoaded", () => {
             if (userRole === "ADMIN") {
                 switch (pageId) {
                     case "currentSprint":
-                        Sprint.renderTasksForSprint();
+                        //Sprint.renderTasksForSprint();
+                        Sprint.loadSprintData();
                         break;
                     case "backlog":
                         Backlog.loadBacklogData();
@@ -77,7 +83,8 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (userRole === "USER" || userRole === "GUEST") {
                 switch (pageId) {
                     case "currentSprint":
-                        Sprint.renderTasksForSprint();
+                        //Sprint.renderTasksForSprint();
+                        Sprint.loadSprintData();
                         break;
                     case "backlog":
                         Backlog.loadBacklogData();
@@ -121,6 +128,11 @@ document.addEventListener("DOMContentLoaded", () => {
         createSprintSubmitButton.addEventListener("click", async () => {
             CreateSprint.sendSprintToCreate();
         });
+
+        document.getElementById("create-sprint-link").addEventListener("click", (e) => {
+            e.preventDefault();
+            updateUrlAndShowPage("createSprint", "/create/sprint");
+        });
     }
 
     // функция для инициализации страницы на основе URL
@@ -130,8 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "/backlog": "backlog",
             "/history": "history",
             "/account/settings": "settings",
-            "/create/sprint": "createSprint",
-            '/team/settings': 'teamSettings'
+            "/create/sprint": "createSprint"
         };
 
         const currentPath = window.location.pathname;
@@ -158,7 +169,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // нажатие на кнопку получения задач на спринт
     getCurrentSprintData.addEventListener("click", () => {
-        Sprint.renderTasksForSprint();
+        //Sprint.renderTasksForSprint();
+        Sprint.loadSprintData();
     });
 
     // назначаем обработчики событий для ссылок в меню
@@ -180,11 +192,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("settings-link").addEventListener("click", (e) => {
         e.preventDefault();
         updateUrlAndShowPage("settings", "/account/settings");
-    });
-
-    document.getElementById("create-sprint-link").addEventListener("click", (e) => {
-        e.preventDefault();
-        updateUrlAndShowPage("createSprint", "/create/sprint");
     });
 
     getUserSettingsButton.addEventListener("click", () => {

@@ -1,7 +1,7 @@
-import { showNotification } from '/js/util/notification.js';
+import { showNotification } from '../util/notification.js';
 
 const backendUrl = 'http://localhost:8080';
-const mainPage = '/account/login';
+const mainPage = '/current/sprint';
 
 // получение данных из формы для входа
 document.getElementById('login-sing-in').addEventListener('click', function (e) {
@@ -32,13 +32,13 @@ document.getElementById('login-sing-in').addEventListener('click', function (e) 
 
     if (isError === true) {
         showNotification('Поле обязательно для заполнения', 'error');
+        return;
     }
 
     loginUser(email.value, password.value);
 });
 
 async function loginUser(userEmail, userPassword) {
-
     let rememberMeCheckbox = document.getElementById('remember-me');
     let userJSON = {
         email: userEmail,
@@ -58,6 +58,7 @@ async function loginUser(userEmail, userPassword) {
 
         if (!response.ok) {
             showNotification('Ошибка при входе в систему', 'error');
+            return;
         }
 
         let data = await response.json();

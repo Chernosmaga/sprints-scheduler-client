@@ -2,19 +2,21 @@ const express = require('express');
 const path = require('path');
 
 const app = express();
+const cors = require('cors');
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(cors());
 
 // раздача статических файлов из папки 'public'
 app.use(express.static(path.join(__dirname, 'public')));
 
 // маршруты для основных страниц
-app.get('/current/sprint', (req, res) => {
+app.get('/backlog', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/templates', 'main.html'));
 });
 
-app.get('/backlog', (req, res) => {
+app.get('/current/sprint', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/templates', 'main.html'));
 });
 
