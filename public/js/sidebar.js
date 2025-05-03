@@ -74,7 +74,7 @@ export function setupNavigation(userRole) {
         navLinks = navLinksForUser;
     }
 
-    console.log(navLinks);
+    initializePageFromUrl(navLinks);
 
     Object.keys(navLinks).forEach((linkId) => {
         let link = document.getElementById(linkId);
@@ -124,16 +124,11 @@ export function setupNavigation(userRole) {
             });
         }
     });
-
-    // инициализация при загрузке страницы
-    initializePageFromUrl(navLinks);
 }
 
 export function setupSidebar() {
     let toggleSidebar = document.getElementById("toggle-sidebar");
-    //let sidebar = document.getElementById("sidebar");
     let mainContent = document.getElementById("main-content");
-    //let logoText = document.getElementById("logo-text");
 
     toggleSidebar.addEventListener("click", () => {
         // переключаем классы для меню и основного контента
@@ -145,27 +140,35 @@ export function setupSidebar() {
 
 function initializePageFromUrl(navLinks) {
     const currentPath = window.location.pathname;
-
-    // Находим ссылку, соответствующую текущему пути
-    const selectedLink = Object.values(navLinks).find(link => link.path === currentPath);
-
-    if (selectedLink) {
-        // Скрываем все контенты страниц
+    
+    const activeLink = Object.entries(navLinks).find(([_, link]) => 
+        link.path === currentPath
+    );
+    
+    if (activeLink) {
+        const [linkId, linkData] = activeLink;
+        const linkElement = document.getElementById(linkId);
+        
         Object.values(navLinks).forEach((navItem) => {
-            let contentElement = document.getElementById(navItem.content);
-            if (contentElement) {
-                contentElement.classList.add('hidden');
+            const contentElement = document.getElementById(navItem.content);
+            if (contentElement) contentElement.classList.add('hidden');
+        });
+        
+        const selectedContent = document.getElementById(linkData.content);
+        if (selectedContent) selectedContent.classList.remove('hidden');
+        
+        Object.keys(navLinks).forEach((navLinkId) => {
+            const navLinkElement = document.getElementById(navLinkId);
+            if (navLinkElement) {
+                navLinkElement.classList.remove('bg-indigo-900', 'text-white');
+                navLinkElement.classList.add(
+                    'text-indigo-200',
+                    'hover:bg-indigo-700',
+                    'hover:text-white'
+                );
             }
         });
-
-        // Показываем выбранный контент
-        let selectedContent = document.getElementById(selectedLink.content);
-        if (selectedContent) {
-            selectedContent.classList.remove('hidden');
-        }
-
-        // Добавляем активные стили для выбранной ссылки
-        const linkElement = document.querySelector(`a[href="${selectedLink.path}"]`);
+        
         if (linkElement) {
             linkElement.classList.remove(
                 'text-indigo-200',
@@ -174,6 +177,12 @@ function initializePageFromUrl(navLinks) {
             );
             linkElement.classList.add('bg-indigo-900', 'text-white');
         }
+    } else {
+        const defaultLinkId = Object.keys(navLinks)[0];
+        const defaultLink = navLinks[defaultLinkId];
+        
+        document.getElementById(defaultLink.content)?.classList.remove('hidden');
+        document.getElementById(defaultLinkId)?.classList.add('bg-indigo-900', 'text-white');
     }
 }
 
