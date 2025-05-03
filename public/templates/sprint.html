@@ -2,7 +2,6 @@
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-gray-800">Текущий спринт</h2>
 
-        <!-- контейнер для кнопок -->
         <div id="sprint-buttons-container" class="flex space-x-3"></div>
 
         <div id="modal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
@@ -27,7 +26,6 @@
             </div>
         </div>
 
-        <!-- модальное окно для редактирования -->
         <div id="edit-modal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
             <div id="modal-content" class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md transform scale-0 opacity-0">
                 <h2 id="edit-mode-subject" class="text-xl font-medium mb-4"></h2>
@@ -138,9 +136,7 @@
                         <div id="sprint-progress-bar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
                     </div>
 
-                    <!-- диаграммы спринта -->
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4 mt-8">
-                        <!-- статические блоки -->
                         <div class="bg-gray-50 p-2 rounded-lg w-full h-20">
                             <h4 class="text-sm font-medium text-gray-500 mb-2">Ответственный</h4>
                             <div id="sprint-responsible-container" class="flex justify-center h-full text-xl text-gray-700">
@@ -166,13 +162,11 @@
 
                 <div id="task-table-body" class="bg-white divide-y divide-gray-200"></div>
 
-                <!-- динамический контейнер для диаграмм -->
                 <div id="sprint-charts-container" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 mt-8"></div>
             </div>
         </div>
     </div>
 
-    <!-- экран загрузки -->
     <div id="sprint-loading-screen" class="loading-screen">
         <div class="loading-content">
             <div class="spinner"></div>

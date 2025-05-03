@@ -41,7 +41,6 @@ export async function loadSprintData() {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('userRole');
             window.location.href = loginPage;
-            console.log("redirect");
             return;
         }
 
