@@ -303,7 +303,7 @@ function createUserElement(user) {
             let token = localStorage.getItem('accessToken');
 
             try {
-                let url = new URL(backendUrl + '/api/v1/update/role');
+                let url = new URL(backendUrl + '/api/v1/users/update/role');
                 let response = await fetch(url, {
                     method: 'PUT',
                     headers: {
@@ -312,6 +312,8 @@ function createUserElement(user) {
                     },
                     body: JSON.stringify(userJSON),
                 });
+
+                console.log(JSON.stringify(userJSON, null, 2));
 
                 if (response.status === 403 || response.status === 401) {
                     localStorage.removeItem('accessToken');

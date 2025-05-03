@@ -33,41 +33,80 @@
                 <h2 id="edit-mode-subject" class="text-xl font-medium mb-4"></h2>
 
                 <div class="mb-4">
-                    <label for="modal-status" class="block text-sm font-medium text-gray-700">Статус</label>
-                    <select id="modal-status" class="mt-1 block w-full border border-gray-300 rounded px-2 py-1 text-sm">
-                        <option value="Scheduled">Scheduled</option>
-                        <option value="Waiting for validation">Waiting for validation</option>
-                        <option value="Registered">Registered</option>
-                        <option value="Delivered/Testing">Delivered/Testing</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Done">Done</option>
-                        <option value="Cancelled">Cancelled</option>
-                        <option value="Cancelled">Implemented</option>
-                    </select>
+                    <label for="modal-status" class="block text-sm font-medium text-gray-700 mb-1">Статус задачи</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <img src="/icons/chart-simple-solid.svg" class="w-4 h-4" loading="lazy" />
+                        </div>
+                        <select
+                            id="modal-status"
+                            name="status"
+                            required
+                            class="input-focus-effect pl-10 w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
+                        >
+                            <option value=""></option>
+                            <option>Scheduled</option>
+                            <option>Waiting for validation</option>
+                            <option>Registered</option>
+                            <option>Delivered/Testing</option>
+                            <option>In Progress</option>
+                            <option>Done</option>
+                            <option>Cancelled</option>
+                            <option>Implemented</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="mb-4">
-                    <label for="modal-responsible" class="block text-sm font-medium text-gray-700">Ответственный</label>
-                    <select id="modal-responsible" class="mt-1 block w-full border border-gray-300 rounded px-2 py-1 text-sm">
-                        <option value="Алеся Беседина">Алеся Беседина</option>
-                        <option value="Антон Стенищев">Антон Стенищев</option>
-                        <option value="Вячеслав Мозговой">Вячеслав Мозговой</option>
-                        <option value="Дмитрий Кичигин">Дмитрий Кичигин</option>
-                        <option value="Михаил Горбов">Михаил Горбов</option>
-                        <option value="Никита Колычев">Никита Колычев</option>
-                        <option value="Сергей Черносмага">Сергей Черносмага</option>
-                        <option value="Татьяна Чугунова">Татьяна Чугунова</option>
-                    </select>
+                    <label for="modal-responsible" class="block text-sm font-medium text-gray-700 mb-1">Ответственный</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <img src="/icons/circle-user-solid.svg" class="w-4 h-4" loading="lazy" />
+                        </div>
+                        <select
+                            id="modal-responsible"
+                            name="responsible"
+                            class="input-focus-effect pl-10 w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
+                        >
+                            <option value=""></option>
+                            <option>Алеся Беседина</option>
+                            <option>Антон Стенищев</option>
+                            <option>Вячеслав Мозговой</option>
+                            <option>Дмитрий Кичигин</option>
+                            <option>Михаил Горбов</option>
+                            <option>Никита Колычев</option>
+                            <option>Сергей Черносмага</option>
+                            <option>Татьяна Чугунова</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="mb-4">
-                    <label for="modal-comment" class="block text-sm font-medium text-gray-700">Комментарий</label>
-                    <textarea id="modal-comment" class="mt-1 block w-full border border-gray-300 rounded px-2 py-1 text-sm"></textarea>
+                    <label for="modal-comment" class="block text-sm font-medium text-gray-700 mb-1">Комментарий</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <img src="/icons/address-book-solid.svg" class="w-4 h-4" loading="lazy" />
+                        </div>
+                        <input
+                            type="text"
+                            id="modal-comment"
+                            class="input-focus-effect pl-10 w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
+                        />
+                    </div>
                 </div>
 
                 <div class="mb-4">
-                    <label for="modal-story-points" class="block text-sm font-medium text-gray-700">Story Points</label>
-                    <input type="number" id="modal-story-points" class="mt-1 block w-full border border-gray-300 rounded px-2 py-1 text-sm">
+                    <label for="modal-story-points" class="block text-sm font-medium text-gray-700 mb-1">Story Points</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <img src="/icons/address-book-solid.svg" class="w-4 h-4" loading="lazy" />
+                        </div>
+                        <input
+                            type="text"
+                            id="modal-story-points"
+                            class="input-focus-effect pl-10 w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
+                        />
+                    </div>
                 </div>
 
                 <div class="flex justify-center space-x-2 mt-8">

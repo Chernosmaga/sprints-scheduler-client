@@ -359,7 +359,7 @@ function renderTasks(task) {
 
     // приоритет задачи
     let priorityIcon = document.createElement('img');
-    priorityIcon.src = '/icons/chart-simple-solid.svg';
+    priorityIcon.src = '/icons/flag-solid.svg';
     priorityIcon.alt = 'Приоритет';
     priorityIcon.className = 'w-3 h-3 mr-1';
     detailsWrapper.appendChild(priorityIcon);
