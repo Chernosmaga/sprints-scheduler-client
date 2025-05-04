@@ -1,4 +1,5 @@
 import { showNotification } from '../js/util/notification.js';
+import { showCreateSprintLoading } from '../js/util/loading-screen.js';
 
 const backendUrl = 'http://localhost:8080';
 const simpleOneUrl = 'https://fmlogistic.simpleone.ru/record/itsm_change_request/';
@@ -43,6 +44,7 @@ export async function sendSprintToCreate() {
 export async function renderTasks() {
     let token = localStorage.getItem('accessToken');
     let currentSprintId = localStorage.getItem('currentSprintId');
+    showCreateSprintLoading();
 
     try {
         let url = new URL(backendUrl + '/api/v1/tasks/excluded/sprints/' + currentSprintId);

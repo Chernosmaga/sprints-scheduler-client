@@ -1,6 +1,6 @@
 import { showNotification } from '../js/util/notification.js';
 import { getProgressPercentage, parseDate, createButton } from '../js/util/util.js';
-import { showLoadingScreen, hideLoadingScreen } from '../js/util/loading-screen.js';
+import { showLoading } from '../js/util/loading-screen.js';
 import * as Chart from '../js/chart.js';
 
 const simpleOneUrl = 'https://fmlogistic.simpleone.ru/record/itsm_change_request/';
@@ -25,7 +25,7 @@ const buttonsData = [
 
 export async function loadSprintData() {
     let token = localStorage.getItem('accessToken');
-
+    showLoading('task-table-body');
     try {
         let url = new URL(backendUrl + '/api/v1/sprints/current');
         let response = await fetch(url, {
@@ -54,6 +54,7 @@ export async function loadSprintData() {
 
         let tasks = sprint.tasks; // извлекаем массив задач
         let taskContainer = document.getElementById('task-table-body');
+        
 
         renderSprintData(sprint);
 
@@ -195,7 +196,7 @@ export async function synchronizeTasksWithSimpleOne() {
     let token = localStorage.getItem('accessToken');
     let currentSprintId = localStorage.getItem('currentSprintId');
 
-    showLoadingScreen('sprint-loading-screen');
+    showLoading('task-table-body');
     try {
         let url = new URL(backendUrl + '/api/v1/sprints/sync/' + currentSprintId);
         let response = await fetch(url, {
@@ -209,13 +210,11 @@ export async function synchronizeTasksWithSimpleOne() {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('userRole');
             window.location.href = loginPage;
-            hideLoadingScreen('sprint-loading-screen');
             return;
         }
 
         if (!response.ok) {
             showNotification('Ошибка при обновлении статусов', 'error');
-            hideLoadingScreen('sprint-loading-screen');
             return;
         }
 
@@ -234,10 +233,8 @@ export async function synchronizeTasksWithSimpleOne() {
             taskContainer.appendChild(taskElement);
         });
 
-        hideLoadingScreen('sprint-loading-screen');
         showNotification('Статусы обновлены!', 'success');
     } catch (error) {
-        hideLoadingScreen('sprint-loading-screen');
         console.error('Ошибка при обновлении статусов:', error);
         showNotification('Ошибка при обновлении статусов', 'error');
     }

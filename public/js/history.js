@@ -1,5 +1,6 @@
 import { showNotification } from './util/notification.js';
 import { getProgressPercentage, parseDate } from './util/util.js';
+import { showHistoryLoading } from '../js/util/loading-screen.js';
 import { getDaysText, loadCharts } from './sprint.js';
 
 const simpleOneUrl = 'https://fmlogistic.simpleone.ru/record/itsm_change_request/';
@@ -12,6 +13,8 @@ const sprintLimit = 10;
 
 export async function renderData() {
     let token = localStorage.getItem('accessToken');
+    showHistoryLoading();
+
     try {
         let url = `${backendUrl}/api/v1/history/sprints?page=${currentOffset}&size=${sprintLimit}`;
         let response = await fetch(url, {

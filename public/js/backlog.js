@@ -1,6 +1,6 @@
 import { showNotification } from '../js/util/notification.js';
 import { createButton } from '../js/util/util.js';
-import { showLoadingScreen, hideLoadingScreen } from '../js/util/loading-screen.js';
+import { showLoading } from '../js/util/loading-screen.js';
 
 const simpleOneUrl = 'https://fmlogistic.simpleone.ru/record/itsm_change_request/';
 const backendUrl = 'http://localhost:8080';
@@ -189,6 +189,8 @@ function changePage(direction) {
 async function fetchFilteredTasks() {
     let token = localStorage.getItem('accessToken');
     let userRole = localStorage.getItem('userRole');
+
+    showLoading('tasks-container-backlog');
     try {
         // получаем выбранные значения
         let status = statusFilter.value === 'Все статусы' ? null : statusFilter.value;
@@ -237,7 +239,7 @@ async function fetchFilteredTasks() {
 
         // создаем элементы для каждой задачи
         tasks.forEach((task) => {
-            const taskElement = createTaskElement(task);
+            let taskElement = createTaskElement(task);
             taskContainer.appendChild(taskElement);
         });
 
@@ -438,8 +440,8 @@ async function sendSearchRequest(text) {
 // синхронизация с SimpleOne
 async function synchronizeWithSimpleOne() {
     let token = localStorage.getItem('accessToken');
+    showLoading('tasks-container-backlog');
 
-    showLoadingScreen('backlog-loading-screen');
     try {
         let url = new URL(backendUrl + '/api/v1/tasks/sync/backlog');
         let response = await fetch(url, {
@@ -453,13 +455,11 @@ async function synchronizeWithSimpleOne() {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('userRole');
             window.location.href = loginPage;
-            hideLoadingScreen('backlog-loading-screen');
             return;
         }
 
         if (!response.ok) {
             showNotification('Ошибка при синхронизации задач', 'error');
-            hideLoadingScreen('backlog-loading-screen');
             return;
         }
 
@@ -478,8 +478,6 @@ async function synchronizeWithSimpleOne() {
 
         initializeTaskCounters();
         initializeSearch();
-
-        hideLoadingScreen('backlog-loading-screen');
         showNotification('Успешная синхронизация', 'success');
     } catch (error) {
         hideLoadingScreen('backlog-loading-screen');

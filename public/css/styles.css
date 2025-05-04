@@ -249,46 +249,25 @@ body {
   text-align: center;
 }
 
-/* стиль для экрана загрузки */
-.loading-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* полупрозрачный фон */
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999; /* чтобы экран был поверх всего */
-}
-
-.loading-content {
-  text-align: center;
-  color: white;
-}
-
-/* анимация спиннера */
-.spinner {
-  border: 4px solid rgba(255, 255, 255, 0.3);
-  border-top: 4px solid white;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-  margin: 0 auto 10px;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 /* стиль для подсветки поля */
 input.error {
     border-color: red;
+}
+
+/* стиль анимации при загрузке */
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+.skeleton {
+    background-color: #e5e7eb; /* Tailwind's bg-gray-200 */
+    border-radius: 0.25rem; /* rounded */
 }

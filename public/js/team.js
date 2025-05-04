@@ -1,4 +1,5 @@
 import { showNotification } from '../js/util/notification.js';
+import { showUserListLoading } from '../js/util/loading-screen.js';
 import { parseDate } from '../js/util/util.js';
 const backendUrl = 'http://localhost:8080';
 const loginPage = '/account/login';
@@ -187,6 +188,7 @@ async function sendSearchRequest(text) {
 export async function renderUserList() {
     let userListContainer = document.getElementById('user-list');
     let token = localStorage.getItem('accessToken');
+    showUserListLoading();
 
     try {
         let url = new URL(backendUrl + '/api/v1/users');
