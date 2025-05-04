@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/styles.css" media="all">
     <title>Вход в систему</title>
-    <link rel="icon" href="/icons/rocket-solid-icon.svg" type="image/x-icon" loading="lazy">
+    <link rel="icon" href="/icons/rocket-solid-icon.svg" type="image/x-icon">
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
 <div class="w-full max-w-md">
     <div class="text-center mb-8 animate-fade-in" style="animation-delay: 0.1s;">
         <div class="mx-auto w-20 h-20 flex items-center justify-center mb-4">
-            <img src="/icons/rocket-solid-icon.svg" class="w-17 h-17" loading="lazy">
+            <img src="/icons/rocket-solid-icon.svg" alt="Иконка" class="w-17 h-17" loading="lazy">
         </div>
         <h1 class="text-3xl font-bold text-gray-800 mb-2">Добро пожаловать в SSX</h1>
     </div>
@@ -21,7 +21,7 @@
             <label for="login-user-email" class="block text-sm font-medium text-gray-700 mb-1">Электронная почта</label>
             <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <img src="/icons/envelope-solid.svg" class="w-5 h-5 mr-2" loading="lazy">
+                    <img src="/icons/envelope-solid.svg" alt="Электронная почта" class="w-5 h-5 mr-2" loading="lazy">
                 </div>
                 <input type="email" id="login-user-email"
                        class="input-focus-effect pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
@@ -34,14 +34,13 @@
             <label for="login-user-password" class="block text-sm font-medium text-gray-700 mb-1">Пароль</label>
             <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <img src="/icons/key-solid.svg" class="w-5 h-5 mr-2" loading="lazy">
+                    <img src="/icons/key-solid.svg" alt="Пароль" class="w-5 h-5 mr-2" loading="lazy">
                 </div>
                 <input type="password" id="login-user-password"
                        class="input-focus-effect pl-10 w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
                        placeholder="••••••••" required>
                 <p id="login-password-error" class="hidden mt-1 text-sm text-red-600"></p>
-                <button type="button" class="absolute right-3 top-3 text-gray-400 hover:text-indigo-600" id="togglePassword">
-                    <i class="fas fa-eye"></i>
+                <button type="button" class="absolute right-3 top-3 text-gray-400 hover:text-indigo-600" id="login-toggle-password">
                 </button>
             </div>
         </div>

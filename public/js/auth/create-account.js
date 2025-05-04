@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
     localStorage.removeItem('user-email');
 
     let passwordInput = document.getElementById('create-account-user-password');
-    let togglePasswordButton = document.getElementById('togglePassword');
+    let togglePasswordButton = document.getElementById('create-account-toggle-password');
     let eyeIcon = document.getElementById('eye-icon');
 
     // обработчик клика на кнопку
