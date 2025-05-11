@@ -1,6 +1,6 @@
 import { showNotification } from '../util/notification.js';
 
-const backendUrl = 'http://localhost:8080';
+const BACKEND_URL = window.appConfig.BACKEND_URL;
 const redirectLocation = '/account/login';
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -51,7 +51,7 @@ async function createUserAccount(userName, userBirthday, userEmail, userPassword
     };
 
     try {
-        let url = backendUrl + '/api/auth/register';
+        let url = BACKEND_URL + '/api/auth/register';
 
         let response = await fetch(url, {
             method: 'POST',

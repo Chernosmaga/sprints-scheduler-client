@@ -2,8 +2,8 @@ import { showNotification } from '../js/util/notification.js';
 import { createButton } from '../js/util/util.js';
 import { showLoading } from '../js/util/loading-screen.js';
 
-const simpleOneUrl = 'https://fmlogistic.simpleone.ru/record/itsm_change_request/';
-const backendUrl = 'http://localhost:8080';
+const BACKEND_URL = window.appConfig.BACKEND_URL;
+const SIMPLE_ONE_URL = window.appConfig.SIMPLE_ONE_URL;
 const loginPage = '/accout/login';
 let statusFilter;
 let priorityFilter;
@@ -204,7 +204,7 @@ async function fetchFilteredTasks() {
         }
 
         // формируем URL с параметрами фильтрации и пагинации
-        let url = `${backendUrl}/api/v1/tasks/filter?page=${currentPage}&size=${pageSize}`;
+        let url = `${BACKEND_URL}/api/v1/tasks/filter?page=${currentPage}&size=${pageSize}`;
 
         if (status) url += `&status=${encodeURIComponent(status)}`;
         if (priority) url += `&priority=${encodeURIComponent(priority)}`;
@@ -310,7 +310,7 @@ async function addTasksToSprint(tasks) {
     let currentSprintId = localStorage.getItem('currentSprintId');
     let token = localStorage.getItem('accessToken');
     try {
-        let url = new URL(backendUrl + '/api/v1/sprints/' + currentSprintId + '/add/tasks');
+        let url = new URL(BACKEND_URL + '/api/v1/sprints/' + currentSprintId + '/add/tasks');
         let response = await fetch(url, {
             method: 'PATCH',
             headers: {
@@ -343,7 +343,7 @@ async function addTasksToSprint(tasks) {
 // функция для отрисовки всех задач (неактуальна, так как запрос на отрисовку выполняется в методе fetchFilteredTasks)
 export async function renderTasks() {
     try {
-        let url = backendUrl + '/api/v1/tasks?page=' + currentPage + '&size=' + pageSize;
+        let url = BACKEND_URL + '/api/v1/tasks?page=' + currentPage + '&size=' + pageSize;
         let response = await fetch(url);
         if (!response.ok) {
             showNotification('Ошибка при получении задач', 'error');
@@ -397,7 +397,7 @@ async function sendSearchRequest(text) {
     let token = localStorage.getItem('accessToken');
     let userRole = localStorage.getItem('userRole');
     try {
-        let url = new URL(backendUrl + '/api/v1/tasks/search');
+        let url = new URL(BACKEND_URL + '/api/v1/tasks/search');
         url.searchParams.append('keyword', text.toLowerCase());
 
         let response = await fetch(url, {
@@ -443,7 +443,7 @@ async function synchronizeWithSimpleOne() {
     showLoading('tasks-container-backlog');
 
     try {
-        let url = new URL(backendUrl + '/api/v1/tasks/sync/backlog');
+        let url = new URL(BACKEND_URL + '/api/v1/tasks/sync/backlog');
         let response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -535,7 +535,7 @@ function createTaskElement(task) {
     // номер задачи
     let taskNumber = document.createElement('a');
     taskNumber.className = 'mr-3 text-indigo-600 hover:underline'; // стили для ссылки
-    taskNumber.href = simpleOneUrl + task.externalId;
+    taskNumber.href = SIMPLE_ONE_URL + task.externalId;
     taskNumber.target = '_blank'; // открывать ссылку в новой вкладке
     taskNumber.rel = 'noopener noreferrer'; // защита от уязвимостей при открытии в новой вкладке
     taskNumber.textContent = task.number; // текст ссылки (номер задачи)
@@ -599,7 +599,7 @@ function createTaskElement(task) {
     let flexWrapper = document.createElement('div');
     flexWrapper.className = 'flex items-start';
 
-    // Добавляем чекбокс только если роль не GUEST
+    // добавляем чекбокс только если роль не GUEST
     if (checkboxWrapper) {
         flexWrapper.appendChild(checkboxWrapper);
     }

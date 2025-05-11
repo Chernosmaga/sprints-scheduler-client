@@ -3,8 +3,8 @@ import { getProgressPercentage, parseDate } from './util/util.js';
 import { showHistoryLoading } from '../js/util/loading-screen.js';
 import { getDaysText, loadCharts } from './sprint.js';
 
-const simpleOneUrl = 'https://fmlogistic.simpleone.ru/record/itsm_change_request/';
-const backendUrl = 'http://localhost:8080';
+const BACKEND_URL = window.appConfig.BACKEND_URL;
+const SIMPLE_ONE_URL = window.appConfig.SIMPLE_ONE_URL;
 const loginPage = '/account/login';
 let allSprints = [];
 let currentSprintId = null;
@@ -16,7 +16,7 @@ export async function renderData() {
     showHistoryLoading();
 
     try {
-        let url = `${backendUrl}/api/v1/history/sprints?page=${currentOffset}&size=${sprintLimit}`;
+        let url = `${BACKEND_URL}/api/v1/history/sprints?page=${currentOffset}&size=${sprintLimit}`;
         let response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -93,7 +93,7 @@ window.openSprint = async function (sprintId) {
         // обновляем URL с sprintId
         updateUrlWithSprintId(sprintId);
 
-        let url = new URL(backendUrl + '/api/v1/sprints/' + sprintId);
+        let url = new URL(BACKEND_URL + '/api/v1/sprints/' + sprintId);
         let response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -383,7 +383,7 @@ function updateTableRow(task) {
     // заполняем строку данными
     row.innerHTML = `
         <td class='px-4 py-2 text-xs'>
-            <a href='${simpleOneUrl + task.externalId}' target='_blank' rel='noopener noreferrer' class='text-blue-500 hover:underline'>${task.number}</a>
+            <a href='${SIMPLE_ONE_URL + task.externalId}' target='_blank' rel='noopener noreferrer' class='text-blue-500 hover:underline'>${task.number}</a>
         </td>
 
         <td class='px-4 py-2 text-xs'>${task.author}</td>

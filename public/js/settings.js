@@ -1,5 +1,6 @@
 import { showNotification } from '../js/util/notification.js';
-const backendUrl = 'http://localhost:8080';
+
+const BACKEND_URL = window.appConfig.BACKEND_URL;
 const loginPage = '/account/login';
 
 export async function sendUserDataToSave() {
@@ -16,7 +17,7 @@ export async function sendUserDataToSave() {
         };
 
         // отправляем данные пользователя на сервер
-        let url = new URL(backendUrl + '/api/v1/users');
+        let url = new URL(BACKEND_URL + '/api/v1/users');
         let response = await fetch(url, {
             method: 'PUT',
             headers: {
@@ -51,7 +52,7 @@ async function uploadPhotoToServer(file) {
     let formData = new FormData();
     formData.append("file", file);
 
-    let url = new URL(backendUrl + "/api/v1/users/upload");
+    let url = new URL(BACKEND_URL + "/api/v1/users/upload");
     // отправляем фото на сервер
     let response = await fetch(url, {
         method: "POST",
@@ -81,7 +82,7 @@ export async function fetchUserData() {
     let token = localStorage.getItem('accessToken');
 
     try {
-        let url = new URL(backendUrl + '/api/v1/users/account');
+        let url = new URL(BACKEND_URL + '/api/v1/users/account');
         let response = await fetch(url, {
             method: 'GET',
             headers: {

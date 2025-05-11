@@ -1,11 +1,11 @@
 import { showNotification } from '../util/notification.js';
 
-const backendUrl = 'http://localhost:8080';
+const BACKEND_URL = window.appConfig.BACKEND_URL;
 const loginPage = '/account/login';
 
 document.getElementById('logout-btn').addEventListener('click', function (event) {
     event.preventDefault();
-    fetch(backendUrl + '/api/auth/logout', {
+    fetch(BACKEND_URL + '/api/auth/logout', {
         method: 'POST',
         credentials: 'include' // если используются куки
     }).then(response => {

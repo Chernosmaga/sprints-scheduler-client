@@ -1,123 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sprint Scheduler X</title>
-    <link rel="icon" href="../icons/rocket-solid-icon.svg" type="image/x-icon" loading="lazy">
-    <link rel="stylesheet" href="../css/styles.css" media="all">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link
+      rel="icon"
+      href="../icons/rocket-solid-icon.svg"
+      type="image/x-icon"
+      loading="lazy"
+    />
+    <link rel="stylesheet" href="../css/styles.css" media="all" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      rel="stylesheet"
+    />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-</head>
-<body class="bg-gray-100 font-sans">
-<div class="flex h-screen overflow-hidden">
-    <div id="sidebar-placeholder"></div>
+  </head>
+  <body class="bg-gray-100 font-sans">
+    <div class="flex h-screen overflow-hidden">
+      <div id="sidebar-placeholder"></div>
 
-    <div id="main-content" class="main-content flex-1 flex flex-col overflow-hidden">
+      <div
+        id="main-content"
+        class="main-content flex-1 flex flex-col overflow-hidden"
+      >
         <header class="bg-white shadow-sm">
-            <div class="px-4 py-3 flex justify-between items-center">
-                <div class="text-xl font-semibold text-gray-800" id="page-title"></div>
-                <div class="flex items-center space-x-4">
-                    <div class="relative">
-                        <button class="flex items-center space-x-2 focus:outline-none">
-                            <img id="user-photo-for-header" class="h-8 w-8 rounded-full" alt="">
-                            <span id="user-name-for-header" class="text-sm font-medium text-gray-700">Пользователь</span>
-                        </button>
-                    </div>
+          <div class="px-4 py-3 flex justify-between items-center">
+            <div
+              class="text-xl font-semibold text-gray-800"
+              id="page-title"
+            ></div>
+            <div class="flex items-center space-x-4">
+              <div class="relative">
+                <button class="flex items-center space-x-2 focus:outline-none">
+                  <img
+                    id="user-photo-for-header"
+                    class="h-8 w-8 rounded-full"
+                    alt=""
+                  />
+                  <span
+                    id="user-name-for-header"
+                    class="text-sm font-medium text-gray-700"
+                    >Пользователь</span
+                  >
+                </button>
+              </div>
 
-                    <div id="notification-container" class="fixed top-4 right-4 space-y-2 w-80">
-                    </div>
-                </div>
+              <div
+                id="notification-container"
+                class="fixed top-4 right-4 space-y-2 w-80"
+              ></div>
             </div>
+          </div>
         </header>
 
         <main class="flex-1 overflow-y-auto p-6 bg-gray-100">
-            <div id="sprint-placeholder"></div>
+          <div id="sprint-placeholder"></div>
 
-            <div id="backlog-placeholder"></div>
+          <div id="backlog-placeholder"></div>
 
-            <div id="create-sprint-placeholder"></div>
+          <div id="create-sprint-placeholder"></div>
 
-            <div id="history-content" class="hidden">
-                <div class="max-w-6xl mx-auto">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-6">История спринтов</h2>
+          <div id="history-content" class="hidden">
+            <div class="max-w-6xl mx-auto">
+              <h2 class="text-2xl font-bold text-gray-800 mb-6">
+                История спринтов
+              </h2>
 
-                    <div id="history-sprint-content" class="space-y-4"></div>
-                </div>
+              <div id="history-sprint-content" class="space-y-4"></div>
             </div>
+          </div>
 
-            <div id="team-placeholder"></div>
+          <div id="team-placeholder"></div>
 
-            <div id="settings-placeholder"></div>
+          <div id="settings-placeholder"></div>
         </main>
+      </div>
     </div>
-</div>
-<script>
-    fetch('/templates/sidebar.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('sidebar-placeholder').innerHTML = data;
+    <script>
+      fetch("/templates/sidebar.html")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("sidebar-placeholder").innerHTML = data;
         });
 
-    fetch('/templates/sprint.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('sprint-placeholder').innerHTML = data;
+      fetch("/templates/sprint.html")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("sprint-placeholder").innerHTML = data;
         });
 
-    fetch('/templates/backlog.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('backlog-placeholder').innerHTML = data;
+      fetch("/templates/backlog.html")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("backlog-placeholder").innerHTML = data;
         });
 
-    fetch('/templates/create-sprint.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('create-sprint-placeholder').innerHTML = data;
-        });
-        
-    fetch('/templates/team.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('team-placeholder').innerHTML = data;
+      fetch("/templates/create-sprint.html")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("create-sprint-placeholder").innerHTML = data;
         });
 
-    fetch('/templates/settings.html')
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('settings-placeholder').innerHTML = data;
+      fetch("/templates/team.html")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("team-placeholder").innerHTML = data;
         });
-</script>
-<script src="../js/util/main.js"></script>
-<script type="module" src="../js/app.js"></script>
-<script type="module" src="../js/auth/logout.js"></script>
-<script>
-    window.onload = function () {
+
+      fetch("/templates/settings.html")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("settings-placeholder").innerHTML = data;
+        });
+    </script>
+    <script src="../js/util/main.js"></script>
+    <script src="../../config.js"></script>
+    <script type="module" src="../js/app.js"></script>
+    <script type="module" src="../js/auth/logout.js"></script>
+    <script>
+      window.onload = function () {
         var sprintStartDate = document.getElementById("start-date");
         var sprintEndDate = document.getElementById("end-date");
 
         if (!sprintStartDate.value) {
-            var today = new Date();
-            var formattedToday = formatDate(today);
-            sprintStartDate.value = formattedToday;
+          var today = new Date();
+          var formattedToday = formatDate(today);
+          sprintStartDate.value = formattedToday;
         }
 
         if (!sprintEndDate.value) {
-            var endDate = new Date();
-            endDate.setDate(endDate.getDate() + 14);
-            var formattedEndDate = formatDate(endDate);
-            sprintEndDate.value = formattedEndDate;
+          var endDate = new Date();
+          endDate.setDate(endDate.getDate() + 14);
+          var formattedEndDate = formatDate(endDate);
+          sprintEndDate.value = formattedEndDate;
         }
-    };
+      };
 
-    function formatDate(date) {
+      function formatDate(date) {
         var year = date.getFullYear();
-        var month = String(date.getMonth() + 1).padStart(2, '0');
-        var day = String(date.getDate()).padStart(2, '0');
+        var month = String(date.getMonth() + 1).padStart(2, "0");
+        var day = String(date.getDate()).padStart(2, "0");
         return `${year}-${month}-${day}`;
-    }
-</script>
-</body>
+      }
+    </script>
+  </body>
 </html>

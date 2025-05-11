@@ -1,16 +1,16 @@
 import { showNotification } from '../js/util/notification.js';
 import { showCreateSprintLoading } from '../js/util/loading-screen.js';
 
-const backendUrl = 'http://localhost:8080';
-const simpleOneUrl = 'https://fmlogistic.simpleone.ru/record/itsm_change_request/';
 const loginPage = '/account/login';
+const BACKEND_URL = window.appConfig.BACKEND_URL;
+const SIMPLE_ONE_URL = window.appConfig.SIMPLE_ONE_URL;
 
 export async function sendSprintToCreate() {
     let sprintDto = createSprintDto();
     let token = localStorage.getItem('accessToken');
 
     try {
-        let response = await fetch(backendUrl + '/api/v1/sprints', {
+        let response = await fetch(BACKEND_URL + '/api/v1/sprints', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -47,7 +47,7 @@ export async function renderTasks() {
     showCreateSprintLoading();
 
     try {
-        let url = new URL(backendUrl + '/api/v1/tasks/excluded/sprints/' + currentSprintId);
+        let url = new URL(BACKEND_URL + '/api/v1/tasks/excluded/sprints/' + currentSprintId);
         let response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -75,7 +75,7 @@ export async function renderTasks() {
 
         // создаем элементы для каждой задачи
         tasks.forEach((task) => {
-            let url = simpleOneUrl + task.externalId;
+            let url = SIMPLE_ONE_URL + task.externalId;
             let taskElement = document.createElement('div');
             taskElement.className = 'flex items-center mb-2';
             taskElement.innerHTML = `

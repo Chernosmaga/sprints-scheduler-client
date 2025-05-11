@@ -3,8 +3,8 @@ import { getProgressPercentage, parseDate, createButton } from '../js/util/util.
 import { showLoading } from '../js/util/loading-screen.js';
 import * as Chart from '../js/chart.js';
 
-const simpleOneUrl = 'https://fmlogistic.simpleone.ru/record/itsm_change_request/';
-const backendUrl = 'http://localhost:8080';
+const SIMPLE_ONE_URL = window.appConfig.SIMPLE_ONE_URL;
+const BACKEND_URL = window.appConfig.BACKEND_URL;
 const loginPage = '/account/login';
 const buttonsData = [
     {
@@ -27,7 +27,7 @@ export async function loadSprintData() {
     let token = localStorage.getItem('accessToken');
     showLoading('task-table-body');
     try {
-        let url = new URL(backendUrl + '/api/v1/sprints/current');
+        let url = new URL(BACKEND_URL + '/api/v1/sprints/current');
         let response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -148,7 +148,7 @@ export async function renderTasksForSprint() {
     let currentSprintId = localStorage.getItem('currentSprintId');
 
     try {
-        let url = new URL(backendUrl + '/api/v1/sprints/' + currentSprintId);
+        let url = new URL(BACKEND_URL + '/api/v1/sprints/' + currentSprintId);
         let response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -198,7 +198,7 @@ export async function synchronizeTasksWithSimpleOne() {
 
     showLoading('task-table-body');
     try {
-        let url = new URL(backendUrl + '/api/v1/sprints/sync/' + currentSprintId);
+        let url = new URL(BACKEND_URL + '/api/v1/sprints/sync/' + currentSprintId);
         let response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -321,7 +321,7 @@ function renderTasks(task) {
     // номер задачи
     let taskNumber = document.createElement('a');
     taskNumber.className = 'mr-3 text-indigo-600 hover:underline'; // стили для ссылки
-    taskNumber.href = simpleOneUrl + task.externalId;
+    taskNumber.href = SIMPLE_ONE_URL + task.externalId;
     taskNumber.target = '_blank'; // открывать ссылку в новой вкладке
     taskNumber.rel = 'noopener noreferrer'; // защита от уязвимостей при открытии в новой вкладке
     taskNumber.textContent = task.number; // текст ссылки (номер задачи)
@@ -627,7 +627,7 @@ async function sendTaskToSave(taskId, updatedTask) {
     let currentSprintId = localStorage.getItem('currentSprintId');
 
     try {
-        let url = new URL(backendUrl + '/api/v1/tasks/' + taskId + '/sprints/' + currentSprintId);
+        let url = new URL(BACKEND_URL + '/api/v1/tasks/' + taskId + '/sprints/' + currentSprintId);
         let response = await fetch(url, {
             method: 'PATCH',
             headers: {
@@ -664,7 +664,7 @@ async function deleteTask(taskId) {
     let currentSprintId = localStorage.getItem('currentSprintId');
 
     try {
-        let url = new URL(backendUrl + '/api/v1/sprints/' + currentSprintId + '/delete/tasks/' + taskId);
+        let url = new URL(BACKEND_URL + '/api/v1/sprints/' + currentSprintId + '/delete/tasks/' + taskId);
         let response = await fetch(url, {
             method: 'PATCH',
             headers: {
@@ -726,7 +726,7 @@ async function getTaskFromSimpleOne(number) {
     let token = localStorage.getItem('accessToken');
 
     try {
-        let url = new URL(backendUrl + '/api/v1/tasks/import');
+        let url = new URL(BACKEND_URL + '/api/v1/tasks/import');
         url.searchParams.append('number', number);
         let response = await fetch(url, {
             method: 'PATCH',

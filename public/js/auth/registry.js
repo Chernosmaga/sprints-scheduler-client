@@ -1,6 +1,6 @@
 import { showNotification } from '../util/notification.js';
 
-const backendUrl = 'http://localhost:8080';
+const BACKEND_URL = window.appConfig.BACKEND_URL;
 const redirectLocation = '/current/sprint';
 
 // получение email из формы для загрузки данных из SimpleOne
@@ -22,7 +22,7 @@ document.getElementById('registry-sign-up').addEventListener('click', function (
 
 async function getUserDataFromExternalService(email) {
     try {
-        var url = backendUrl + '/api/v1/users/get/data?email=' + email;
+        var url = BACKEND_URL + '/api/v1/users/get/data?email=' + email;
         var response = await fetch(url);
         if (!response.ok) {
             showNotification('Ошибка при получении данных', 'error');

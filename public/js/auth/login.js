@@ -1,6 +1,6 @@
 import { showNotification } from '../util/notification.js';
 
-const backendUrl = 'http://localhost:8080';
+const BACKEND_URL = window.appConfig.BACKEND_URL;
 const mainPage = '/current/sprint';
 
 // получение данных из формы для входа
@@ -39,6 +39,7 @@ document.getElementById('login-sing-in').addEventListener('click', function (e) 
 });
 
 async function loginUser(userEmail, userPassword) {
+    // донастроить после создания эндпоинта для рефреша токена
     let rememberMeCheckbox = document.getElementById('remember-me');
     let userJSON = {
         email: userEmail,
@@ -46,7 +47,7 @@ async function loginUser(userEmail, userPassword) {
     };
 
     try {
-        let url = backendUrl + '/api/auth/login';
+        let url = BACKEND_URL + '/api/auth/login';
 
         let response = await fetch(url, {
             method: 'POST',

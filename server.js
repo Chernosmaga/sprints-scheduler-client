@@ -1,15 +1,27 @@
+require('dotenv').config();
+
 const express = require('express');
 const path = require('path');
 
 const app = express();
 const cors = require('cors');
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 app.use(express.json());
 app.use(cors());
 
 // раздача статических файлов из папки 'public'
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/config.js', (req, res) => {
+    res.type('application/javascript');
+    res.send(`
+        window.appConfig = {
+            BACKEND_URL: "${process.env.BACKEND_URL}",
+            SIMPLE_ONE_URL: "${process.env.SIMPLE_ONE_URL}"
+        };
+    `);
+});
 
 // маршруты для основных страниц
 app.get('/backlog', (req, res) => {
@@ -49,8 +61,16 @@ app.get('/account/create', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/templates/auth', 'create-account.html'));
 });
 
-app.get('/account/password/reset', (req, res) => {
+app.get('/account/forgot/password', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/templates/auth', 'forgot-password.html'));
+});
+
+app.get('/account/password/reset/request', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/templates/auth', 'reset-password.html'));
+});
+
+app.get('/account/password/reset/confirm', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/templates/auth', 'verify.html'));
 });
 
 app.get('/account/setup', (req, res) => {
