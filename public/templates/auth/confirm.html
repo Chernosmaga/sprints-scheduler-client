@@ -21,9 +21,10 @@
             loading="lazy"
           />
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-2">Проверка данных</h1>
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Последний этап</h1>
         <p class="text-gray-600">
-          Буквально секунду, проверяем корректность данных
+          Мы отправили ссылку для подтверждения регистрации, перейди по ней,
+          чтоб подтвердить электронную почту
         </p>
       </div>
 
@@ -53,27 +54,6 @@
     ></div>
     <script src="/js/util/main.js"></script>
     <script src="../../config.js"></script>
-    <script>
-      const BACKEND_URL = window.appConfig.BACKEND_URL;
-      const redirectLocation = "/current/sprint";
-      let urlParams = new URLSearchParams(window.location.search);
-      let token = urlParams.get("token");
-
-      if (token) {
-        try {
-          let url = new URL(BACKEND_URL + "/api/auth/verify");
-          url.searchParams.set("token", token);
-
-          let response = fetch(url, {
-            method: "GET",
-          });
-
-          window.location.href = redirectLocation;
-        } catch (error) {
-          console.error("Ошибка при подтверждении данных:", error);
-          showNotification("Ошибка при подтверждении данных", "error");
-        }
-      }
-    </script>
+    <script type="module" src="/js/auth/registry.js"></script>
   </body>
 </html>

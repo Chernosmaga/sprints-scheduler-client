@@ -57,24 +57,30 @@ app.get('/account/logout', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/templates/auth', 'login.html'));
 });
 
+// маршруты для страниц регистрации
 app.get('/account/create', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/templates/auth', 'create-account.html'));
 });
 
-app.get('/account/forgot/password', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/templates/auth', 'forgot-password.html'));
-});
-
-app.get('/account/password/reset/request', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/templates/auth', 'reset-password.html'));
-});
-
-app.get('/account/password/reset/confirm', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/templates/auth', 'verify.html'));
+app.get('/account/create/confirm', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/templates/auth', 'confirm.html'));
 });
 
 app.get('/account/setup', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/templates/auth', 'set-up.html'));
+});
+
+app.get('/account/verify', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/templates/auth', 'verify.html'));
+});
+
+// маршруты для страниц сброса пароля
+app.get('/password/reset/request', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/templates/auth', 'forgot-password.html'));
+});
+
+app.get('/password/reset/confirm', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/templates/auth', 'password-confirm.html'));
 });
 
 // обработка ошибок 404

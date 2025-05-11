@@ -1,17 +1,17 @@
 import { showNotification } from '../util/notification.js';
 
 const BACKEND_URL = window.appConfig.BACKEND_URL;
-const redirectLocation = '/account/login';
+const redirectLocation = '/account/create/confirm';
 
 document.addEventListener('DOMContentLoaded', function () {
     // предзаполняем поля формы
-    document.getElementById('create-account-user-name').value = localStorage.getItem('user-name');
-    document.getElementById('create-account-user-birthday').value = localStorage.getItem('user-birthday');
-    document.getElementById('create-account-user-email').value = localStorage.getItem('user-email');
+    document.getElementById('create-account-user-name').value = localStorage.getItem('userName');
+    document.getElementById('create-account-user-birthday').value = localStorage.getItem('userBirthday');
+    document.getElementById('create-account-user-email').value = localStorage.getItem('userEmail');
 
-    localStorage.removeItem('user-name');
-    localStorage.removeItem('user-birthday');
-    localStorage.removeItem('user-email');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userBirthday');
+    localStorage.removeItem('userEmail');
 
     let passwordInput = document.getElementById('create-account-user-password');
     let togglePasswordButton = document.getElementById('create-account-toggle-password');
@@ -37,17 +37,24 @@ document.getElementById('create-account-sign-up').addEventListener('click', func
     let birthday = document.getElementById('create-account-user-birthday');
     let email = document.getElementById('create-account-user-email');
     let password = document.getElementById('create-account-user-password');
+    let group = localStorage.getItem('userGroup');
+    let groupId = localStorage.getItem('userGroupId');
 
     checkInputFields(name, birthday, email, password);
-    createUserAccount(name, birthday, email, password);
+    createUserAccount(name.value, birthday.value, email.value, password.value, group, groupId);
+    
+    localStorage.removeItem('userGroup');
+    localStorage.removeItem('userGroupId');
 });
 
-async function createUserAccount(userName, userBirthday, userEmail, userPassword) {
+async function createUserAccount(userName, userBirthday, userEmail, userPassword, userGroup, userGroupId) {
     let userJSON = {
         name: userName,
         birthday: userBirthday,
         email: userEmail,
-        password: userPassword
+        password: userPassword,
+        group: userGroup,
+        groupId: userGroupId
     };
 
     try {
@@ -61,13 +68,13 @@ async function createUserAccount(userName, userBirthday, userEmail, userPassword
             body: JSON.stringify(userJSON)
         });
 
+        console.log(response.json);
+
         if (!response.ok) {
             showNotification('Ошибка при сохранении данных', 'error');
+        } else {
+            window.location.href = redirectLocation;
         }
-
-        var user = await response.json();
-
-        window.location.href = redirectLocation;
     } catch (error) {
         console.error('Ошибка при сохранении данных:', error);
         showNotification('Ошибка при сохранении данных', 'error');

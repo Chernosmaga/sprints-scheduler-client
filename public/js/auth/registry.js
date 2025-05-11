@@ -1,7 +1,7 @@
 import { showNotification } from '../util/notification.js';
 
 const BACKEND_URL = window.appConfig.BACKEND_URL;
-const redirectLocation = '/current/sprint';
+const redirectLocation = '/account/create';
 
 // получение email из формы для загрузки данных из SimpleOne
 document.getElementById('registry-sign-up').addEventListener('click', function (e) {
@@ -30,9 +30,11 @@ async function getUserDataFromExternalService(email) {
 
         var user = await response.json();
 
-        localStorage.setItem('user-name', user.name);
-        localStorage.setItem('user-birthday', user.birthday);
-        localStorage.setItem('user-email', user.email);
+        localStorage.setItem('userName', user.name);
+        localStorage.setItem('userBirthday', user.birthday);
+        localStorage.setItem('userEmail', user.email);
+        localStorage.setItem('userGroup', user.group);
+        localStorage.setItem('userGroupId', user.groupId);
 
         window.location.href = redirectLocation;
     } catch (error) {
