@@ -14,19 +14,19 @@ document.querySelector('form').addEventListener('reset-password-button', functio
     emailSentMessage.classList.remove("hidden");
     resetPasswordText.textContent = "Отправить письмо повторно";
 
-    showNotification('Письмо отправлено на почту', 'success');
+    showNotification('Ссылка для восстановления отправлена на почту', 'success');
 });
 
 async function sendResetPasswordLink(email) {
     try {
         let url = new URL(BACKEND_URL + '/reset/password/request');
+        url.searchParams.append("email", email);
 
         let response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(userJSON)
+            }
         });
         
         let data = await response.json();
@@ -35,18 +35,11 @@ async function sendResetPasswordLink(email) {
             showNotification('Ваш аккаунт деактивирован, обратитесь в отдел разработки', 'error');
             return;
         } else if (!response.ok) {
-            showNotification('Ошибка при входе в аккаунт', 'error');
+            showNotification('Ошибка на стороне сервера', 'error');
             return;
         }
-
-        let role = data.userRole;
-        let token = data.accessToken;
-        localStorage.setItem('accessToken', token);
-        localStorage.setItem('userRole', role);
-
-        window.location.href = mainPage;
     } catch (error) {
-        console.error('Ошибка при входе в систему:', error);
-        showNotification('Ошибка при входе в систему', 'error');
+        console.error('Ошибка на стороне сервера:', error);
+        showNotification('Ошибка на стороне сервера', 'error');
     }
 }

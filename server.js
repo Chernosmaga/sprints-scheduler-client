@@ -66,12 +66,12 @@ app.get('/account/create/confirm', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/templates/auth', 'confirm.html'));
 });
 
-app.get('/account/setup', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/templates/auth', 'set-up.html'));
-});
-
 app.get('/account/verify', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/templates/auth', 'verify.html'));
+});
+
+app.get('/account/create/password', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public/templates/auth', 'set-password.html'));
 });
 
 // маршруты для страниц сброса пароля

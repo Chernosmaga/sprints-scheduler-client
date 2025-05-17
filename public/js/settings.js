@@ -112,8 +112,8 @@ export async function fetchUserData() {
 
 function renderUserData(userData) {
     if (userData) {
-        document.getElementById('user-name-for-header').textContent = userData.name;
-        document.getElementById('first-name').value = userData.name;
+        document.getElementById('user-name-for-header').textContent = userData.surname + " " +  userData.name + " " + (userData.patronymic || '');
+        document.getElementById('first-name').value = userData.surname + " " +  userData.name + " " + (userData.patronymic || '');
         document.getElementById('user-email').value = userData.email;
         let roleBadge = document.getElementById('user-role');
         roleBadge.textContent = 'Гость';

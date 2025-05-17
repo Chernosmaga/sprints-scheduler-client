@@ -64,6 +64,7 @@ export function closeCreateUserModal() {
 document.getElementById('create-user-form')?.addEventListener('submit', function (e) {
     e.preventDefault();
     let name = document.getElementById('create-user-name').value.trim();
+    let surname = document.getElementById('create-user-surname').value.trim();
     let email = document.getElementById('create-user-email').value.trim();
     let birthday = document.getElementById('create-user-birthday').value;
     let externalId = document.getElementById('create-user-external-id').value;
@@ -73,7 +74,10 @@ document.getElementById('create-user-form')?.addEventListener('submit', function
     if (!name) {
         showNotification('Поле с именем пользователя обзательно для заполнения', 'error');
         return;
-    } else if (!email) {
+    } else if (!surname) {
+        showNotification('Поле с фамилией пользователя обзательно для заполнения', 'error');
+        return;
+    }else if (!email) {
         showNotification('Поле с электронной почтой обзательно для заполнения', 'error');
         return;
     } else if (!birthday) {
@@ -98,6 +102,7 @@ document.getElementById('create-user-form')?.addEventListener('submit', function
 
     let userJSON = {
         name: name,
+        surname: surname,
         email: email,
         role: role,
         birthday: birthday,
@@ -252,7 +257,7 @@ function createUserElement(user) {
 
     let nameElement = document.createElement('p');
     nameElement.className = 'text-sm font-medium text-gray-900';
-    nameElement.textContent = user.name || 'Не указано';
+    nameElement.textContent = user.surname + " " + user.name + " " + (user.patronymic || '');
 
     let emailElement = document.createElement('p');
     emailElement.className = 'text-sm text-gray-500';

@@ -6,12 +6,14 @@ const redirectLocation = '/account/create/confirm';
 document.addEventListener('DOMContentLoaded', function () {
     // предзаполняем поля формы
     document.getElementById('create-account-user-name').value = localStorage.getItem('userName');
+    document.getElementById('create-account-user-surname').value = localStorage.getItem('userSurname');
     document.getElementById('create-account-user-birthday').value = localStorage.getItem('userBirthday');
     document.getElementById('create-account-user-email').value = localStorage.getItem('userEmail');
 
     localStorage.removeItem('userName');
     localStorage.removeItem('userBirthday');
     localStorage.removeItem('userEmail');
+    localStorage.removeItem('userSurname');
 
     let passwordInput = document.getElementById('create-account-user-password');
     let togglePasswordButton = document.getElementById('create-account-toggle-password');
@@ -34,27 +36,22 @@ document.addEventListener('DOMContentLoaded', function () {
 document.getElementById('create-account-sign-up').addEventListener('click', function (e) {
     e.preventDefault();
     let name = document.getElementById('create-account-user-name');
+    let surname = document.getElementById('create-account-user-surname');
     let birthday = document.getElementById('create-account-user-birthday');
     let email = document.getElementById('create-account-user-email');
     let password = document.getElementById('create-account-user-password');
-    let group = localStorage.getItem('userGroup');
-    let groupId = localStorage.getItem('userGroupId');
 
-    checkInputFields(name, birthday, email, password);
-    createUserAccount(name.value, birthday.value, email.value, password.value, group, groupId);
-    
-    localStorage.removeItem('userGroup');
-    localStorage.removeItem('userGroupId');
+    checkInputFields(name, surname, birthday, email, password);
+    createUserAccount(name.value, surname.value, birthday.value, email.value, password.value);
 });
 
-async function createUserAccount(userName, userBirthday, userEmail, userPassword, userGroup, userGroupId) {
+async function createUserAccount(userName, userSurname, userBirthday, userEmail, userPassword) {
     let userJSON = {
         name: userName,
+        surname: userSurname,
         birthday: userBirthday,
         email: userEmail,
-        password: userPassword,
-        group: userGroup,
-        groupId: userGroupId
+        password: userPassword
     };
 
     try {
@@ -68,8 +65,6 @@ async function createUserAccount(userName, userBirthday, userEmail, userPassword
             body: JSON.stringify(userJSON)
         });
 
-        console.log(response.json);
-
         if (!response.ok) {
             showNotification('Ошибка при сохранении данных', 'error');
         } else {
@@ -81,9 +76,10 @@ async function createUserAccount(userName, userBirthday, userEmail, userPassword
     }
 }
 
-function checkInputFields(name, birthday, email, password) {
+function checkInputFields(name, surname, birthday, email, password) {
     let isError = false;
     let nameErrorElement = document.getElementById('name-error');
+    let surnameErrorElement = document.getElementById('surname-error');
     let birthdayErrorElement = document.getElementById('birthday-error');
     let emailErrorElement = document.getElementById('email-error');
     let passwordErrorElement = document.getElementById('password-error');
@@ -95,6 +91,15 @@ function checkInputFields(name, birthday, email, password) {
     } else {
         name.classList.remove('error');
         nameErrorElement.classList.add('hidden');
+    }
+
+    if (!surname.value.trim()) {
+        surnameErrorElement.classList.add('error');
+        surnameErrorElement.classList.remove('hidden');
+        isError = true;
+    } else {
+        name.classList.remove('error');
+        surnameErrorElement.classList.add('hidden');
     }
 
     if (!birthday.value.trim()) {

@@ -3,14 +3,14 @@ import { showNotification } from '../util/notification.js';
 const BACKEND_URL = window.appConfig.BACKEND_URL;
 const redirectLocation = '/account/login';
 
-document.getElementById('save-new-password').addEventListener('click', function (e) {
+document.getElementById('set-password').addEventListener('click', function (e) {
     e.preventDefault();
-    let password = document.getElementById('new-user-password');
-    let passwordErrorElement = document.getElementById('password-error');
+    let password = document.getElementById('set-user-password');
+    let passwordErrorElement = document.getElementById('set-password-error');
     let urlParams = new URLSearchParams(window.location.search);
     let token = urlParams.get('token');
 
-    let togglePasswordButton = document.getElementById('toggle-new-password');
+    let togglePasswordButton = document.getElementById('toggle-set-password');
     let eyeIcon = document.getElementById('eye-icon');
 
     // обработчик клика на кнопку
@@ -39,9 +39,9 @@ document.getElementById('save-new-password').addEventListener('click', function 
 
 async function changeUserPassword(password, token) {
     try {
-        let url = new URL(BACKEND_URL + '/reset/password/confirm');
+        let url = new URL(BACKEND_URL + '/verify/invitation');
         url.searchParams.append('token', token);
-        url.searchParams.append('newPassword', password);
+        url.searchParams.append('password', password);
 
         let response = await fetch(url, {
             method: 'POST',

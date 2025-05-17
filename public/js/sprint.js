@@ -11,15 +11,13 @@ const buttonsData = [
         id: 'update-sprint-statuses-btn',
         icon: '/icons/arrows-rotate-solid.svg',
         alt: 'Обновить статусы',
-        text: 'Обновить статусы',
-        onClick: () => console.log('Обновить статусы'),
+        text: 'Обновить статусы'
     },
     {
         id: 'get-closed-task',
         icon: '/icons/plus-solid.svg',
         alt: 'Добавить задачу',
-        text: 'Добавить задачу',
-        onClick: () => console.log('Добавить задачу'),
+        text: 'Добавить задачу'
     },
 ];
 
@@ -447,9 +445,7 @@ function renderSprintData(data) {
             synchronizeTasksWithSimpleOne();
         });
 
-        document.getElementById('get-closed-task').addEventListener('click', (e) => {
-            getClosedTask();
-        });
+        getClosedTask();
     }
 
     let start = new Date(data.startDate);
@@ -472,7 +468,7 @@ function renderSprintData(data) {
 
     responsibleForSprint.innerHTML = `
             <div class='large-text'>
-                <div>${data.responsible?.name || 'Не назначен'}</div>
+                <div>${data.responsible?.name + " " + data.responsible?.surname || 'Не назначен'}</div>
             </div>
         `;
 
@@ -588,7 +584,8 @@ document.getElementById('cancel-edit')?.addEventListener('click', function (even
 
 // обработчик нажатия на кнопку удаления задачи
 document.getElementById('delete-edit').addEventListener('click', function () {
-    let taskId = modal.getAttribute('data-task-id');
+    let editModal = document.getElementById('edit-modal');
+    let taskId = editModal.getAttribute('data-task-id');
     deleteTask(taskId);
 });
 
@@ -682,11 +679,14 @@ async function deleteTask(taskId) {
 
         if (!response.ok) {
             showNotification('Ошибка при удалении задачи', 'error');
+            closeEditModal();
             return;
         } else {
+            closeEditModal();
             showNotification('Задача удалена из спринта', 'success');
         }
     } catch (error) {
+        closeEditModal();
         console.error('Ошибка при удалении задачи:', error);
         showNotification('Ошибка при удалении задачи', 'error');
     }
@@ -694,8 +694,8 @@ async function deleteTask(taskId) {
     if (task) task.remove();
 }
 
-export function getClosedTask() {
-    let modal = document.getElementById('modal');
+function getClosedTask() {
+    let modal = document.getElementById('find-task-modal');
     let openModalButton = document.getElementById('get-closed-task');
     let closeModalButton = document.getElementById('close-modal');
     let findTaskButton = document.getElementById('find-external-task');
