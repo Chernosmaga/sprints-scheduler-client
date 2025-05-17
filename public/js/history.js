@@ -71,7 +71,7 @@ function showLoadMoreButton() {
         let container = document.getElementById('history-sprint-content');
         let button = document.createElement('button');
         button.id = 'load-more-button';
-        button.className = 'px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none w-full mt-4';
+        button.className = 'px-4 py-2 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500';
         button.textContent = 'Загрузить ещё';
         button.addEventListener('click', renderData); // добавляем обработчик события
         container.appendChild(button);
@@ -150,16 +150,16 @@ function renderSprints(sprints) {
                     <div class='p-6'>
                         <div class='mb-4'>
                             <div class='inline-block items-center'>
-                                <h3 id='current-sprint-name' class='text-xl font-semibold text-gray-800 inline-block'>${sprint.sprintName}</h3>
+                                <h3 id='current-sprint-name' class='text-base font-semibold text-gray-800 inline-block'>${sprint.sprintName}</h3>
                                 <h3 id='sprint-name-dates' class='text-gray-600 ml-5 inline-block'>${startDate} - ${endDate}</h3>
                             </div>
-                            <span id='current-sprint-activity' class='px-3 py-1 rounded-full text-sm font-medium ${getStatusLabelClass(sprint.isActive)} text-green-800 inline-block float-right'>
+                            <span id='current-sprint-activity' class='px-3 py-1 rounded-full text-xs font-medium ${getStatusLabelClass(sprint.isActive)} text-green-800 inline-block float-right'>
                                 ${getStatusText(sprint.isActive)}
                             </span>
                     </div>
 
                     <div class='mb-4'>
-                        <p class='text-gray-700 text-sm'>
+                        <p class='text-gray-700 text-xs'>
                             <span class='ont-medium'>${sprint.responsible?.name || 'Не назначен'}</span>
                         </p>
                     </div>
@@ -176,7 +176,7 @@ function renderSprints(sprints) {
                     </div>
 
                     <!-- Задачи и сложность -->
-                    <div class='flex justify-between text-sm'>
+                    <div class='flex justify-between text-xs'>
                         <div>
                             <span class='text-gray-500'>Tasks:</span>
                             <span class='font-medium ml-1'>${sprint.tasksCount || 0}</span>
@@ -265,7 +265,7 @@ function renderSprintDetails(sprint) {
             <div class='p-6 relative'>
                 <div class='relative flex flex-col items-center'>
                     <button
-                        class='absolute top-4 left-4 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-1 px-3 rounded-md'
+                        class='absolute top-4 left-4 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2'
                         onclick='goBackToSprintList()'
                     >
                         Назад
@@ -273,13 +273,13 @@ function renderSprintDetails(sprint) {
 
                     <span
                         id='history-sprint-activity'
-                        class='absolute top-4 right-4 px-3 py-1 rounded-full text-sm font-medium ${isSprintActive ? 'bg-green-100 text-green-800' : 'bg-purple-100 text-purple-800'}'
+                        class='absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-medium ${isSprintActive ? 'bg-green-100 text-green-800' : 'bg-purple-100 text-purple-800'}'
                     >
                         ${isSprintActive ? 'Active' : 'Completed'}
                     </span>
 
-                    <h3 class='text-xl font-semibold text-gray-800 text-center mb-4 ml-[-40px]'>${sprint.sprintName || 'Нет текущих спринтов'}</h3>
-                    <p class='text-gray-600 text-sm text-center mb-4 ml-[-40px]'>
+                    <h3 class='text-base font-semibold text-gray-800 text-center mb-4 ml-[-40px]'>${sprint.sprintName || 'Нет текущих спринтов'}</h3>
+                    <p class='text-gray-600 text-xs text-center mb-4 ml-[-40px]'>
                         ${Number.isNaN(sprint.startDate) || Number.isNaN(sprint.endDate) ? 'Даты спринта' : `${startDate} - ${endDate}`}
                     </p>
                 </div>
@@ -306,55 +306,55 @@ function renderSprintDetails(sprint) {
                 <div class='grid grid-cols-1 md:grid-cols-4 gap-4 mb-4 mt-8'>
                     <div class='bg-gray-50 p-2 rounded-md w-full h-20 flex flex-col justify-center items-center'>
                         <h4 class='text-xs font-medium text-gray-500 mb-1'>Ответственный</h4>
-                        <div class='text-sm font-medium'>${sprint.responsible?.name || 'Не назначен'}</div>
+                        <div class='text-xs font-medium'>${sprint.responsible?.name || 'Не назначен'}</div>
                     </div>
                     <div class='bg-gray-50 p-2 rounded-md w-full h-20 flex flex-col justify-center items-center'>
                         <h4 class='text-xs font-medium text-gray-500 mb-1'>Задачи</h4>
-                        <div class='text-sm font-medium'>${sprint.tasksCount || 0}</div>
+                        <div class='text-xs font-medium'>${sprint.tasksCount || 0}</div>
                     </div>
                     <div class='bg-gray-50 p-2 rounded-md w-full h-20 flex flex-col justify-center items-center'>
                         <h4 class='text-xs font-medium text-gray-500 mb-1'>Сложность</h4>
-                        <div class='text-sm font-medium'>${sprint.storyPointsSum || 0}</div>
+                        <div class='text-xs font-medium'>${sprint.storyPointsSum || 0}</div>
                     </div>
                     <div class='bg-gray-50 p-2 rounded-md w-full h-20 flex flex-col justify-center items-center'>
                         <h4 class='text-xs font-medium text-gray-500 mb-1'>Длительность</h4>
-                        <div class='text-sm font-medium'>${Number.isNaN(daysDifference) ? 0 : daysDifference}</div>
+                        <div class='text-xs font-medium'>${Number.isNaN(daysDifference) ? 0 : daysDifference}</div>
                     </div>
                 </div>
 
                 <div class='grid grid-cols-1 md:grid-cols-3 gap-6 mb-6'>
                     <div class='bg-gray-50 p-4 rounded-lg'>
-                        <h4 class='text-sm font-medium text-gray-500 mb-2'>Статусы задач</h4>
+                        <h4 class='text-xs font-medium text-gray-500 mb-2'>Статусы задач</h4>
                         <div class='chart-container'>
                             <canvas id='statusChart-${sprint.id}' width='700' height='400'></canvas>
                         </div>
                     </div>
                     <div class='bg-gray-50 p-4 rounded-lg'>
-                        <h4 class='text-sm font-medium text-gray-500 mb-2'>Приоритеты задач</h4>
+                        <h4 class='text-xs font-medium text-gray-500 mb-2'>Приоритеты задач</h4>
                         <div class='chart-container'>
                             <canvas id='priorityChart-${sprint.id}' width='700' height='400'></canvas>
                         </div>
                     </div>
                     <div class='bg-gray-50 p-4 rounded-lg'>
-                        <h4 class='text-sm font-medium text-gray-500 mb-2'>Количество задач</h4>
+                        <h4 class='text-xs font-medium text-gray-500 mb-2'>Количество задач</h4>
                         <div class='chart-container'>
                             <canvas id='assigneeChart-${sprint.id}' width='700' height='400'></canvas>
                         </div>
                     </div>
                     <div class='bg-gray-50 p-4 rounded-lg'>
-                        <h4 class='text-sm font-medium text-gray-500 mb-2'>Оценка сложности задач</h4>
+                        <h4 class='text-xs font-medium text-gray-500 mb-2'>Оценка сложности задач</h4>
                         <div class='chart-container'>
                             <canvas id='storyPointsChart-${sprint.id}' width='700' height='400'></canvas>
                         </div>
                     </div>
                     <div class='bg-gray-50 p-4 rounded-lg'>
-                        <h4 class='text-sm font-medium text-gray-500 mb-2'>Клиенты</h4>
+                        <h4 class='text-xs font-medium text-gray-500 mb-2'>Клиенты</h4>
                         <div class='chart-container'>
                             <canvas id='clientsChart-${sprint.id}' width='700' height='400'></canvas>
                         </div>
                     </div>
                     <div class='bg-gray-50 p-4 rounded-lg'>
-                        <h4 class='text-sm font-medium text-gray-500 mb-2'>Количество CHG от авторов</h4>
+                        <h4 class='text-xs font-medium text-gray-500 mb-2'>Количество CHG от авторов</h4>
                         <div class='chart-container'>
                             <canvas id='authorsChart-${sprint.id}' width='700' height='400'></canvas>
                         </div>
@@ -391,7 +391,7 @@ function updateTableRow(task) {
 
         <td class='px-4 py-2 relative client-cell'>
             <span class='client-name text-xs'>${task.client}</span>
-            <span class='subject hidden text-gray-700 text-xs absolute top-1/2 -translate-y-1/2 left-full ml-2 px-3 py-2 bg-gray-100 rounded-md shadow-md'></span>
+            <span class='subject hidden text-gray-700 text-xs absolute top-1/2 -translate-y-1/2 left-full ml-2 px-2 py-1 bg-gray-100 rounded-md shadow-md'></span>
         </td>
 
         <td class='px-4 py-2 text-xs editable' data-field='responsible'>${task.responsible || 'Не назначен'}</td>

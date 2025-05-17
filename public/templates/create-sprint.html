@@ -1,60 +1,82 @@
 <div id="create-sprint-content" class="hidden">
-    <div class="max-w-3xl mx-auto">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6">Создать новый спринт</h2>
+  <div class="max-w-3xl mx-auto">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">Создать новый спринт</h2>
 
-        <div class="bg-white rounded-lg shadow overflow-hidden">
-            <div class="p-6">
-                <div class="space-y-6">
-
-                    <div class="space-y-6">
-                        <div>
-                            <label for="sprint-name" class="block text-sm font-medium text-gray-700">Название спринта</label>
-                            <input
-                                    type="text"
-                                    id="sprint-name"
-                                    placeholder="Введите название спринта"
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                            >
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label for="start-date" class="block text-sm font-medium text-gray-700">Дата начала</label>
-                                <input
-                                        type="date"
-                                        id="start-date"
-                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                >
-                            </div>
-                            <div>
-                                <label for="end-date" class="block text-sm font-medium text-gray-700">Дата окончания</label>
-                                <input
-                                        type="date"
-                                        id="end-date"
-                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                                >
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label id="include-tasks-to-current-sprint" class="block text-sm font-medium text-gray-700">Задачи для включения в спринт</label>
-                        <div class="mt-2 space-y-2">
-                            <div id="include-tasks" class="text-sm text-gray-500">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-8 flex justify-end space-x-3">
-                    <button id="cancel-button" type="button" class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Отмена
-                    </button>
-                    <button id="create-sprint-button" type="button" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        Создать спринт
-                    </button>
-                </div>
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+      <div class="p-6">
+        <div class="space-y-6">
+          <div class="space-y-6">
+            <div>
+              <label
+                for="sprint-name"
+                class="block text-xs font-medium text-gray-700"
+                >Название спринта</label
+              >
+              <input
+                type="text"
+                id="sprint-name"
+                placeholder="Введите название спринта"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs"
+              />
             </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label
+                  for="start-date"
+                  class="block text-xs font-medium text-gray-700"
+                  >Дата начала</label
+                >
+                <input
+                  type="date"
+                  id="start-date"
+                  class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs"
+                />
+              </div>
+              <div>
+                <label
+                  for="end-date"
+                  class="block text-xs font-medium text-gray-700"
+                  >Дата окончания</label
+                >
+                <input
+                  type="date"
+                  id="end-date"
+                  class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label
+              id="include-tasks-to-current-sprint"
+              class="block text-xs font-medium text-gray-700"
+              >Задачи для включения в спринт</label
+            >
+            <div class="mt-2 space-y-2">
+              <div id="include-tasks" class="text-xs text-gray-500"></div>
+            </div>
+          </div>
         </div>
+
+        <div class="mt-8 flex justify-end space-x-3">
+          <button
+            id="cancel-button"
+            type="button"
+            class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Отмена
+          </button>
+          <button
+            id="create-sprint-button"
+            type="button"
+            class="px-4 py-2 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            Создать спринт
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
 </div>

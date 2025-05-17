@@ -99,37 +99,37 @@ function createCharts(sprint) {
     // создаем разметку для диаграмм
     let chartsHTML = `
         <div class='bg-gray-50 p-4 rounded-lg'>
-            <h4 class='text-sm font-medium text-gray-500 mb-2'>Статусы задач</h4>
+            <h4 class='text-xs font-medium text-gray-500 mb-2'>Статусы задач</h4>
                 <div class='chart-container'>
                     <canvas id='statusChart-${sprint.id}' width='700' height='400'></canvas>
                 </div>
         </div>
         <div class='bg-gray-50 p-4 rounded-lg'>
-            <h4 class='text-sm font-medium text-gray-500 mb-2'>Приоритеты задач</h4>
+            <h4 class='text-xs font-medium text-gray-500 mb-2'>Приоритеты задач</h4>
                 <div class='chart-container'>
                     <canvas id='priorityChart-${sprint.id}' width='700' height='400'></canvas>
                 </div>
         </div>
         <div class='bg-gray-50 p-4 rounded-lg'>
-            <h4 class='text-sm font-medium text-gray-500 mb-2'>Количество задач</h4>
+            <h4 class='text-xs font-medium text-gray-500 mb-2'>Количество задач</h4>
                 <div class='chart-container'>
                     <canvas id='assigneeChart-${sprint.id}' width='700' height='400'></canvas>
                 </div>
         </div>
         <div class='bg-gray-50 p-4 rounded-lg'>
-            <h4 class='text-sm font-medium text-gray-500 mb-2'>Оценка сложности задач</h4>
+            <h4 class='text-xs font-medium text-gray-500 mb-2'>Оценка сложности задач</h4>
                 <div class='chart-container'>
                     <canvas id='storyPointsChart-${sprint.id}' width='700' height='400'></canvas>
                 </div>
         </div>
         <div class='bg-gray-50 p-4 rounded-lg'>
-            <h4 class='text-sm font-medium text-gray-500 mb-2'>Клиенты</h4>
+            <h4 class='text-xs font-medium text-gray-500 mb-2'>Клиенты</h4>
                 <div class='chart-container'>
                     <canvas id='clientsChart-${sprint.id}' width='700' height='400'></canvas>
                 </div>
         </div>
         <div class='bg-gray-50 p-4 rounded-lg'>
-            <h4 class='text-sm font-medium text-gray-500 mb-2'>Количество CHG от авторов</h4>
+            <h4 class='text-xs font-medium text-gray-500 mb-2'>Количество CHG от авторов</h4>
                 <div class='chart-container'>
                     <canvas id='authorsChart-${sprint.id}' width='700' height='400'></canvas>
                 </div>
@@ -314,7 +314,7 @@ function renderTasks(task) {
 
     // дополнительная информация
     let detailsWrapper = document.createElement('div');
-    detailsWrapper.className = 'mt-2 flex items-center text-sm text-gray-500';
+    detailsWrapper.className = 'mt-2 flex items-center text-xs text-gray-500';
 
     // номер задачи
     let taskNumber = document.createElement('a');
@@ -393,7 +393,7 @@ function renderTasks(task) {
     // комментарий
     let commentWrapper = document.createElement('div');
     commentWrapper.id = `task-comment-${task.id}`;
-    commentWrapper.className = 'text-sm text-gray-800';
+    commentWrapper.className = 'text-xs text-gray-800';
     commentWrapper.textContent = task.comment || ' ';
     bottomTask.appendChild(commentWrapper);
 
@@ -759,22 +759,22 @@ async function getTaskFromSimpleOne(number) {
 function getStatusClass(status) {
     switch (status) {
         case 'Scheduled':
-            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-zinc-100 text-zinc-800';
+            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-zinc-100 text-zinc-800';
         case 'Waiting for validation':
-            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-orange-100 text-orange-800';
+            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800';
         case 'Registered':
-            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-red-100 text-red-800';
+            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800';
         case 'Delivered/Testing':
-            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-green-100 text-green-800';
+            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800';
         case 'In Progress':
-            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-sky-100 text-sky-800';
+            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sky-100 text-sky-800';
         case 'Done':
-            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800';
+            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800';
         case 'Cancelled':
-            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-stone-100 text-stone-800';
+            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-stone-100 text-stone-800';
         case 'Implemented':
-            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800';
+            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800';
         default:
-            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-violet-100 text-violet-800';
+            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-violet-100 text-violet-800';
     }
 }

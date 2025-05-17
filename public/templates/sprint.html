@@ -5,7 +5,7 @@
     <div id="sprint-buttons-container" class="flex space-x-3"></div>
 
     <div
-      id="modal"
+      id="find-task-modal"
       class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center"
     >
       <div class="bg-white p-6 rounded-lg shadow-lg w-96">
@@ -14,7 +14,7 @@
           <input
             type="text"
             id="task-search-input"
-            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs"
             placeholder="Введите номер CHG"
           />
         </div>
@@ -45,12 +45,12 @@
         id="modal-content"
         class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md transform scale-0 opacity-0"
       >
-        <h2 id="edit-mode-subject" class="text-xl font-medium mb-4"></h2>
+        <h2 id="edit-mode-subject" class="text-base font-medium mb-4"></h2>
 
         <div class="mb-4">
           <label
             for="modal-status"
-            class="block text-sm font-medium text-gray-700 mb-1"
+            class="block text-xs font-medium text-gray-700 mb-1"
             >Статус задачи</label
           >
           <div class="relative">
@@ -68,7 +68,7 @@
               id="modal-status"
               name="status"
               required
-              class="input-focus-effect pl-10 w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
+              class="input-focus-effect pl-10 w-full px-2 py-1 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
             >
               <option value=""></option>
               <option>Scheduled</option>
@@ -86,7 +86,7 @@
         <div class="mb-4">
           <label
             for="modal-responsible"
-            class="block text-sm font-medium text-gray-700 mb-1"
+            class="block text-xs font-medium text-gray-700 mb-1"
             >Ответственный</label
           >
           <div class="relative">
@@ -103,7 +103,7 @@
             <select
               id="modal-responsible"
               name="responsible"
-              class="input-focus-effect pl-10 w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
+              class="input-focus-effect pl-10 w-full px-2 py-1 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
             >
               <option value=""></option>
               <option>Алеся Беседина</option>
@@ -121,7 +121,7 @@
         <div class="mb-4">
           <label
             for="modal-comment"
-            class="block text-sm font-medium text-gray-700 mb-1"
+            class="block text-xs font-medium text-gray-700 mb-1"
             >Комментарий</label
           >
           <div class="relative">
@@ -138,7 +138,7 @@
             <input
               type="text"
               id="modal-comment"
-              class="input-focus-effect pl-10 w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
+              class="input-focus-effect pl-10 w-full px-2 py-1 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
             />
           </div>
         </div>
@@ -146,7 +146,7 @@
         <div class="mb-4">
           <label
             for="modal-story-points"
-            class="block text-sm font-medium text-gray-700 mb-1"
+            class="block text-xs font-medium text-gray-700 mb-1"
             >Story Points</label
           >
           <div class="relative">
@@ -163,7 +163,7 @@
             <input
               type="text"
               id="modal-story-points"
-              class="input-focus-effect pl-10 w-full px-3 py-2 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
+              class="input-focus-effect pl-10 w-full px-2 py-1 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
             />
           </div>
         </div>
@@ -202,7 +202,7 @@
           <div class="inline-block items-center">
             <h3
               id="current-sprint-name"
-              class="text-xl font-semibold text-gray-800 inline-block"
+              class="text-base font-semibold text-gray-800 inline-block"
             >
               Спринт
             </h3>
@@ -212,19 +212,19 @@
           </div>
           <span
             id="current-sprint-activity"
-            class="px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 inline-block float-right"
+            class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 inline-block float-right"
             >Active</span
           >
         </div>
 
         <div class="mb-6">
           <div class="flex justify-between mb-1">
-            <span class="text-sm font-medium text-gray-700"
+            <span class="text-xs font-medium text-gray-700"
               >Прогресс спринта</span
             >
             <span
               id="sprint-percent-text"
-              class="text-sm font-medium text-gray-700"
+              class="text-xs font-medium text-gray-700"
               >0%</span
             >
           </div>
@@ -238,39 +238,39 @@
 
           <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4 mt-8">
             <div class="bg-gray-50 p-2 rounded-lg w-full h-20">
-              <h4 class="text-sm font-medium text-gray-500 mb-2">
+              <h4 class="text-xs font-medium text-gray-500 mb-2">
                 Ответственный
               </h4>
               <div
                 id="sprint-responsible-container"
-                class="flex justify-center h-full text-xl text-gray-700"
+                class="flex justify-center h-full text-base text-gray-700"
               ></div>
             </div>
             <div class="bg-gray-50 p-2 rounded-lg w-full h-20">
-              <h4 class="text-sm font-medium text-gray-500 mb-2">
+              <h4 class="text-xs font-medium text-gray-500 mb-2">
                 Всего задач
               </h4>
               <div
                 id="tasks-sum-container"
-                class="flex justify-center h-full text-xl text-gray-700"
+                class="flex justify-center h-full text-base text-gray-700"
               ></div>
             </div>
             <div class="bg-gray-50 p-2 rounded-lg w-full h-20">
-              <h4 class="text-sm font-medium text-gray-500 mb-2">
+              <h4 class="text-xs font-medium text-gray-500 mb-2">
                 Оценка сложности
               </h4>
               <div
                 id="story-points-sum-container"
-                class="flex justify-center h-full text-xl text-gray-700"
+                class="flex justify-center h-full text-base text-gray-700"
               ></div>
             </div>
             <div class="bg-gray-50 p-2 rounded-lg w-full h-20">
-              <h4 class="text-sm font-medium text-gray-500 mb-2">
+              <h4 class="text-xs font-medium text-gray-500 mb-2">
                 Продолжительность спринта
               </h4>
               <div
                 id="sprint-duration-container"
-                class="flex justify-center h-full text-xl text-gray-700"
+                class="flex justify-center h-full text-base text-gray-700"
               ></div>
             </div>
           </div>

@@ -80,7 +80,7 @@ export async function renderTasks() {
             taskElement.className = 'flex items-center mb-2';
             taskElement.innerHTML = `
                 <input id='include-tasks' type='checkbox' class='focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded' data-id='${task.id}'>
-                <label for='include-tasks' class='ml-2 block text-sm text-gray-700'>
+                <label for='include-tasks' class='ml-2 block text-xs text-gray-700'>
                     <a href='${url}' target='_blank' class='text-indigo-600 hover:text-indigo-800 underline'>
                         ${task.number}
                     </a>: ${task.subject}

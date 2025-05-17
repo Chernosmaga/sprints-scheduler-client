@@ -197,7 +197,7 @@ function createSprintButton() {
     let icon = document.createElement('img');
     icon.src = '/icons/circle-plus-solid.svg';
     icon.alt = 'Создать спринт';
-    icon.className = 'w-5 h-5 mr-3';
+    icon.className = 'w-4 h-4 mr-3';
 
     // создаем элемент <span> для текста
     let text = document.createElement('span');

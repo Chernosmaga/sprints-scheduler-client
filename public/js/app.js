@@ -106,7 +106,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (userRole === "ADMIN") {
-        let createSprintButtonContainer = document.getElementById("create-sprint-button-container");
         let createSprintButton = document.getElementById("create-sprint-btn");
         let cancelSprintButton = document.getElementById("cancel-button");
         let createSprintSubmitButton = document.getElementById("create-sprint-button");

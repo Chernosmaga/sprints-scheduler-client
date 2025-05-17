@@ -530,7 +530,7 @@ function createTaskElement(task) {
 
     // дополнительная информация
     let detailsWrapper = document.createElement('div');
-    detailsWrapper.className = 'mt-2 flex items-center text-sm text-gray-500';
+    detailsWrapper.className = 'mt-2 flex items-center text-xs text-gray-500';
 
     // номер задачи
     let taskNumber = document.createElement('a');

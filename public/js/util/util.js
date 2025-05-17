@@ -36,13 +36,13 @@ export function createButton(buttonData) {
     // создаем элемент кнопки
     const button = document.createElement('button');
     button.id = buttonData.id;
-    button.className = 'px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none flex items-center text-base';
+    button.className = 'flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500';
 
     // добавляем иконку
     const img = document.createElement('img');
     img.src = buttonData.icon;
     img.alt = buttonData.alt;
-    img.className = 'w-5 h-5 mr-2';
+    img.className = 'w-4 h-4 mr-2';
     button.appendChild(img);
 
     // добавляем текст

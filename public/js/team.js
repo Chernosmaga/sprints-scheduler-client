@@ -29,7 +29,7 @@ export function renderCreateUserButton() {
     buttonContainer.innerHTML = `
   <button
     type='button'
-    class='mt-9 px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 h-10 whitespace-nowrap'
+    class='mt-9 px-4 py-2 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 h-10 whitespace-nowrap'
     id='create-user-button'
   >
     <i class='fas fa-plus mr-2'></i>
@@ -256,11 +256,11 @@ function createUserElement(user) {
     infoContainer.className = 'ml-4';
 
     let nameElement = document.createElement('p');
-    nameElement.className = 'text-sm font-medium text-gray-900';
+    nameElement.className = 'text-xs font-medium text-gray-900';
     nameElement.textContent = user.surname + " " + user.name + " " + (user.patronymic || '');
 
     let emailElement = document.createElement('p');
-    emailElement.className = 'text-sm text-gray-500';
+    emailElement.className = 'text-xs text-gray-500';
     emailElement.textContent = user.email || 'Не указан';
 
     infoContainer.appendChild(nameElement);

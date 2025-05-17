@@ -1,72 +1,105 @@
 <div id="backlog-content" class="hidden">
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-gray-800">Бэклог задач</h2>
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold text-gray-800">Бэклог задач</h2>
 
-        <div id="update-backlog-button-container" class="flex space-x-3"></div>
-    </div>
+    <div id="update-backlog-button-container" class="flex space-x-3"></div>
+  </div>
 
-    <div class="bg-white rounded-lg shadow overflow-hidden">
-        <div class="p-6">
-            <div class="flex justify-between items-center mb-4">
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="p-6">
+      <div class="flex justify-between items-center mb-4">
+        <div id="select-all-container"></div>
 
-                <div id="select-all-container"></div>
-
-                <div class="flex justify-start">
-                    <div class="relative w-96">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas fa-search text-gray-400"></i>
-                        </div>
-                        <input type="text" id="search-input" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Поиск задач...">
-                    </div>
-                </div>
-
-                <div class="flex space-x-2">
-                    <div class="relative">
-                        <select id="backlog-status-filter" class="appearance-none bg-gray-100 border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-md leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                            <option>Все статусы</option>
-                            <option>Scheduled</option>
-                            <option>Waiting for validation</option>
-                            <option>Registered</option>
-                            <option>Delivered/Testing</option>
-                            <option>In Progress</option>
-                            <option>Done</option>
-                            <option>Cancelled</option>
-                            <option>Implemented</option>
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                    </div>
-
-                    <div class="relative">
-                        <select id="backlog-priority-filter" class="appearance-none bg-gray-100 border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-md leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                            <option>Все приоритеты</option>
-                            <option>Высокий</option>
-                            <option>Средний</option>
-                            <option>Низкий</option>
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                            <i class="fas fa-chevron-down"></i>
-                        </div>
-                    </div>
-                </div>
+        <div class="flex justify-start">
+          <div class="relative w-96">
+            <div
+              class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+            >
+              <i class="fas fa-search text-gray-400"></i>
             </div>
-
-            <div id="tasks-container-backlog" class="text-sm text-gray-500">
-            </div>
-
-            <div class="mt-6 flex justify-between items-center">
-                <div class="text-sm text-gray-500">
-                    Выбрано <span id="selected-count">0</span> из <span id="total-count">0</span> задач
-                </div>
-                <div id="add-to-sprint-button-container" class="flex space-x-3"></div>
-            </div>
-
-            <div id="backlog-pagination" class="flex justify-center mt-4 space-x-2">
-                <button id="backlog-prev-page" class="px-3 py-1 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100" disabled>Предыдущая</button>
-                <span id="backlog-page-info" class="px-3 py-1 text-gray-700">Страница 1 из 5</span>
-                <button id="backlog-next-page" class="px-3 py-1 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100" disabled>Следующая</button>
-            </div>
+            <input
+              type="text"
+              id="search-input"
+              class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs"
+              placeholder="Поиск задач..."
+            />
+          </div>
         </div>
+
+        <div class="flex space-x-2">
+          <div class="relative">
+            <select
+              id="backlog-status-filter"
+              class="appearance-none w-40 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2"
+            >
+              <option>Все статусы</option>
+              <option>Scheduled</option>
+              <option>Waiting for validation</option>
+              <option>Registered</option>
+              <option>Delivered/Testing</option>
+              <option>In Progress</option>
+              <option>Done</option>
+              <option>Cancelled</option>
+              <option>Implemented</option>
+            </select>
+            <div
+              class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+            >
+              <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+
+          <div class="relative">
+            <select
+              id="backlog-priority-filter"
+              class="appearance-none w-40 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2"
+            >
+              <option>Все приоритеты</option>
+              <option>Высокий</option>
+              <option>Средний</option>
+              <option>Низкий</option>
+            </select>
+            <div
+              class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+            >
+              <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tasks-container-backlog" class="text-xs text-gray-500"></div>
+
+      <div class="mt-6 flex justify-between items-center">
+        <div class="text-xs text-gray-500">
+          Выбрано <span id="selected-count">0</span> из
+          <span id="total-count">0</span> задач
+        </div>
+        <div id="add-to-sprint-button-container" class="flex space-x-3"></div>
+      </div>
+
+      <div
+        id="backlog-pagination"
+        class="flex justify-center mt-4 mr-6 space-x-2"
+      >
+        <button
+          id="backlog-prev-page"
+          class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2"
+          disabled
+        >
+          Предыдущая
+        </button>
+        <span id="backlog-page-info" class="px-3 py-1 text-sm text-gray-700"
+          >Страница 1 из 5</span
+        >
+        <button
+          id="backlog-next-page"
+          class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2"
+          disabled
+        >
+          Следующая
+        </button>
+      </div>
     </div>
+  </div>
 </div>
