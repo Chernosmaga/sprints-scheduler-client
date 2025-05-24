@@ -235,6 +235,7 @@ function updateUrlWithSprintId(sprintId) {
 // функция для возврата к списку спринтов
 window.goBackToSprintList = function goBackToSprintList() {
     // перерисовываем список спринтов
+    updateUrlWithSprintId();
     renderSprints(allSprints);
 }
 
