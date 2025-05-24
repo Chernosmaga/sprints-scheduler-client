@@ -5,132 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Страница не найдена</title>
     <link rel="icon" href="/icons/rocket-solid-icon.svg" type="image/x-icon" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      body {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background: linear-gradient(135deg, #4f46e5, #7c3aed);
-        color: #1e1b4b;
-        font-family: Arial, sans-serif;
-        position: relative;
-        height: 100vh;
-      }
-
-      .stars {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-      }
-
       .star {
         position: absolute;
         background-color: white;
         border-radius: 50%;
-        animation: twinkle var(--duration) infinite ease-in-out;
-        opacity: 0;
+        animation: twinkle var(--duration) ease-in-out infinite;
       }
-
       @keyframes twinkle {
-        0% {
-          opacity: 0.5;
-        }
+        0%,
         100% {
+          opacity: 0.2;
+        }
+        50% {
           opacity: 1;
         }
       }
-
-      .rocket-above {
-        position: absolute;
-        top: 15%;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 80px;
-        height: 80px;
-        color: #a5b4fc;
-        z-index: 15;
-        filter: brightness(0) invert(1);
-      }
-
-      .content-container {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: white;
-        padding: 2rem;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        z-index: 10;
-        width: 300px;
-      }
-
-      p {
-        font-size: 1.2rem;
-        margin-bottom: 1.5rem;
-        color: #333;
-      }
-
-      .home-button {
-        background-color: #4f46e5;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        font-size: 1rem;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        text-decoration: none;
-        display: inline-block;
-      }
-
-      .home-button:hover {
-        background-color: #4338ca;
-      }
     </style>
   </head>
-  <body>
-    <div id="stars-container" class="stars"></div>
+  <body
+    class="bg-indigo-950 text-white min-h-screen flex flex-col items-center justify-center overflow-hidden relative"
+  >
+    <div id="stars-container" class="absolute inset-0 overflow-hidden"></div>
 
-    <img
-      src="/icons/rocket-solid-icon.svg"
-      alt="Rocket"
-      class="rocket-above mb-12"
-      loading="lazy"
-    />
+    <div class="relative z-10 text-center px-4 max-w-2xl mx-auto">
+      <h1 class="text-6xl font-bold mb-4 text-indigo-300">404</h1>
+      <h2 class="text-3xl font-semibold mb-6 text-indigo-200">
+        Страница не найдена
+      </h2>
 
-    <div class="content-container">
-      <p>Кажется вы потерялись</p>
-      <a href="/current/sprint" class="home-button">На главную</a>
+      <p class="text-lg mb-8 text-indigo-100">
+        Где-то в параллельной вселенной такая страница точно существует
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="/current/sprint"
+          class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 rounded-lg font-medium flex items-center gap-2"
+        >
+          <img src="/icons/house-solid.svg" alt="На главную" class="w-5 h-5" />
+          На главную
+        </a>
+      </div>
+
+      <div class="mt-12 text-pulse text-indigo-300">
+        <p class="text-sm">
+          Если адрес корректный, но нет доступа, обратитесь в отдел разработки
+        </p>
+      </div>
     </div>
-
-    <script>
-      const starsContainer = document.getElementById("stars-container");
-      const starCount = 30;
-
-      for (let i = 0; i < starCount; i++) {
-        const star = document.createElement("div");
-        star.classList.add("star");
-
-        const size = Math.random() * 3 + 1;
-        const opacity = Math.random() * 0.7 + 0.3;
-        const duration = Math.random() * 3 + 2 + "s";
-        const delay = Math.random() * 5 + "s";
-
-        star.style.width = `${size}px`;
-        star.style.height = `${size}px`;
-        star.style.left = `${Math.random() * 100}%`;
-        star.style.top = `${Math.random() * 100}%`;
-        star.style.setProperty("--opacity", opacity);
-        star.style.setProperty("--duration", duration);
-        star.style.animationDelay = delay;
-
-        starsContainer.appendChild(star);
-      }
-    </script>
+    <script src="../js/util/not-found.js"></script>
   </body>
 </html>
