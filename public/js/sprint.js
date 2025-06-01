@@ -98,40 +98,40 @@ function createCharts(sprint) {
 
     // создаем разметку для диаграмм
     let chartsHTML = `
-        <div class='bg-gray-50 p-4 rounded-lg'>
-            <h4 class='text-xs font-medium text-gray-500 mb-2'>Статусы задач</h4>
+        <div class='chart-container-card'>
+            <h4 class='chart-title'>Статусы задач</h4>
                 <div class='chart-container'>
-                    <canvas id='statusChart-${sprint.id}' width='700' height='400'></canvas>
+                    <canvas id='statusChart-${sprint.id}'></canvas>
                 </div>
         </div>
-        <div class='bg-gray-50 p-4 rounded-lg'>
-            <h4 class='text-xs font-medium text-gray-500 mb-2'>Приоритеты задач</h4>
+        <div class='chart-container-card'>
+            <h4 class='chart-title'>Приоритеты задач</h4>
                 <div class='chart-container'>
-                    <canvas id='priorityChart-${sprint.id}' width='700' height='400'></canvas>
+                    <canvas id='priorityChart-${sprint.id}'></canvas>
                 </div>
         </div>
-        <div class='bg-gray-50 p-4 rounded-lg'>
-            <h4 class='text-xs font-medium text-gray-500 mb-2'>Количество задач</h4>
+        <div class='chart-container-card'>
+            <h4 class='chart-title'>Количество задач</h4>
                 <div class='chart-container'>
-                    <canvas id='assigneeChart-${sprint.id}' width='700' height='400'></canvas>
+                    <canvas id='assigneeChart-${sprint.id}'></canvas>
                 </div>
         </div>
-        <div class='bg-gray-50 p-4 rounded-lg'>
-            <h4 class='text-xs font-medium text-gray-500 mb-2'>Оценка сложности задач</h4>
+        <div class='chart-container-card'>
+            <h4 class='chart-title'>Оценка сложности задач</h4>
                 <div class='chart-container'>
-                    <canvas id='storyPointsChart-${sprint.id}' width='700' height='400'></canvas>
+                    <canvas id='storyPointsChart-${sprint.id}'></canvas>
                 </div>
         </div>
-        <div class='bg-gray-50 p-4 rounded-lg'>
-            <h4 class='text-xs font-medium text-gray-500 mb-2'>Клиенты</h4>
+        <div class='chart-container-card'>
+            <h4 class='chart-title'>Клиенты</h4>
                 <div class='chart-container'>
-                    <canvas id='clientsChart-${sprint.id}' width='700' height='400'></canvas>
+                    <canvas id='clientsChart-${sprint.id}'></canvas>
                 </div>
         </div>
-        <div class='bg-gray-50 p-4 rounded-lg'>
-            <h4 class='text-xs font-medium text-gray-500 mb-2'>Количество CHG от авторов</h4>
+        <div class='chart-container-card'>
+            <h4 class='chart-title'>Количество CHG от авторов</h4>
                 <div class='chart-container'>
-                    <canvas id='authorsChart-${sprint.id}' width='700' height='400'></canvas>
+                    <canvas id='authorsChart-${sprint.id}'></canvas>
                 </div>
         </div>
     `;
@@ -257,166 +257,150 @@ export function getDaysText(days) {
     }
 }
 
-// функция создания контейнера для задачи
 function renderTasks(task) {
-    let userRole = localStorage.getItem('userRole');
-    // контейнер задачи
-    let taskItem = document.createElement('div');
-    taskItem.className =
-        'task-item bg-gray-50 p-4 rounded-lg border border-gray-200 hover:bg-indigo-100 transition-all duration-300';
-    taskItem.setAttribute('data-task-id', task.id);
+  let userRole = localStorage.getItem('userRole');
+  let taskItem = document.createElement('div');
+  taskItem.className = 'task-item p-4 rounded-lg transition-all duration-300';
+  
+  if (document.body.classList.contains('dark-theme')) {
+    taskItem.classList.add('dark-mode');
+  }
 
-    // основное содержимое задачи
-    let contentWrapper = document.createElement('div');
-    contentWrapper.className = 'flex flex-col justify-between'; // flexbox для вертикального выравнивания
+  taskItem.setAttribute('data-task-id', task.id);
 
-    // левая часть (основная информация)
-    let leftContent = document.createElement('div');
-    leftContent.className = 'flex-1';
+  let contentWrapper = document.createElement('div');
+  contentWrapper.className = 'flex flex-col justify-between';
 
-    // заголовок задачи
-    let headerWrapper = document.createElement('div');
-    headerWrapper.className = 'flex justify-between items-center'; // flexbox для выравнивания по краям
+  let leftContent = document.createElement('div');
+  leftContent.className = 'flex-1';
 
-    // левая часть заголовка (иконка проекта + текст)
-    let leftHeader = document.createElement('div');
-    leftHeader.className = 'flex items-center'; // flexbox для выравнивания иконки и текста
+  let headerWrapper = document.createElement('div');
+  headerWrapper.className = 'flex justify-between items-center';
 
-    // иконка проекта (если isProject = true)
-    if (task.isProject === true) {
-        let projectIcon = document.createElement('img');
-        projectIcon.src = '/icons/rocket-solid-icon.svg';
-        projectIcon.alt = 'Проект';
-        projectIcon.className = 'w-4 h-4 mr-2'; // размер иконки и отступ справа
-        leftHeader.appendChild(projectIcon);
+  let leftHeader = document.createElement('div');
+  leftHeader.className = 'flex items-center';
+
+  if (task.isProject === true) {
+    let projectIcon = document.createElement('img');
+    projectIcon.src = '/icons/rocket-solid-icon.svg';
+    projectIcon.alt = 'Проект';
+    projectIcon.className = 'w-4 h-4 mr-2';
+    leftHeader.appendChild(projectIcon);
+  }
+
+  let label = document.createElement('label');
+  label.htmlFor = `task-subject-${task.id}`;
+  label.className = 'font-medium';
+  label.textContent = task.subject;
+  leftHeader.appendChild(label);
+
+  headerWrapper.appendChild(leftHeader);
+
+  let statusBadge = document.createElement('span');
+  statusBadge.id = `task-status-${task.id}`;
+  statusBadge.className = getStatusClass(task.status);
+  statusBadge.textContent = task.status;
+
+  headerWrapper.appendChild(statusBadge);
+  leftContent.appendChild(headerWrapper);
+
+  let detailsWrapper = document.createElement('div');
+  detailsWrapper.className = 'mt-2 flex items-center text-sm text-gray-500';
+
+  let taskNumber = document.createElement('a');
+  taskNumber.href = SIMPLE_ONE_URL + task.externalId;
+  taskNumber.target = '_blank';
+  taskNumber.rel = 'noopener noreferrer';
+  taskNumber.className = 'task-link mr-3 hover:underline';
+  taskNumber.textContent = task.number;
+  detailsWrapper.appendChild(taskNumber);
+
+  // Создаём отдельный контейнер для исполнителя с id
+  let responsibleContainer = document.createElement('div');
+  responsibleContainer.id = `task-responsible-${task.id}`;
+  responsibleContainer.className = 'flex items-center mr-4';
+
+  let responsibleIcon = document.createElement('img');
+  responsibleIcon.src = '/icons/circle-user-solid.svg';
+  responsibleIcon.alt = 'Исполнитель';
+  responsibleIcon.className = 'w-3 h-3 mr-1';
+
+  let responsibleText = document.createElement('span');
+  responsibleText.className = 'mr-4';
+  responsibleText.textContent = task.responsible || 'Не назначен';
+
+  responsibleContainer.appendChild(responsibleIcon);
+  responsibleContainer.appendChild(responsibleText);
+
+  detailsWrapper.appendChild(responsibleContainer);
+
+  // Добавляем остальные детали задачи
+  detailsWrapper.appendChild(createDetail('/icons/user-tag-solid.svg', 'Заявитель', task.author));
+  detailsWrapper.appendChild(createDetail('/icons/flag-solid.svg', 'Приоритет', task.priority));
+  detailsWrapper.appendChild(createDetail('/icons/address-book-solid.svg', 'Клиент', task.client || 'NO CLIENT'));
+
+  leftContent.appendChild(detailsWrapper);
+  contentWrapper.appendChild(leftContent);
+
+  let rightContent = document.createElement('div');
+  rightContent.className = 'flex flex-col space-y-2';
+
+  let bottomTask = document.createElement('div');
+  bottomTask.className = 'flex justify-between items-center mt-2';
+
+  let commentWrapper = document.createElement('div');
+  commentWrapper.id = `task-comment-${task.id}`;
+  commentWrapper.className = 'text-sm';
+  commentWrapper.textContent = task.comment || '';
+
+  let storyPointsWrapper = document.createElement('div');
+  storyPointsWrapper.id = `task-story-points-${task.id}`;
+  storyPointsWrapper.className = 'text-bold';
+  storyPointsWrapper.textContent = task.storyPoints || 0;
+
+  bottomTask.appendChild(commentWrapper);
+  bottomTask.appendChild(storyPointsWrapper);
+  rightContent.appendChild(bottomTask);
+  contentWrapper.appendChild(rightContent);
+
+  taskItem.appendChild(contentWrapper);
+
+  if (userRole === 'ADMIN' || userRole === 'USER') {
+    taskItem.addEventListener('click', function () {
+        openEditModal(this);
+    });
+  }
+
+  return taskItem;
+}
+
+function createDetail(iconSrc, alt, text) {
+  let icon = document.createElement('img');
+  icon.src = iconSrc;
+  icon.alt = alt;
+  icon.className = 'w-3 h-3 mr-1';
+
+  let span = document.createElement('span');
+  span.className = 'mr-4';
+  span.textContent = text;
+
+  let container = document.createElement('div');
+  container.className = 'flex items-center mr-4';
+  container.appendChild(icon);
+  container.appendChild(span);
+  return container;
+}
+
+// Функция для применения темы к уже созданным элементам
+export function applyThemeToElements() {
+  const taskItems = document.querySelectorAll('.task-item');
+  taskItems.forEach(item => {
+    if (document.body.classList.contains('dark-theme')) {
+      item.classList.add('dark-mode');
+    } else {
+      item.classList.remove('dark-mode');
     }
-
-    // текст заголовка
-    let label = document.createElement('label');
-    label.htmlFor = `task-subject-${task.id}`;
-    label.className = 'font-medium text-gray-700';
-    label.textContent = task.subject;
-    leftHeader.appendChild(label);
-
-    // добавляем левую часть заголовка в headerWrapper
-    headerWrapper.appendChild(leftHeader);
-
-    // статус задачи (справа)
-    let statusBadge = document.createElement('span');
-    statusBadge.id = `task-status-${task.id}`;
-    statusBadge.className = getStatusClass(task.status);
-    statusBadge.textContent = task.status;
-
-    // добавляем статус в headerWrapper
-    headerWrapper.appendChild(statusBadge);
-
-    leftContent.appendChild(headerWrapper);
-
-    // дополнительная информация
-    let detailsWrapper = document.createElement('div');
-    detailsWrapper.className = 'mt-2 flex items-center text-xs text-gray-500';
-
-    // номер задачи
-    let taskNumber = document.createElement('a');
-    taskNumber.className = 'mr-3 text-indigo-600 hover:underline'; // стили для ссылки
-    taskNumber.href = SIMPLE_ONE_URL + task.externalId;
-    taskNumber.target = '_blank'; // открывать ссылку в новой вкладке
-    taskNumber.rel = 'noopener noreferrer'; // защита от уязвимостей при открытии в новой вкладке
-    taskNumber.textContent = task.number; // текст ссылки (номер задачи)
-    detailsWrapper.appendChild(taskNumber);
-
-    // заявитель
-    let authorIcon = document.createElement('img');
-    authorIcon.src = '/icons/user-tag-solid.svg';
-    authorIcon.alt = 'Заявитель';
-    authorIcon.className = 'w-3 h-3 mr-1';
-    detailsWrapper.appendChild(authorIcon);
-
-    let author = document.createElement('span');
-    author.id = `task-author-${task.id}`;
-    author.className = 'mr-4';
-    author.textContent = task.author;
-    detailsWrapper.appendChild(author);
-
-    // исполнитель
-    let userIcon = document.createElement('img');
-    userIcon.src = '/icons/circle-user-solid.svg';
-    userIcon.alt = 'Исполнитель';
-    userIcon.className = 'w-3 h-3 mr-1';
-    detailsWrapper.appendChild(userIcon);
-
-    let responsible = document.createElement('span');
-    responsible.id = `task-responsible-${task.id}`;
-    responsible.className = 'mr-4';
-    responsible.textContent = task.responsible || 'Не назначен';
-    detailsWrapper.appendChild(responsible);
-
-    // приоритет задачи
-    let priorityIcon = document.createElement('img');
-    priorityIcon.src = '/icons/flag-solid.svg';
-    priorityIcon.alt = 'Приоритет';
-    priorityIcon.className = 'w-3 h-3 mr-1';
-    detailsWrapper.appendChild(priorityIcon);
-
-    let taskPriority = document.createElement('span');
-    taskPriority.id = `task-priority-${task.id}`;
-    taskPriority.className = 'mr-4';
-    taskPriority.textContent = task.priority;
-    detailsWrapper.appendChild(taskPriority);
-
-    // клиент
-    let clientIcon = document.createElement('img');
-    clientIcon.src = '/icons/address-book-solid.svg';
-    clientIcon.alt = 'Клиент';
-    clientIcon.className = 'w-3 h-3 mr-1';
-    detailsWrapper.appendChild(clientIcon);
-
-    let client = document.createElement('span');
-    client.id = `task-client-${task.id}`;
-    client.className = 'mr-4';
-    client.textContent = task.client || 'NO CLIENT';
-    detailsWrapper.appendChild(client);
-
-    leftContent.appendChild(detailsWrapper);
-
-    // все части вместе
-    contentWrapper.appendChild(leftContent);
-
-    // правая часть (дополнительное поле storyPoints и комментарий)
-    let rightContent = document.createElement('div');
-    rightContent.className = 'flex flex-col space-y-2'; // вертикальное расположение
-
-    // контейнер для storyPoints и комментария
-    let bottomTask = document.createElement('div');
-    bottomTask.className = 'flex justify-between items-center mt-2'; // горизонтальное расположение
-
-    // комментарий
-    let commentWrapper = document.createElement('div');
-    commentWrapper.id = `task-comment-${task.id}`;
-    commentWrapper.className = 'text-xs text-gray-800';
-    commentWrapper.textContent = task.comment || ' ';
-    bottomTask.appendChild(commentWrapper);
-
-    // story points
-    let storyPointsWrapper = document.createElement('div');
-    storyPointsWrapper.id = `task-story-points-${task.id}`;
-    storyPointsWrapper.className = 'text-bold text-gray-600';
-    storyPointsWrapper.textContent = task.storyPoints || 0;
-    bottomTask.appendChild(storyPointsWrapper);
-
-    rightContent.appendChild(bottomTask);
-
-    contentWrapper.appendChild(rightContent);
-    taskItem.appendChild(contentWrapper);
-
-    if (userRole === 'ADMIN' || userRole === 'USER') {
-        // обработчик клика для редактирования
-        taskItem.addEventListener('click', function () {
-            openEditModal(this);
-        });
-    }
-
-    return taskItem;
+  });
 }
 
 // вывод данных о спринте на главный лист
@@ -524,16 +508,17 @@ function renderSprintData(data) {
     document.getElementById('sprint-progress-bar').style.width = `${progress}%`;
 
     createCharts(data);
+    activitySpan.classList.add('activity-badge');
 
     // обновляем текст и классы в зависимости от значения переменной
     if (isSprintActive === false) {
         activitySpan.textContent = 'Completed';
-        activitySpan.classList.remove('bg-green-100', 'text-green-800');
-        activitySpan.classList.add('bg-purple-100', 'text-purple-800');
+        activitySpan.classList.remove('activity-active');
+        activitySpan.classList.add('activity-completed');
     } else {
         activitySpan.textContent = 'Active';
-        activitySpan.classList.remove('bg-purple-100', 'text-purple-800');
-        activitySpan.classList.add('bg-green-100', 'text-green-800');
+        activitySpan.classList.remove('activity-completed');
+        activitySpan.classList.add('activity-active');
     }
 }
 
@@ -541,27 +526,52 @@ function renderSprintData(data) {
 function openEditModal(taskItem) {
     let taskId = taskItem.getAttribute('data-task-id');
 
-    // находим заголовок задачи
     let subjectElement = taskItem.querySelector(`label[for='task-subject-${taskId}']`);
-    let subject = subjectElement ? subjectElement.textContent : 'Редактирование задачи';
+    let subject = subjectElement ? subjectElement.textContent.trim() : 'Редактирование задачи';
 
-    // находим остальные поля задачи
-    let status = taskItem.querySelector(`#task-status-${taskId}`).textContent;
-    let responsible = taskItem.querySelector(`#task-responsible-${taskId}`).textContent;
-    let comment = taskItem.querySelector(`#task-comment-${taskId}`).textContent;
-    let storyPoints = taskItem.querySelector(`#task-story-points-${taskId}`).textContent;
+    let status = taskItem.querySelector(`#task-status-${taskId}`).textContent.trim();
+    let responsible = taskItem.querySelector(`#task-responsible-${taskId}`).textContent.trim();
+    let comment = taskItem.querySelector(`#task-comment-${taskId}`).textContent.trim();
+    let storyPoints = taskItem.querySelector(`#task-story-points-${taskId}`).textContent.trim();
 
-    // заполняем модальное окно текущими значениями
-    document.getElementById('edit-mode-subject').textContent = subject;
+    let taskLinkElement = taskItem.querySelector('.task-link');
+    let taskNumber = taskLinkElement.textContent.trim();
+    let taskUrl = taskLinkElement.getAttribute('href');
+
+    let applicantDiv = Array.from(taskItem.querySelectorAll('.flex.items-center')).find(div => {
+        let img = div.querySelector('img');
+        return img && img.getAttribute('alt') === 'Заявитель';
+    });
+    let applicantName = applicantDiv ? applicantDiv.querySelector('span').textContent.trim() : null;
+
+    let priorityDiv = Array.from(taskItem.querySelectorAll('.flex.items-center')).find(div => {
+        let img = div.querySelector('img');
+        return img && img.getAttribute('alt') === 'Приоритет';
+    });
+    let priority = priorityDiv ? priorityDiv.querySelector('span').textContent.trim() : null;
+
+    const taskLink = `<a href="${taskUrl}" target="_blank" rel="noopener noreferrer" class="task-link">${taskNumber}</a>`;
+
+    const editModeNumber = document.getElementById('edit-mode-number');
+    if (editModeNumber) {
+        editModeNumber.innerHTML = taskLink;
+    }
+
+    const editModeSubject = document.getElementById('edit-mode-subject');
+    if (editModeSubject) {
+        editModeSubject.textContent = subject;
+    }
+
+    document.getElementById('modal-caller').value = applicantName;
+    document.getElementById('modal-priority').value = priority;
     document.getElementById('modal-status').value = status;
     document.getElementById('modal-responsible').value = responsible;
     document.getElementById('modal-comment').value = comment;
     document.getElementById('modal-story-points').value = storyPoints;
 
-    // показываем модальное окно
     let editModal = document.getElementById('edit-modal');
     editModal.setAttribute('data-task-id', taskId);
-    editModal.classList.remove('hidden'); // убираем класс hidden
+    editModal.classList.remove('hidden');
 }
 
 // функция для закрытия модального окна
@@ -759,22 +769,22 @@ async function getTaskFromSimpleOne(number) {
 function getStatusClass(status) {
     switch (status) {
         case 'Scheduled':
-            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-zinc-100 text-zinc-800';
+            return 'status-scheduled inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium';
         case 'Waiting for validation':
-            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800';
+            return ' status-waiting-for-validation inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium';
         case 'Registered':
-            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800';
+            return 'status-registered inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium';
         case 'Delivered/Testing':
-            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800';
+            return 'status-delivered-testing inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium';
         case 'In Progress':
-            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sky-100 text-sky-800';
+            return 'status-in-progress inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium';
         case 'Done':
-            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800';
+            return 'status-done inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium';
         case 'Cancelled':
-            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-stone-100 text-stone-800';
+            return 'status-cancelled inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium';
         case 'Implemented':
-            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800';
+            return 'status-implemented inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium';
         default:
-            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-violet-100 text-violet-800';
+            return 'status-default inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium';
     }
 }

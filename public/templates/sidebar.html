@@ -1,51 +1,46 @@
-<div
-  id="sidebar"
-  class="sidebar compact bg-indigo-800 text-white flex flex-col"
->
-  <div class="p-4 flex items-center justify-between border-b border-indigo-700">
-    <div class="flex items-center">
-      <button
-        type="button"
-        id="toggle-sidebar"
-        class="flex items-center text-white focus:outline-none"
-      >
-        <img
-          src="/icons/rocket-solid.svg"
-          alt="Иконка"
-          class="w-7 h-7 mr-3"
-          loading="lazy"
-        />
-        <span id="logo-text" class="text-xl font-bold">SSX</span>
-      </button>
+<div id="sidebar" class="sidebar compact flex flex-col">
+  <div class="sidebar-header">
+    <div class="flex items-center justify-between sidebar-border px-4 py-4">
+      <div class="flex items-center">
+        <button
+          type="button"
+          id="toggle-sidebar"
+          class="flex items-center focus:outline-none"
+        >
+          <img
+            src="/icons/rocket-solid.svg"
+            alt="Иконка"
+            class="w-7 h-7 mr-3"
+            loading="lazy"
+          />
+          <span id="logo-text" class="text-xl font-bold text-logo">SSX</span>
+        </button>
+      </div>
     </div>
   </div>
 
-  <div class="flex-1 overflow-y-auto py-4">
+  <div class="sidebar-nav flex-1 overflow-y-auto py-4">
     <nav>
       <div class="space-y-1 px-2">
         <a
           href="/current/sprint"
           id="current-sprint-link"
-          class="flex items-center px-3 py-2 text-sm font-medium rounded-md bg-indigo-900 text-white"
+          class="create-sprint-btn active"
         >
           <img
             src="/icons/house-solid.svg"
             alt="Текущий спринт"
-            class="w-4 h-4 mr-3"
+            class="nav-icon"
             loading="lazy"
           />
           <span id="get-sprint-btn">Текущий спринт</span>
         </a>
 
-        <a
-          href="/backlog"
-          id="backlog-link"
-          class="flex items-center px-3 py-2 text-sm font-medium rounded-md text-indigo-200 hover:bg-indigo-700 hover:text-white"
-        >
+        <a href="/backlog" id="backlog-link" class="create-sprint-btn">
           <img
             src="/icons/list-solid.svg"
             alt="Бэклог задач"
-            class="w-4 h-4 mr-3"
+            class="nav-icon"
             loading="lazy"
           />
           <span id="get-backlog-btn">Бэклог задач</span>
@@ -53,15 +48,11 @@
 
         <div id="create-sprint-button-container" class="mt-4"></div>
 
-        <a
-          href="/history"
-          id="history-sprint-link"
-          class="flex items-center px-3 py-2 text-sm font-medium rounded-md text-indigo-200 hover:bg-indigo-700 hover:text-white"
-        >
+        <a href="/history" id="history-sprint-link" class="create-sprint-btn">
           <img
             src="/icons/file-lines-solid.svg"
             alt="История спринтов"
-            class="w-4 h-4 mr-3"
+            class="nav-icon"
             loading="lazy"
           />
           <span id="history-sprint-btn">История спринтов</span>
@@ -70,12 +61,12 @@
         <a
           href="/team/settings"
           id="team-settings-link"
-          class="flex items-center px-3 py-2 text-sm font-medium rounded-md text-indigo-200 hover:bg-indigo-700 hover:text-white"
+          class="create-sprint-btn"
         >
           <img
             src="/icons/address-card-solid.svg"
             alt="Команда"
-            class="w-4 h-4 mr-3"
+            class="nav-icon"
             loading="lazy"
           />
           <span id="team-btn">Команда</span>
@@ -84,12 +75,12 @@
         <a
           href="/account/settings"
           id="settings-link"
-          class="flex items-center px-3 py-2 text-sm font-medium rounded-md text-indigo-200 hover:bg-indigo-700 hover:text-white"
+          class="create-sprint-btn"
         >
           <img
             src="/icons/gear-solid.svg"
             alt="Настройки"
-            class="w-4 h-4 mr-3"
+            class="nav-icon"
             loading="lazy"
           />
           <span id="user-settings-btn">Настройки</span>
@@ -98,16 +89,12 @@
     </nav>
   </div>
 
-  <div class="p-4 border-t border-indigo-700">
-    <button
-      type="button"
-      id="logout-link"
-      class="w-full flex items-center justify-center px-4 py-2 text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none"
-    >
+  <div class="sidebar-footer px-4 py-4">
+    <button type="button" id="logout-link" class="logout-button w-full">
       <img
         src="/icons/plug-circle-xmark-solid.svg"
-        class="w-4 h-4 mr-3"
         alt="Выйти"
+        class="nav-icon"
         loading="lazy"
       />
       <span id="logout-btn">Выйти</span>

@@ -1,100 +1,67 @@
 <div id="settings-content" class="hidden">
   <div class="max-w-4xl mx-auto">
-    <h2 class="text-2xl font-bold text-gray-800 mb-6">Настройки</h2>
+    <h2 class="section-title">Настройки</h2>
 
-    <div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="card">
       <div id="account-settings" class="p-6">
         <div class="space-y-6">
           <div class="flex items-center">
             <img
               id="user-photo"
-              class="h-16 w-16 rounded-full object-cover"
+              class="h-16 w-16 rounded-full object-cover user-photo"
               src=""
               alt="photo"
             />
             <div class="ml-4">
-              <button
-                id="upload-photo-btn"
-                class="px-3 py-1 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
+              <button id="upload-photo-btn" class="secondary-button">
                 Изменить фото
               </button>
-              <p class="mt-1 text-xs text-gray-500">
+              <p class="mt-1 text-sm info-text">
                 JPG, GIF или PNG. Максимум 2MB.
               </p>
-
               <input
                 id="file-input"
                 type="file"
-                accept="image/jpeg,image/png,image/gif"
-                style="display: none"
+                accept="image/*"
+                class="hidden"
               />
             </div>
             <div class="ml-auto">
-              <span
-                id="user-role"
-                class="px-6 py-2 rounded-full text-xs font-bold text-yellow-600 bg-yellow-100 outline outline-2 outline-yellow-100 role-badge"
-              >
-              </span>
+              <span id="user-role" class="role-badge">Пользователь</span>
             </div>
           </div>
 
-          <input
-            id="photo-input"
-            type="file"
-            accept="image/*"
-            style="display: none"
-          />
-
           <div>
-            <label
-              for="first-name"
-              class="block text-xs font-medium text-gray-700"
-              >Имя и фамилия</label
-            >
-            <input
-              type="text"
-              id="first-name"
-              class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs"
-            />
+            <label for="first-name" class="form-label">Имя и фамилия</label>
+            <input type="text" id="first-name" class="form-input-no-pics" />
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label
-                for="user-email"
-                class="block text-xs font-medium text-gray-700"
+              <label for="user-email" class="form-label"
                 >Электронная почта</label
               >
               <input
                 type="email"
                 id="user-email"
-                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs"
+                class="form-input-no-pics"
                 disabled
               />
             </div>
             <div>
-              <label
-                for="password"
-                class="block text-xs font-medium text-gray-700"
-                >Пароль</label
-              >
+              <label for="password" class="form-label">Пароль</label>
               <input
                 type="password"
                 id="password"
                 placeholder="Введите новый пароль"
-                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs"
+                class="form-input-no-pics"
               />
             </div>
           </div>
         </div>
 
         <div class="mt-8 flex justify-end">
-          <button
-            id="user-save-data"
-            type="button"
-            class="px-4 py-2 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
+          <button id="user-save-data" type="button" class="primary-button">
             Сохранить изменения
           </button>
         </div>

@@ -7,6 +7,13 @@ let assigneeChart;
 let storyPointsChart;
 let clientsChart;
 let authorsChart;
+let colors = [
+  "#6C7A89", "#A8D8B9", "#F4E3B5", "#D0E6A5", "#B3CDE0", "#F0CFC2", "#C8BFE7",
+  "#9DBEBB", "#E8D5E6", "#FFDAB9", "#BFD8B0", "#F2F2F2", "#C4D7B2", "#D3B8C9",
+  "#AEC6CF", "#7F8C8D", "#BDC3C7", "#A29BFE", "#FFC67D", "#81ECEC", "#FF9F80",
+  "#C7EFCF", "#D4A5A5", "#F2F0C6", "#B2E2E2", "#E8EAF6", "#FFD7B5", "#CCE6CF",
+  "#F8E3E3", "#D1D1E0", "#87CEEB", "#B0E0E6", "#D8BFD8", "#C8E6C9", "#F0F4C3", "#EAEAEA"
+];
 
 // функция для получения данных об авторах
 export async function fetchAuthorsData(sprintId) {
@@ -37,9 +44,6 @@ export async function fetchAuthorsData(sprintId) {
         let labels = backendData.map(item => item.subject || 'Не назначен');
         let chartData = backendData.map(item => item.total || 0);
 
-        let colors = ['#6C7A89', '#A8D8B9', '#F4E3B5', '#D0E6A5', '#B3CDE0', '#F0CFC2', '#C8BFE7', '#9DBEBB',
-        '#E8D5E6', '#FFDAB9', '#BFD8B0', '#F2F2F2', '#C4D7B2', '#D3B8C9', '#AEC6CF'];
-
         authorsChart.data.labels = labels;
         authorsChart.data.datasets[0].data = chartData;
         authorsChart.data.datasets[0].backgroundColor = colors.slice(0, labels.length);
@@ -52,6 +56,7 @@ export async function fetchAuthorsData(sprintId) {
 
 // функция для создания диаграммы авторов
 export function createAuthorsChart(sprintId) {
+    let textColor = returnTextColor();
     authorsChart = new Chart(document.getElementById('authorsChart-' + sprintId).getContext('2d'), {
         type: 'doughnut',
         data: {
@@ -65,12 +70,22 @@ export function createAuthorsChart(sprintId) {
             ],
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             cutout: '70%',
+            radius: '80%',
+            color: textColor,
             plugins: {
                 legend: {
-                    display: false,
+                    //display: false,
                     // если нужно выводить список
-                    // position: 'right'
+                    position: 'right',
+                    labels: {
+                        font: {
+                            size: 10,
+                        },
+                        boxWidth: 10,
+                    },
                 },
                 tooltip: {
                     callbacks: {
@@ -83,12 +98,11 @@ export function createAuthorsChart(sprintId) {
                 },
                 datalabels: {
                     display: true,
-                    color: '#000',
                     font: {
                         size: 14,
                         weight: 'bold',
                     },
-                    formatter: function (value, context) {
+                    formatter: function (value) {
                         return value || '';
                     },
                     anchor: 'center',
@@ -101,6 +115,7 @@ export function createAuthorsChart(sprintId) {
 
 // содание диаграммы клиентов
 export function createClientsChart(sprintId) {
+    let textColor = returnTextColor();
     clientsChart = new Chart(document.getElementById('clientsChart-' + sprintId).getContext('2d'), {
         type: 'doughnut',
         data: {
@@ -114,12 +129,20 @@ export function createClientsChart(sprintId) {
             ],
         },
         options: {
-            cutout: '50%',
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '70%',
+            radius: '80%',
+            color: textColor,
             plugins: {
                 legend: {
-                    //display: false,
-                    // если нужно выводить список
-                    position: 'right'
+                    position: 'right',
+                    labels: {
+                        font: {
+                            size: 10,
+                        },
+                        boxWidth: 10,
+                    },
                 },
                 tooltip: {
                     callbacks: {
@@ -132,18 +155,23 @@ export function createClientsChart(sprintId) {
                 },
                 datalabels: {
                     display: true,
-                    color: '#000',
                     font: {
                         size: 14,
                         weight: 'bold',
                     },
-                    formatter: function (value, context) {
+                    formatter: function (value) {
                         return value || '';
                     },
                     anchor: 'center',
                     align: 'center',
                 },
             },
+            layout: {
+                padding: {
+                    top: 10,
+                    bottom: 10
+                }
+            }
         },
     });
 }
@@ -176,10 +204,7 @@ export async function fetchClientsData(sprintId) {
 
         let labels = backendData.map(item => item.subject || 'Не назначен');
         let chartData = backendData.map(item => item.total || 0);
-
-        let colors = ['#7F8C8D', '#BDC3C7', '#A29BFE', '#FFC67D', '#81ECEC', '#FF9F80', '#C7EFCF',
-        '#D4A5A5', '#F2F0C6', '#B2E2E2', '#E8EAF6', '#FFD7B5', '#CCE6CF', '#F8E3E3', '#D1D1E0'];
-
+        
         clientsChart.data.labels = labels;
         clientsChart.data.datasets[0].data = chartData;
         clientsChart.data.datasets[0].backgroundColor = colors.slice(0, labels.length);
@@ -192,31 +217,40 @@ export async function fetchClientsData(sprintId) {
 
 // функция для отрисовки диаграммы для story points
 export function createStoryPointsChart(sprintId) {
+    let textColor = returnTextColor();
     storyPointsChart = new Chart(document.getElementById('storyPointsChart-' + sprintId).getContext('2d'), {
-        type: 'bar', // тип диаграммы (столбчатая)
+        type: 'bar',
         data: {
-            labels: [], // пустые метки
+            labels: [],
             datasets: [
                 {
-                    label: 'Количество задач', // подпись для данных
-                    data: [], // пустые данные
-                    backgroundColor: [], // пустые цвета
+                    label: 'Количество задач',
+                    data: [],
+                    backgroundColor: [],
                     borderWidth: 0,
                 },
             ],
         },
         options: {
-            responsive: true, // диаграмма адаптируется под размер контейнера
+            responsive: true,
+            maintainAspectRatio: false,
+
             scales: {
                 y: {
-                    beginAtZero: true, // ось Y начинается с нуля
+                    beginAtZero: true,
                     grid: {
-                        display: true, // отображение сетки по оси Y
+                        display: true
+                    },
+                    ticks: {
+                        color: textColor,
                     },
                 },
                 x: {
                     grid: {
-                        display: false, // скрываем сетку по оси X
+                        display: false,
+                    },
+                    ticks: {
+                        color: textColor,
                     },
                 },
             },
@@ -270,13 +304,10 @@ export async function fetchStoryPointsData(sprintId) {
         let labels = backendData.map(item => item.subject); // метки (subject)
         let chartData = backendData.map(item => item.total || 0); // данные (total)
 
-        // цвета для диаграммы
-        let colors = ['#343a57'];
-
         // обновляем данные диаграммы
         storyPointsChart.data.labels = labels; // обновляем метки
         storyPointsChart.data.datasets[0].data = chartData; // обновляем данные
-        storyPointsChart.data.datasets[0].backgroundColor = colors.slice(0, labels.length); // обновляем цвета
+        storyPointsChart.data.datasets[0].backgroundColor = returnChartColor();
 
         // перерисовываем диаграмму
         storyPointsChart.update();
@@ -314,11 +345,9 @@ export async function fetchAssigneeData(sprintId) {
         let labels = backendData.map(item => item.subject || 'Не назначен');
         let chartData = backendData.map(item => item.total || 0);
 
-        let colors = ['#343a57'];
-
         assigneeChart.data.labels = labels;
         assigneeChart.data.datasets[0].data = chartData;
-        assigneeChart.data.datasets[0].backgroundColor = colors.slice(0, labels.length);
+        assigneeChart.data.datasets[0].backgroundColor = returnChartColor();
 
         assigneeChart.update();
     } catch (error) {
@@ -328,6 +357,7 @@ export async function fetchAssigneeData(sprintId) {
 
 // функция для создания пустой диаграммы для количества задач на разработчика
 export function createAssigneeChart(sprintId) {
+    let textColor = returnTextColor();
     assigneeChart = new Chart(document.getElementById('assigneeChart-' + sprintId).getContext('2d'), {
         type: 'bar',
         data: {
@@ -342,17 +372,24 @@ export function createAssigneeChart(sprintId) {
             ],
         },
         options: {
-            responsive: true, // диаграмма адаптируется под размер контейнера
+            responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 y: {
                     beginAtZero: true, // ось Y начинается с нуля
                     grid: {
                         display: true, // отображение сетки по оси Y
                     },
+                    ticks: {
+                        color: textColor,
+                    },
                 },
                 x: {
                     grid: {
                         display: false, // скрываем сетку по оси X
+                    },
+                    ticks: {
+                        color: textColor,
                     },
                 },
             },
@@ -376,6 +413,7 @@ export function createAssigneeChart(sprintId) {
 
 // функция для создания пустой диаграммы приоритетов
 export function createPriorityChart(sprintId) {
+    let textColor = returnTextColor();
     priorityChart = new Chart(document.getElementById('priorityChart-' + sprintId).getContext('2d'), {
         type: 'bar',
         data: {
@@ -389,9 +427,19 @@ export function createPriorityChart(sprintId) {
             ],
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             scales: {
                 y: {
                     beginAtZero: true,
+                    ticks: {
+                        color: textColor,
+                    },
+                },
+                x: {
+                    ticks: {
+                        color: textColor,
+                    },
                 },
             },
             plugins: {
@@ -452,6 +500,7 @@ export async function fetchPriorityData(sprintId) {
 
 // функция для создания диаграммы статусов
 export function createStatusChart(sprintId) {
+    let textColor = returnTextColor();
     statusChart = new Chart(document.getElementById('statusChart-' + sprintId).getContext('2d'), {
         type: 'doughnut',
         data: {
@@ -465,7 +514,10 @@ export function createStatusChart(sprintId) {
             ],
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
             cutout: '70%',
+            color: textColor,
             plugins: {
                 legend: {
                     position: 'left',
@@ -481,7 +533,6 @@ export function createStatusChart(sprintId) {
                 },
                 datalabels: {
                     display: true,
-                    color: '#000',
                     font: {
                         size: 14,
                         weight: 'bold',
@@ -525,8 +576,6 @@ export async function fetchStatuses(sprintId) {
         let labels = backendData.map(item => item.subject);
         let data = backendData.map(item => item.total);
 
-        let colors = ['#87CEEB', '#B0E0E6', '#D8BFD8', '#FFDAB9', '#C8E6C9', '#F0F4C3', '#EAEAEA'];
-
         statusChart.data.labels = labels;
         statusChart.data.datasets[0].data = data;
         statusChart.data.datasets[0].backgroundColor = colors.slice(0, labels.length);
@@ -535,4 +584,14 @@ export async function fetchStatuses(sprintId) {
     } catch (error) {
         console.error('Error fetching or updating chart data:', error);
     }
+}
+
+function returnTextColor() {
+    let isDarkTheme = localStorage.getItem('theme') === "dark";
+    return isDarkTheme ? '#d6d6d6' : '#4b5563';
+}
+
+function returnChartColor() {
+    let isDarkTheme = localStorage.getItem('theme') === "dark";
+    return isDarkTheme ? '#9FA6C8' : '#343a57';
 }

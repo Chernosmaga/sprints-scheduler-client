@@ -39,7 +39,7 @@ document.getElementById('set-password').addEventListener('click', function (e) {
 
 async function changeUserPassword(password, token) {
     try {
-        let url = new URL(BACKEND_URL + '/verify/invitation');
+        let url = new URL(BACKEND_URL + '/api/auth/verify/invitation');
         url.searchParams.append('token', token);
         url.searchParams.append('password', password);
 

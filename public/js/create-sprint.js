@@ -77,13 +77,13 @@ export async function renderTasks() {
         tasks.forEach((task) => {
             let url = SIMPLE_ONE_URL + task.externalId;
             let taskElement = document.createElement('div');
-            taskElement.className = 'flex items-center mb-2';
+            taskElement.className = 'flex items-center mb-4';
             taskElement.innerHTML = `
-                <input id='include-tasks' type='checkbox' class='focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded' data-id='${task.id}'>
-                <label for='include-tasks' class='ml-2 block text-xs text-gray-700'>
-                    <a href='${url}' target='_blank' class='text-indigo-600 hover:text-indigo-800 underline'>
+                <input id='include-tasks' type='checkbox' class='task-checkbox' data-id='${task.id}'>
+                <label for='include-tasks' class='task-list-placeholder'>
+                    <a href='${url}' target='_blank' class='task-link'>
                         ${task.number}
-                    </a>: ${task.subject}
+                    </a>${task.subject}
                 </label>
             `;
             taskContainer.appendChild(taskElement);

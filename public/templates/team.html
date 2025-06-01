@@ -1,273 +1,210 @@
 <div id="team-settings-content" class="hidden">
   <div class="max-w-4xl mx-auto">
-    <h2 class="text-2xl font-bold text-gray-800 mb-6">Команда</h2>
+    <h2 class="section-title">Команда</h2>
 
-    <div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="card">
       <div class="p-6">
         <div class="flex justify-between items-start gap-4 mb-6">
-          <div class="relative w-full max-w-md">
-            <label
-              for="user-search-input"
-              class="block text-lg font-medium text-gray-900 mb-2"
+          <div class="relative search-container w-96">
+            <label for="user-search-input" class="form-label"
               >Поиск пользователей</label
             >
             <div class="relative">
-              <div
-                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-              >
-                <i class="fas fa-search text-gray-400"></i>
+              <div class="search-icon">
+                <i class="fas fa-search"></i>
               </div>
               <input
                 type="text"
                 id="user-search-input"
-                class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs"
+                class="form-input"
                 placeholder="Введите имя, почту или команду..."
               />
             </div>
           </div>
 
-          <div id="create-user-button-container" class="flex space-x-3"></div>
+          <div id="create-user-button-container" class="button-group"></div>
         </div>
 
         <div class="mb-6 mt-6">
-          <h3 class="text-lg font-medium text-gray-900">Члены команды</h3>
+          <h3 class="subheading">Члены команды</h3>
         </div>
-
         <div id="user-list" class="space-y-4"></div>
       </div>
     </div>
   </div>
 </div>
 
-<div
-  id="create-user-modal"
-  class="hidden fixed inset-0 z-50 overflow-y-auto"
-  role="dialog"
-  aria-modal="true"
->
-  <div
-    class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center"
-  >
-    <div
-      id="modalOverlay"
-      class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-      aria-hidden="true"
-    ></div>
+<div id="create-user-modal" class="modal-overlay hidden">
+  <div class="modal-card wide-modal">
+    <form id="create-user-form" class="p-6">
+      <h3 class="modal-title">Создать нового пользователя</h3>
 
-    <div
-      class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
-    >
-      <form id="create-user-form" class="p-6">
-        <h3 class="text-lg font-medium text-gray-900 mb-4">
-          Создать нового пользователя
-        </h3>
-
-        <div class="space-y-4">
-          <div class="mb-4">
-            <label
-              for="create-user-name"
-              class="block text-xs font-medium text-gray-700 mb-1"
-              >Имя</label
-            >
-            <div class="relative">
-              <div
-                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-              >
-                <img
-                  src="/icons/circle-user-solid.svg"
-                  alt="Имя"
-                  class="w-4 h-4"
-                  loading="lazy"
-                />
-              </div>
-              <input
-                type="text"
-                id="create-user-name"
-                class="input-focus-effect pl-10 w-full px-2 py-1 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
-                required
+      <div class="grid grid-cols-2 gap-x-8 gap-y-4">
+        <div class="mb-4">
+          <label for="create-user-name" class="form-label">Имя</label>
+          <div class="relative">
+            <div class="input-icon">
+              <img
+                src="/icons/circle-user-solid.svg"
+                alt="Имя"
+                class="icon"
+                loading="lazy"
               />
             </div>
-          </div>
-
-          <div class="mb-4">
-            <label
-              for="create-user-surname"
-              class="block text-xs font-medium text-gray-700 mb-1"
-              >Фамилия</label
-            >
-            <div class="relative">
-              <div
-                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-              >
-                <img
-                  src="/icons/circle-user-solid.svg"
-                  alt="Фамилия"
-                  class="w-4 h-4"
-                  loading="lazy"
-                />
-              </div>
-              <input
-                type="text"
-                id="create-user-surname"
-                class="input-focus-effect pl-10 w-full px-2 py-1 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
-                required
-              />
-            </div>
-          </div>
-
-          <div class="mb-4">
-            <label
-              for="create-user-email"
-              class="block text-xs font-medium text-gray-700 mb-1"
-              >Электронная почта</label
-            >
-            <div class="relative">
-              <div
-                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-              >
-                <img
-                  src="/icons/envelope-solid.svg"
-                  alt="Электронная почта"
-                  class="w-4 h-4"
-                  loading="lazy"
-                />
-              </div>
-              <input
-                type="email"
-                id="create-user-email"
-                class="input-focus-effect pl-10 w-full px-2 py-1 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
-                placeholder="email@fmlogistic.com"
-                required
-              />
-            </div>
-          </div>
-
-          <div class="mb-4">
-            <label
-              for="create-user-role"
-              class="block text-xs font-medium text-gray-700 mb-1"
-              >Роль пользователя</label
-            >
-            <div class="relative">
-              <div
-                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-              >
-                <img
-                  src="/icons/chart-simple-solid.svg"
-                  alt="Роль пользователя"
-                  class="w-4 h-4"
-                  loading="lazy"
-                />
-              </div>
-              <select
-                id="create-user-role"
-                name="role"
-                required
-                class="input-focus-effect pl-10 w-full px-2 py-1 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
-              >
-                <option value="">Выберите роль</option>
-                <option>Гость</option>
-                <option>Пользователь</option>
-                <option>Администратор</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="mb-4">
-            <label
-              for="create-user-birthday"
-              class="block text-xs font-medium text-gray-700 mb-1"
-              >Дата рождения</label
-            >
-            <div class="relative">
-              <div
-                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-              >
-                <img
-                  src="/icons/address-book-solid.svg"
-                  alt="Дата рождения"
-                  class="w-4 h-4"
-                  loading="lazy"
-                />
-              </div>
-              <input
-                type="date"
-                id="create-user-birthday"
-                class="input-focus-effect pl-10 w-full px-2 py-1 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
-                required
-              />
-            </div>
-          </div>
-
-          <div class="mb-4">
-            <label
-              for="create-user-external-id"
-              class="block text-xs font-medium text-gray-700 mb-1"
-              >Идентификатор группы</label
-            >
-            <div class="relative">
-              <div
-                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-              >
-                <img
-                  src="/icons/id-badge-solid.svg"
-                  alt="Идентификатор группы"
-                  class="w-4 h-4"
-                  loading="lazy"
-                />
-              </div>
-              <input
-                type="text"
-                id="create-user-external-id"
-                class="input-focus-effect pl-10 w-full px-2 py-1 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
-                placeholder="Идентификатор группы SimpleOne"
-              />
-            </div>
-          </div>
-
-          <div class="mb-4">
-            <label
-              for="create-user-group-name"
-              class="block text-xs font-medium text-gray-700 mb-1"
-              >Название группы</label
-            >
-            <div class="relative">
-              <div
-                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-              >
-                <img
-                  src="/icons/user-tag-solid.svg"
-                  alt="Название группы"
-                  class="w-4 h-4"
-                  loading="lazy"
-                />
-              </div>
-              <input
-                type="text"
-                id="create-user-group-name"
-                class="input-focus-effect pl-10 w-full px-2 py-1 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
-                placeholder="RUCH - IPI Developers"
-              />
-            </div>
+            <input
+              type="text"
+              id="create-user-name"
+              class="form-input"
+              required
+              placeholder="Иван"
+            />
           </div>
         </div>
 
-        <div class="mt-6 flex justify-end space-x-3">
-          <button
-            type="button"
-            id="cancel-modal-btn"
-            class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none"
-          >
-            Отменить
-          </button>
-          <button
-            type="submit"
-            class="px-4 py-2 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none"
-          >
-            Сохранить
-          </button>
+        <div class="mb-4">
+          <label for="create-user-surname" class="form-label">Фамилия</label>
+          <div class="relative">
+            <div class="input-icon">
+              <img
+                src="/icons/circle-user-solid.svg"
+                alt="Фамилия"
+                class="icon"
+                loading="lazy"
+              />
+            </div>
+            <input
+              type="text"
+              id="create-user-surname"
+              class="form-input"
+              required
+              placeholder="Иванов"
+            />
+          </div>
         </div>
-      </form>
-    </div>
+
+        <div class="mb-4">
+          <label for="create-user-email" class="form-label"
+            >Электронная почта</label
+          >
+          <div class="relative">
+            <div class="input-icon">
+              <img
+                src="/icons/envelope-solid.svg"
+                alt="Почта"
+                class="icon"
+                loading="lazy"
+              />
+            </div>
+            <input
+              type="email"
+              id="create-user-email"
+              class="form-input"
+              placeholder="email@fmlogistic.com"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="create-user-role" class="form-label"
+            >Роль пользователя</label
+          >
+          <div class="relative">
+            <div class="input-icon">
+              <img
+                src="/icons/chart-simple-solid.svg"
+                alt="Роль"
+                class="icon"
+                loading="lazy"
+              />
+            </div>
+            <select
+              id="create-user-role"
+              name="role"
+              required
+              class="form-select"
+            >
+              <option value="">Выберите роль</option>
+              <option>Гость</option>
+              <option>Пользователь</option>
+              <option>Администратор</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="create-user-birthday" class="form-label"
+            >Дата рождения</label
+          >
+          <div class="relative">
+            <div class="input-icon">
+              <img
+                src="/icons/address-book-solid.svg"
+                alt="Дата рождения"
+                class="icon"
+                loading="lazy"
+              />
+            </div>
+            <input
+              type="date"
+              id="create-user-birthday"
+              class="form-input"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="create-user-external-id" class="form-label"
+            >Идентификатор группы</label
+          >
+          <div class="relative">
+            <div class="input-icon">
+              <img
+                src="/icons/id-badge-solid.svg"
+                alt="ID группы"
+                class="icon"
+                loading="lazy"
+              />
+            </div>
+            <input
+              type="text"
+              id="create-user-external-id"
+              class="form-input"
+              placeholder="Идентификатор группы SimpleOne"
+            />
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="create-user-group-name" class="form-label"
+            >Название группы</label
+          >
+          <div class="relative">
+            <div class="input-icon">
+              <img
+                src="/icons/user-tag-solid.svg"
+                alt="Группа"
+                class="icon"
+                loading="lazy"
+              />
+            </div>
+            <input
+              type="text"
+              id="create-user-group-name"
+              class="form-input"
+              placeholder="RUCH - IPI Developers"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 flex justify-center space-x-3">
+        <button type="button" id="cancel-modal-btn" class="secondary-button">
+          Отменить
+        </button>
+        <button type="submit" class="primary-button">Сохранить</button>
+      </div>
+    </form>
   </div>
 </div>

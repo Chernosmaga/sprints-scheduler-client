@@ -1,77 +1,53 @@
 <div id="create-sprint-content" class="hidden">
   <div class="max-w-3xl mx-auto">
-    <h2 class="text-2xl font-bold text-gray-800 mb-6">Создать новый спринт</h2>
+    <h2 class="section-title">Создать новый спринт</h2>
 
-    <div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="card">
       <div class="p-6">
         <div class="space-y-6">
           <div class="space-y-6">
             <div>
-              <label
-                for="sprint-name"
-                class="block text-xs font-medium text-gray-700"
+              <label for="sprint-name" class="form-label"
                 >Название спринта</label
               >
               <input
                 type="text"
                 id="sprint-name"
                 placeholder="Введите название спринта"
-                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs"
+                class="form-input-no-pics"
               />
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label
-                  for="start-date"
-                  class="block text-xs font-medium text-gray-700"
-                  >Дата начала</label
-                >
-                <input
-                  type="date"
-                  id="start-date"
-                  class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs"
-                />
+                <label for="start-date" class="form-label">Дата начала</label>
+                <input type="date" id="start-date" class="form-input-no-pics" />
               </div>
               <div>
-                <label
-                  for="end-date"
-                  class="block text-xs font-medium text-gray-700"
-                  >Дата окончания</label
-                >
-                <input
-                  type="date"
-                  id="end-date"
-                  class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs"
-                />
+                <label for="end-date" class="form-label">Дата окончания</label>
+                <input type="date" id="end-date" class="form-input-no-pics" />
               </div>
             </div>
           </div>
 
           <div>
-            <label
-              id="include-tasks-to-current-sprint"
-              class="block text-xs font-medium text-gray-700"
-              >Задачи для включения в спринт</label
-            >
+            <label id="include-tasks-to-current-sprint" class="form-label">
+              Задачи для включения в спринт
+            </label>
             <div class="mt-2 space-y-2">
-              <div id="include-tasks" class="text-xs text-gray-500"></div>
+              <div id="include-tasks" class="task-list-placeholder"></div>
             </div>
           </div>
         </div>
 
         <div class="mt-8 flex justify-end space-x-3">
-          <button
-            id="cancel-button"
-            type="button"
-            class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
+          <button id="cancel-button" type="button" class="secondary-button">
             Отмена
           </button>
           <button
             id="create-sprint-button"
             type="button"
-            class="px-4 py-2 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            class="primary-button"
           >
             Создать спринт
           </button>

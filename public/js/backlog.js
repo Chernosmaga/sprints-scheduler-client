@@ -91,11 +91,11 @@ function renderCheckboxSelectAll() {
     let checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.id = 'select-all-checkbox';
-    checkbox.className = 'form-checkbox h-4 w-4 text-indigo-600';
+    checkbox.className = 'form-checkbox h-4 w-4';
 
     let label = document.createElement('span');
     label.textContent = 'Выбрать все';
-    label.className = 'ml-2 text-gray-400';
+    label.className = 'ml-2 text-gray-400 text-sm';
 
     checkboxWrapper.appendChild(checkbox);
     checkboxWrapper.appendChild(label);
@@ -492,37 +492,45 @@ function createTaskElement(task) {
 
     // контейнер задачи
     let taskItem = document.createElement('div');
-    taskItem.className =
-        'task-item bg-gray-50 p-4 rounded-lg border border-gray-200 hover:border-indigo-300 transition-all duration-300';
+    taskItem.className = 'task-item task-container';
+
+    if (document.body.classList.contains('dark-theme')) {
+        taskItem.classList.add('dark-mode');
+    }
 
     let checkboxWrapper = null;
     if (userRole !== 'GUEST') {
         // отрисовка чекбокса
         checkboxWrapper = document.createElement('div');
-        checkboxWrapper.className = 'flex items-center h-5';
+        checkboxWrapper.className = 'checkbox-wrapper';
         let checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.id = `task-${task.id}`;
-        checkbox.className = 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded';
+        checkbox.className = 'task-checkbox';
         checkboxWrapper.appendChild(checkbox);
     }
 
     // основное содержимое задачи
     let contentWrapper = document.createElement('div');
-    contentWrapper.className = 'ml-3 flex-1';
+    contentWrapper.className = 'task-content';
 
     // заголовок задачи
     let headerWrapper = document.createElement('div');
-    headerWrapper.className = 'flex justify-between';
+    headerWrapper.className = 'task-header';
     let label = document.createElement('label');
     label.htmlFor = `task-${task.id}`;
-    label.className = 'font-medium text-gray-700';
+    label.className = 'task-title';
     label.textContent = task.subject;
     headerWrapper.appendChild(label);
 
     // приоритет задачи
     let priorityBadge = document.createElement('span');
     priorityBadge.className = getPriorityClass(task.priority);
+
+    if (document.body.classList.contains('dark-theme')) {
+        priorityBadge.classList.add('dark');
+    }
+
     priorityBadge.textContent = task.priority;
     headerWrapper.appendChild(priorityBadge);
 
@@ -530,82 +538,54 @@ function createTaskElement(task) {
 
     // дополнительная информация
     let detailsWrapper = document.createElement('div');
-    detailsWrapper.className = 'mt-2 flex items-center text-xs text-gray-500';
+    detailsWrapper.className = 'task-details';
 
     // номер задачи
     let taskNumber = document.createElement('a');
-    taskNumber.className = 'mr-3 text-indigo-600 hover:underline'; // стили для ссылки
+    taskNumber.className = 'task-link';
     taskNumber.href = SIMPLE_ONE_URL + task.externalId;
-    taskNumber.target = '_blank'; // открывать ссылку в новой вкладке
-    taskNumber.rel = 'noopener noreferrer'; // защита от уязвимостей при открытии в новой вкладке
-    taskNumber.textContent = task.number; // текст ссылки (номер задачи)
+    taskNumber.target = '_blank';
+    taskNumber.rel = 'noopener noreferrer';
+    taskNumber.textContent = task.number;
     detailsWrapper.appendChild(taskNumber);
 
-    // заявитель
-    let authorIcon = document.createElement('img');
-    authorIcon.src = '/icons/user-tag-solid.svg';
-    authorIcon.alt = 'Заявитель';
-    authorIcon.className = 'w-3 h-3 mr-1';
-    detailsWrapper.appendChild(authorIcon);
+    // Добавляем иконки и текстовые элементы с новыми классами
+    const addDetail = (iconSrc, altText, text, additionalClass = '') => {
+        let icon = document.createElement('img');
+        icon.src = iconSrc;
+        icon.alt = altText;
+        icon.className = 'detail-icon';
+        detailsWrapper.appendChild(icon);
 
-    let author = document.createElement('span');
-    author.id = 'author-related';
-    author.className = 'mr-4';
-    author.textContent = task.author;
-    detailsWrapper.appendChild(author);
+        let span = document.createElement('span');
+        span.className = `detail-text ${additionalClass}`;
+        span.textContent = text || 'Не указано';
+        detailsWrapper.appendChild(span);
+    };
+
+    // заявитель
+    addDetail('/icons/user-tag-solid.svg', 'Заявитель', task.author, 'mr-4');
 
     // исполнитель
-    let userIcon = document.createElement('img');
-    userIcon.src = '/icons/circle-user-solid.svg';
-    userIcon.alt = 'Исполнитель';
-    userIcon.className = 'w-3 h-3 mr-1';
-    detailsWrapper.appendChild(userIcon);
-
-    let responsible = document.createElement('span');
-    responsible.id = 'user-related';
-    responsible.className = 'mr-4';
-    responsible.textContent = task.responsible || 'Не назначен';
-    detailsWrapper.appendChild(responsible);
+    addDetail('/icons/circle-user-solid.svg', 'Исполнитель', task.responsible, 'mr-4');
 
     // статус задачи
-    let chartIcon = document.createElement('img');
-    chartIcon.src = '/icons/chart-simple-solid.svg';
-    chartIcon.alt = 'Статус';
-    chartIcon.className = 'w-3 h-3 mr-1';
-    detailsWrapper.appendChild(chartIcon);
-
-    let taskStatus = document.createElement('span');
-    taskStatus.id = 'task-status';
-    taskStatus.className = 'mr-4';
-    taskStatus.textContent = task.status;
-    detailsWrapper.appendChild(taskStatus);
+    addDetail('/icons/chart-simple-solid.svg', 'Статус', task.status, 'mr-4');
 
     // клиент
-    let clientIcon = document.createElement('img');
-    clientIcon.src = '/icons/address-book-solid.svg';
-    clientIcon.alt = 'Клиент';
-    clientIcon.className = 'w-3 h-3 mr-1';
-    detailsWrapper.appendChild(clientIcon);
-
-    let client = document.createElement('span');
-    client.id = 'client-related';
-    client.className = 'mr-4';
-    client.textContent = task.client || 'NO CLIENT';
-    detailsWrapper.appendChild(client);
+    addDetail('/icons/address-book-solid.svg', 'Клиент', task.client, 'mr-4');
 
     contentWrapper.appendChild(detailsWrapper);
 
     // все части вместе
     let flexWrapper = document.createElement('div');
-    flexWrapper.className = 'flex items-start';
+    flexWrapper.className = 'task-flex-wrapper';
 
-    // добавляем чекбокс только если роль не GUEST
     if (checkboxWrapper) {
         flexWrapper.appendChild(checkboxWrapper);
     }
 
     flexWrapper.appendChild(contentWrapper);
-
     taskItem.appendChild(flexWrapper);
 
     return taskItem;
@@ -706,12 +686,12 @@ export function initializeTaskCounters() {
 function getPriorityClass(priority) {
     switch (priority) {
         case 'HIGH':
-            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800';
+            return 'priority-high inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium';
         case 'MEDIUM':
-            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800';
+            return 'priority-medium inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium';
         case 'LOW':
-            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800';
+            return 'priority-low inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium';
         default:
-            return 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800';
+            return 'priority-low inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium';
     }
 }

@@ -1,36 +1,32 @@
 <div id="backlog-content" class="hidden">
   <div class="flex justify-between items-center mb-6">
-    <h2 class="text-2xl font-bold text-gray-800">Бэклог задач</h2>
+    <h2 class="section-title">Бэклог задач</h2>
 
-    <div id="update-backlog-button-container" class="flex space-x-3"></div>
+    <div id="update-backlog-button-container" class="button-group"></div>
   </div>
 
-  <div class="bg-white rounded-lg shadow overflow-hidden">
+  <div class="card">
     <div class="p-6">
       <div class="flex justify-between items-center mb-4">
         <div id="select-all-container"></div>
 
-        <div class="flex justify-start">
-          <div class="relative w-96">
-            <div
-              class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-            >
-              <i class="fas fa-search text-gray-400"></i>
-            </div>
-            <input
-              type="text"
-              id="search-input"
-              class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs"
-              placeholder="Поиск задач..."
-            />
+        <div class="relative search-container w-96">
+          <div class="search-icon">
+            <i class="fas fa-search"></i>
           </div>
+          <input
+            type="text"
+            id="search-input"
+            class="form-input text-sm"
+            placeholder="Поиск задач..."
+          />
         </div>
 
         <div class="flex space-x-2">
           <div class="relative">
             <select
               id="backlog-status-filter"
-              class="appearance-none w-40 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2"
+              class="form-input appearance-none w-40 px-3 py-2 border rounded-md shadow-sm text-sm font-medium"
             >
               <option>Все статусы</option>
               <option>Scheduled</option>
@@ -43,7 +39,7 @@
               <option>Implemented</option>
             </select>
             <div
-              class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+              class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2"
             >
               <i class="fas fa-chevron-down"></i>
             </div>
@@ -52,7 +48,7 @@
           <div class="relative">
             <select
               id="backlog-priority-filter"
-              class="appearance-none w-40 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2"
+              class="form-input appearance-none w-40 px-3 py-2 border rounded-md shadow-sm text-sm font-medium"
             >
               <option>Все приоритеты</option>
               <option>Высокий</option>
@@ -60,7 +56,7 @@
               <option>Низкий</option>
             </select>
             <div
-              class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+              class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2"
             >
               <i class="fas fa-chevron-down"></i>
             </div>
@@ -68,35 +64,26 @@
         </div>
       </div>
 
-      <div id="tasks-container-backlog" class="text-xs text-gray-500"></div>
+      <div id="tasks-container-backlog" class="task-list-placeholder"></div>
 
       <div class="mt-6 flex justify-between items-center">
-        <div class="text-xs text-gray-500">
+        <div class="text-sm text-gray-500">
           Выбрано <span id="selected-count">0</span> из
           <span id="total-count">0</span> задач
         </div>
         <div id="add-to-sprint-button-container" class="flex space-x-3"></div>
       </div>
 
-      <div
-        id="backlog-pagination"
-        class="flex justify-center mt-4 mr-6 space-x-2"
-      >
-        <button
-          id="backlog-prev-page"
-          class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2"
-          disabled
-        >
+      <div id="backlog-pagination" class="pagination-container">
+        <button id="backlog-prev-page" class="pagination-button prev" disabled>
           Предыдущая
         </button>
-        <span id="backlog-page-info" class="px-3 py-1 text-sm text-gray-700"
+
+        <span id="backlog-page-info" class="pagination-info"
           >Страница 1 из 5</span
         >
-        <button
-          id="backlog-next-page"
-          class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2"
-          disabled
-        >
+
+        <button id="backlog-next-page" class="pagination-button next" disabled>
           Следующая
         </button>
       </div>
