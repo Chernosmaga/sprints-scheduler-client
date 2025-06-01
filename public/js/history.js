@@ -7,7 +7,6 @@ const BACKEND_URL = window.appConfig.BACKEND_URL;
 const SIMPLE_ONE_URL = window.appConfig.SIMPLE_ONE_URL;
 const loginPage = '/account/login';
 let allSprints = [];
-let currentSprintId = null;
 let currentOffset = 0;
 const sprintLimit = 10;
 
@@ -71,7 +70,7 @@ function showLoadMoreButton() {
         let container = document.getElementById('history-sprint-content');
         let button = document.createElement('button');
         button.id = 'load-more-button';
-        button.className = 'px-4 py-2 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500';
+        button.className = 'load-more-button';
         button.textContent = 'Загрузить ещё';
         button.addEventListener('click', renderData); // добавляем обработчик события
         container.appendChild(button);
@@ -122,74 +121,70 @@ window.openSprint = async function (sprintId) {
 };
 
 function renderSprints(sprints) {
-    let container = document.getElementById('history-sprint-content');
+    let container = document.getElementById("history-sprint-content");
 
     if (!container) {
-        console.error('Container with id=history-sprint-content not found');
+        console.error("Container with id=history-sprint-content not found");
         return;
     }
 
-    container.innerHTML = '';
+    container.innerHTML = "";
 
     // добавляем новые спринты в глобальную переменную с проверкой на дубликаты
-    allSprints = [
-        ...allSprints,
-        ...sprints.filter(newSprint => !allSprints.some(existingSprint => existingSprint.id === newSprint.id))
-    ];
+    allSprints = [...allSprints, ...sprints.filter((newSprint) => !allSprints.some((existingSprint) => existingSprint.id === newSprint.id))];
 
     // создание карточек спринтов
-    let sprintCards = sprints.map((sprint) => {
-        let startDate = parseDate(sprint.startDate);
-        let endDate = parseDate(sprint.endDate);
-        let progress = getProgressPercentage(new Date(sprint.startDate), new Date(sprint.endDate));
-        let progressPercentage = Math.round(progress);
+    let sprintCards = sprints
+        .map((sprint) => {
+            let startDate = parseDate(sprint.startDate);
+            let endDate = parseDate(sprint.endDate);
+            let progress = getProgressPercentage(new Date(sprint.startDate), new Date(sprint.endDate));
+            let progressPercentage = Math.round(progress);
 
-        return `
-            <div class='sprint-card bg-white rounded-lg shadow overflow-hidden transition-all duration-300 cursor-pointer'
-                 data-id='${sprint.id}' onclick="openSprint('${sprint.id}')">
+            return `
+                <div class="sprint-card" data-id='${sprint.id}' onclick="openSprint('${sprint.id}')">
                     <div class='p-6'>
-                        <div class='mb-4'>
-                            <div class='inline-block items-center'>
-                                <h3 id='current-sprint-name' class='text-base font-semibold text-gray-800 inline-block'>${sprint.sprintName}</h3>
-                                <h3 id='sprint-name-dates' class='text-gray-600 ml-5 inline-block'>${startDate} - ${endDate}</h3>
+                        <div class='mb-4 flex justify-between items-center'>
+                            <div class="history-sprint-title-wrapper">
+                                <h3 id='current-sprint-name' class='history-sprint-title'>${sprint.sprintName}</h3>
+                                <h3 id='sprint-name-dates' class='history-sprint-dates'>${startDate} - ${endDate}</h3>
                             </div>
-                            <span id='current-sprint-activity' class='px-3 py-1 rounded-full text-xs font-medium ${getStatusLabelClass(sprint.isActive)} text-green-800 inline-block float-right'>
+                            <span id='current-sprint-activity' class='status-label ${sprint.isActive ? "active" : "inactive"}'>
                                 ${getStatusText(sprint.isActive)}
                             </span>
-                    </div>
-
-                    <div class='mb-4'>
-                        <p class='text-gray-700 text-xs'>
-                            <span class='ont-medium'>${sprint.responsible?.name || 'Не назначен'}</span>
-                        </p>
-                    </div>
-
-                    <!-- Прогресс -->
-                    <div class='mb-4'>
-                        <div class='flex justify-between mb-1'>
-                            <span class='text-xs font-medium text-gray-700'>Progress</span>
-                            <span class='text-xs font-medium text-gray-700'>${progressPercentage}%</span>
                         </div>
-                        <div class='w-full bg-gray-200 rounded-full h-1.5'>
-                            <div class='bg-purple-600 h-1.5 rounded-full' style='width: ${progressPercentage}%'></div>
-                        </div>
-                    </div>
 
-                    <!-- Задачи и сложность -->
-                    <div class='flex justify-between text-xs'>
-                        <div>
-                            <span class='text-gray-500'>Tasks:</span>
-                            <span class='font-medium ml-1'>${sprint.tasksCount || 0}</span>
+                        <div class='mb-4 responsible-info'>
+                            <p class='text-sm'>
+                                <span class='font-medium'>${sprint.responsible?.name || "Не назначен"}</span>
+                            </p>
                         </div>
-                        <div>
-                            <span class='text-gray-500'>Points:</span>
-                            <span class='font-medium ml-1'>${sprint.storyPointsSum || 0}</span>
+
+                        <div class='mb-4 progress-container'>
+                            <div class='flex justify-between mb-1 progress-labels'>
+                                <span class='progress-text'>Progress</span>
+                                <span class='progress-text'>${progressPercentage}%</span>
+                            </div>
+                            <div class='w-full progress-bar'>
+                                <div class='progress-fill' style='width: ${progressPercentage}%'></div>
+                            </div>
+                        </div>
+
+                        <div class='flex justify-between text-sm stats-container flex-nowrap'>
+                            <div>
+                                <span class='stat-card-value'>Tasks:</span>
+                                <span class='font-medium ml-1'>${sprint.tasksCount || 0}</span>
+                            </div>
+                            <div>
+                                <span class='stat-card-value'>Points:</span>
+                                <span class='font-medium ml-1'>${sprint.storyPointsSum || 0}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
         `;
-    }).join('');
+        })
+        .join("");
 
     // добавляем карточки спринтов в контейнер
     container.innerHTML += sprintCards;
@@ -198,28 +193,29 @@ function renderSprints(sprints) {
     if (sprints.length > 10) {
         let loadMoreButton = `
             <div class='flex justify-center mt-4'>
-                <button id='load-more-button' class='px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none'>
+                <button id='load-more-button' class='load-more-button'>
                     Загрузить ещё
                 </button>
             </div>
         `;
-        container.insertAdjacentHTML('beforeend', loadMoreButton);
+        container.insertAdjacentHTML("beforeend", loadMoreButton);
 
         // обработчик события на кнопку
-        let button = container.querySelector('#load-more-button');
+        let button = container.querySelector("#load-more-button");
         if (button) {
-            button.addEventListener('click', async () => {
+            button.addEventListener("click", async () => {
                 await renderData();
             });
         }
     } else {
         // если больше спринтов нет, удаляем кнопку
-        let existingButton = container.querySelector('#load-more-button');
+        let existingButton = container.querySelector("#load-more-button");
         if (existingButton) {
             existingButton.remove();
         }
     }
 }
+
 
 // функция для обновления URL с параметром sprintId
 function updateUrlWithSprintId(sprintId) {
@@ -262,102 +258,100 @@ function renderSprintDetails(sprint) {
 
     // создаем HTML-разметку для деталей спринта и таблицы задач
     let sprintDetailsHTML = `
-        <div class='bg-white rounded-lg shadow overflow-hidden'>
+        <div class='history-sprint-container'>
             <div class='p-6 relative'>
-                <div class='relative flex flex-col items-center'>
-                    <button
-                        class='absolute top-4 left-4 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-xs font-medium text-text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2'
-                        onclick='goBackToSprintList()'
-                    >
-                        Назад
-                    </button>
+                <div class='history-sprint-container'>
+                    <div class='history-sprint-columns'>
+                        <div class='history-sprint-top-row'>
+                            <button class='history-back-button' onclick='goBackToSprintList()'>
+                                Назад
+                            </button>
+                            <div class="history-sprint-title-wrapper">
+                                <h3 class='history-sprint-title'>${sprint.sprintName || 'Нет текущих спринтов'}</h3>
+                                <p class='history-sprint-dates'>
+                                    ${Number.isNaN(sprint.startDate) || Number.isNaN(sprint.endDate) ? 'Даты спринта' : `${startDate} - ${endDate}`}
+                                </p>
+                            </div>
+                            <span id='history-sprint-activity' class='activity-badge ${isSprintActive ? 'activity-active' : 'activity-completed'}'>
+                                ${isSprintActive ? 'Active' : 'Completed'}
+                            </span>
+                        </div>
+                    </div>
+                </div>
 
-                    <span
-                        id='history-sprint-activity'
-                        class='absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-medium ${isSprintActive ? 'bg-green-100 text-green-800' : 'bg-purple-100 text-purple-800'}'
-                    >
-                        ${isSprintActive ? 'Active' : 'Completed'}
-                    </span>
-
-                    <h3 class='text-base font-semibold text-gray-800 text-center mb-4 ml-[-40px]'>${sprint.sprintName || 'Нет текущих спринтов'}</h3>
-                    <p class='text-gray-600 text-xs text-center mb-4 ml-[-40px]'>
-                        ${Number.isNaN(sprint.startDate) || Number.isNaN(sprint.endDate) ? 'Даты спринта' : `${startDate} - ${endDate}`}
-                    </p>
+                <div class='grid grid-cols-1 md:grid-cols-4 gap-4 mb-4 mt-2'>
+                    <div class='stat-card flex items-center justify-between'>
+                        <h4 class='stat-card-title'>Ответственный</h4>
+                        <div class='stat-card-value'>${sprint.responsible?.name || 'Не назначен'}</div>
+                    </div>
+                    <div class='stat-card flex items-center justify-between'>
+                        <h4 class='stat-card-title'>Задачи</h4>
+                        <div class='stat-card-value'>${sprint.tasksCount || 0}</div>
+                    </div>
+                    <div class='stat-card flex items-center justify-between'>
+                        <h4 class='stat-card-title'>Сложность</h4>
+                        <div class='stat-card-value'>${sprint.storyPointsSum || 0}</div>
+                    </div>
+                    <div class='stat-card flex items-center justify-between'>
+                        <h4 class='stat-card-title'>Длительность</h4>
+                        <div class='stat-card-value'>${Number.isNaN(daysDifference) ? 0 : daysDifference}</div>
+                    </div>
                 </div>
 
                 <div class='overflow-x-auto'>
-                    <table class='min-w-full divide-y divide-gray-200'>
-                        <thead class='bg-gray-50'>
+                    <table class='history-task-table'>
+                        <thead>
                         <tr>
-                            <th scope='col' class='px-6 py-3 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider'>Number</th>
-                            <th scope='col' class='px-6 py-3 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider'>Author</th>
-                            <th scope='col' class='px-6 py-3 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider'>Status</th>
-                            <th scope='col' class='px-6 py-3 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider'>Client</th>
-                            <th scope='col' class='px-6 py-3 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider'>Responsible</th>
-                            <th scope='col' class='px-6 py-3 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider'>Priority</th>
-                            <th scope='col' class='px-6 py-3 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider'>Story Points</th>
-                            <th scope='col' class='px-6 py-3 text-left text-[10px] font-medium text-gray-500 uppercase tracking-wider'>Comment</th>
+                            <th scope='col' class='history-table-cell'>Number</th>
+                            <th scope='col' class='history-table-cell'>Author</th>
+                            <th scope='col' class='history-table-cell'>Status</th>
+                            <th scope='col' class='history-table-cell'>Client</th>
+                            <th scope='col' class='history-table-cell'>Responsible</th>
+                            <th scope='col' class='history-table-cell'>Priority</th>
+                            <th scope='col' class='history-table-cell'>Story Points</th>
+                            <th scope='col' class='history-table-cell'>Comment</th>
                         </tr>
                         </thead>
-                        <tbody id='history-task-table-body' class='bg-white divide-y divide-gray-200'>
+                        <tbody id='history-task-table-body' class=''>
                         </tbody>
                     </table>
                 </div>
 
-                <div class='grid grid-cols-1 md:grid-cols-4 gap-4 mb-4 mt-8'>
-                    <div class='bg-gray-50 p-2 rounded-md w-full h-20 flex flex-col justify-center items-center'>
-                        <h4 class='text-xs font-medium text-gray-500 mb-1'>Ответственный</h4>
-                        <div class='text-xs font-medium'>${sprint.responsible?.name || 'Не назначен'}</div>
-                    </div>
-                    <div class='bg-gray-50 p-2 rounded-md w-full h-20 flex flex-col justify-center items-center'>
-                        <h4 class='text-xs font-medium text-gray-500 mb-1'>Задачи</h4>
-                        <div class='text-xs font-medium'>${sprint.tasksCount || 0}</div>
-                    </div>
-                    <div class='bg-gray-50 p-2 rounded-md w-full h-20 flex flex-col justify-center items-center'>
-                        <h4 class='text-xs font-medium text-gray-500 mb-1'>Сложность</h4>
-                        <div class='text-xs font-medium'>${sprint.storyPointsSum || 0}</div>
-                    </div>
-                    <div class='bg-gray-50 p-2 rounded-md w-full h-20 flex flex-col justify-center items-center'>
-                        <h4 class='text-xs font-medium text-gray-500 mb-1'>Длительность</h4>
-                        <div class='text-xs font-medium'>${Number.isNaN(daysDifference) ? 0 : daysDifference}</div>
-                    </div>
-                </div>
-
-                <div class='grid grid-cols-1 md:grid-cols-3 gap-6 mb-6'>
-                    <div class='bg-gray-50 p-4 rounded-lg'>
-                        <h4 class='text-xs font-medium text-gray-500 mb-2'>Статусы задач</h4>
+                <div class='history-chart-container-grid'>
+                    <div class='history-chart-container-card'>
+                        <h4 class='history-chart-container-text'>Статусы задач</h4>
                         <div class='chart-container'>
-                            <canvas id='statusChart-${sprint.id}' width='700' height='400'></canvas>
+                            <canvas id='statusChart-${sprint.id}'></canvas>
                         </div>
                     </div>
-                    <div class='bg-gray-50 p-4 rounded-lg'>
-                        <h4 class='text-xs font-medium text-gray-500 mb-2'>Приоритеты задач</h4>
+                    <div class='history-chart-container-card'>
+                        <h4 class='history-chart-container-text'>Приоритеты задач</h4>
                         <div class='chart-container'>
-                            <canvas id='priorityChart-${sprint.id}' width='700' height='400'></canvas>
+                            <canvas id='priorityChart-${sprint.id}'></canvas>
                         </div>
                     </div>
-                    <div class='bg-gray-50 p-4 rounded-lg'>
-                        <h4 class='text-xs font-medium text-gray-500 mb-2'>Количество задач</h4>
+                    <div class='history-chart-container-card'>
+                        <h4 class='history-chart-container-text'>Количество задач</h4>
                         <div class='chart-container'>
-                            <canvas id='assigneeChart-${sprint.id}' width='700' height='400'></canvas>
+                            <canvas id='assigneeChart-${sprint.id}'></canvas>
                         </div>
                     </div>
-                    <div class='bg-gray-50 p-4 rounded-lg'>
-                        <h4 class='text-xs font-medium text-gray-500 mb-2'>Оценка сложности задач</h4>
+                    <div class='history-chart-container-card'>
+                        <h4 class='history-chart-container-text'>Оценка сложности задач</h4>
                         <div class='chart-container'>
-                            <canvas id='storyPointsChart-${sprint.id}' width='700' height='400'></canvas>
+                            <canvas id='storyPointsChart-${sprint.id}'></canvas>
                         </div>
                     </div>
-                    <div class='bg-gray-50 p-4 rounded-lg'>
-                        <h4 class='text-xs font-medium text-gray-500 mb-2'>Клиенты</h4>
+                    <div class='history-chart-container-card'>
+                        <h4 class='history-chart-container-text'>Клиенты</h4>
                         <div class='chart-container'>
-                            <canvas id='clientsChart-${sprint.id}' width='700' height='400'></canvas>
+                            <canvas id='clientsChart-${sprint.id}'></canvas>
                         </div>
                     </div>
-                    <div class='bg-gray-50 p-4 rounded-lg'>
-                        <h4 class='text-xs font-medium text-gray-500 mb-2'>Количество CHG от авторов</h4>
+                    <div class='history-chart-container-card'>
+                        <h4 class='history-chart-container-text'>Количество CHG от авторов</h4>
                         <div class='chart-container'>
-                            <canvas id='authorsChart-${sprint.id}' width='700' height='400'></canvas>
+                            <canvas id='authorsChart-${sprint.id}'></canvas>
                         </div>
                     </div>
                 </div>
@@ -383,22 +377,22 @@ function updateTableRow(task) {
 
     // заполняем строку данными
     row.innerHTML = `
-        <td class='px-4 py-2 text-xs'>
-            <a href='${SIMPLE_ONE_URL + task.externalId}' target='_blank' rel='noopener noreferrer' class='text-blue-500 hover:underline'>${task.number}</a>
+        <td class='px-4 py-2 text-sm'>
+            <a href='${SIMPLE_ONE_URL + task.externalId}' target='_blank' rel='noopener noreferrer' class='task-link'>${task.number}</a>
         </td>
 
-        <td class='px-4 py-2 text-xs'>${task.author}</td>
-        <td class='px-4 py-2 text-xs editable' data-field='status'>${task.status}</td>
+        <td class='px-4 py-2 text-sm'>${task.author}</td>
+        <td class='px-4 py-2 text-sm' data-field='status'>${task.status}</td>
 
         <td class='px-4 py-2 relative client-cell'>
-            <span class='client-name text-xs'>${task.client}</span>
-            <span class='subject hidden text-gray-700 text-xs absolute top-1/2 -translate-y-1/2 left-full ml-2 px-2 py-1 bg-gray-100 rounded-md shadow-md'></span>
+            <span class='client-name text-sm'>${task.client}</span>
+            <span class='subject alternative hidden'></span>
         </td>
 
-        <td class='px-4 py-2 text-xs editable' data-field='responsible'>${task.responsible || 'Не назначен'}</td>
-        <td class='px-4 py-2 text-xs'>${task.priority || 'Нет приоритета'}</td>
-        <td class='px-4 py-2 text-xs editable' data-field='storyPoints'>${task.storyPoints || '0'}</td>
-        <td class='px-4 py-2 text-xs editable' data-field='comment'>${task.comment || ''}</td>
+        <td class='px-4 py-2 text-sm editable' data-field='responsible'>${task.responsible || 'Не назначен'}</td>
+        <td class='px-4 py-2 text-sm'>${task.priority || 'Нет приоритета'}</td>
+        <td class='px-4 py-2 text-sm editable' data-field='storyPoints'>${task.storyPoints || '0'}</td>
+        <td class='px-4 py-2 text-sm editable' data-field='comment'>${task.comment || ''}</td>
     `;
 
     // безопасно заполняем текстовые поля
@@ -418,15 +412,6 @@ function updateTableRow(task) {
     }
 
     return row;
-}
-
-function getStatusLabelClass(isActive) {
-    if (isActive === false) {
-        return 'bg-purple-100 text-purple-800';
-    }
-    if (isActive === true) {
-        return 'bg-green-100 text-green-800';
-    }
 }
 
 function getStatusText(isActive) {

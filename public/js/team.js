@@ -29,7 +29,7 @@ export function renderCreateUserButton() {
     buttonContainer.innerHTML = `
   <button
     type='button'
-    class='mt-9 px-4 py-2 border border-transparent text-xs font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 h-10 whitespace-nowrap'
+    class='mt-9 px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 h-10 whitespace-nowrap'
     id='create-user-button'
   >
     <i class='fas fa-plus mr-2'></i>
@@ -237,140 +237,125 @@ export async function renderUserList() {
 }
 
 function createUserElement(user) {
-    let userRole = localStorage.getItem('userRole'); // роль текущего пользователя
-    let userContainer = document.createElement('div');
-    userContainer.className = 'flex items-center justify-between p-3 bg-gray-50 rounded-lg mb-4';
+  let userRole = localStorage.getItem('userRole');
+  let userContainer = document.createElement('div');
+  userContainer.className = 'user-card';
 
-    // создаем блок с фото и информацией
-    let userInfoContainer = document.createElement('div');
-    userInfoContainer.className = 'flex items-center';
+  // --- Левая часть: фото + имя/почта ---
+  let userInfoContainer = document.createElement('div');
+  userInfoContainer.className = 'user-info-container';
 
-    // фото
-    let photoElement = document.createElement('img');
-    photoElement.className = 'h-10 w-10 rounded-full';
-    photoElement.src = user.photo?.fileUrl || '/icons/circle-user-solid.svg'; // запасное изображение
-    photoElement.alt = user.name || 'photo';
+  let photoElement = document.createElement('img');
+  photoElement.className = 'user-photo';
+  photoElement.src = user.photo?.fileUrl || '/icons/circle-user-solid.svg';
+  photoElement.alt = user.name || 'photo';
 
-    // информация о пользователе
-    let infoContainer = document.createElement('div');
-    infoContainer.className = 'ml-4';
+  let infoContainer = document.createElement('div');
+  infoContainer.className = 'user-details';
 
-    let nameElement = document.createElement('p');
-    nameElement.className = 'text-xs font-medium text-gray-900';
-    nameElement.textContent = user.surname + " " + user.name + " " + (user.patronymic || '');
+  let nameElement = document.createElement('p');
+  nameElement.className = 'user-name';
+  nameElement.textContent = `${user.surname} ${user.name} ${user.patronymic || ''}`;
 
-    let emailElement = document.createElement('p');
-    emailElement.className = 'text-xs text-gray-500';
-    emailElement.textContent = user.email || 'Не указан';
+  let emailElement = document.createElement('p');
+  emailElement.className = 'user-email';
+  emailElement.textContent = user.email || 'Не указан';
 
-    infoContainer.appendChild(nameElement);
-    infoContainer.appendChild(emailElement);
+  infoContainer.appendChild(nameElement);
+  infoContainer.appendChild(emailElement);
 
-    userInfoContainer.appendChild(photoElement);
-    userInfoContainer.appendChild(infoContainer);
+  userInfoContainer.appendChild(photoElement);
+  userInfoContainer.appendChild(infoContainer);
 
-    // дата рождения
-    //let birthdayElement = document.createElement('span');
-    //birthdayElement.className = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800';
-    //birthdayElement.textContent = parseDate(user.birthday) || 'Не указана';
+  // --- Правая часть: роль ---
 
-    // отображение роли
-    let roleElement;
+  let roleElement;
 
-    if (userRole === 'ADMIN') {
-        // выпадающий список для администратора
-        roleElement = document.createElement('select');
-        roleElement.className = 'ml-2 px-2 py-1 border border-gray-300 rounded-md text-xs font-medium focus:outline-none focus:ring-indigo-500 focus:border-indigo-500';
+  if (userRole === 'ADMIN') {
+    // Выпадающий список для администратора
+    roleElement = document.createElement('select');
+    roleElement.className = 'user-role-select';
 
-        // опции для ролей
-        let roles = [
-            { value: 'ADMIN', label: 'Администратор' },
-            { value: 'USER', label: 'Пользователь' },
-            { value: 'GUEST', label: 'Гость' },
-        ];
+    const roles = [
+      { value: 'ADMIN', label: 'Администратор' },
+      { value: 'USER', label: 'Пользователь' },
+      { value: 'GUEST', label: 'Гость' },
+    ];
 
-        roles.forEach((role) => {
-            let option = document.createElement('option');
-            option.value = role.value;
-            option.textContent = role.label;
-            if (role.value === user.role) {
-                option.selected = true; // устанавливаем текущую роль как выбранную
-            }
-            roleElement.appendChild(option);
+    roles.forEach(role => {
+      let option = document.createElement('option');
+      option.value = role.value;
+      option.textContent = role.label;
+      if (role.value === user.role) option.selected = true;
+      roleElement.appendChild(option);
+    });
+
+    roleElement.addEventListener('change', async event => {
+      const newRole = event.target.value;
+
+      const userJSON = {
+        id: user.id,
+        role: newRole
+      };
+
+      const token = localStorage.getItem('accessToken');
+
+      try {
+        const url = new URL(BACKEND_URL + '/api/v1/users/update/role');
+        const response = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userJSON)
         });
 
-        // обработчик изменения роли
-        roleElement.addEventListener('change', async (event) => {
-            let newRole = event.target.value;
-
-            let userJSON = {
-                id: user.id,
-                role: newRole
-            };
-
-            let token = localStorage.getItem('accessToken');
-
-            try {
-                let url = new URL(BACKEND_URL + '/api/v1/users/update/role');
-                let response = await fetch(url, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(userJSON),
-                });
-
-                console.log(JSON.stringify(userJSON, null, 2));
-
-                if (response.status === 403 || response.status === 401) {
-                    localStorage.removeItem('accessToken');
-                    localStorage.removeItem('userRole');
-                    window.location.href = loginPage;
-                    return;
-                }
-
-                if (!response.ok) {
-                    showNotification('Ошибка при обновлении роли пользователя', 'error');
-                    return;
-                }
-
-                showNotification('Данные успешно обновлены', 'success');
-            } catch (error) {
-                console.error('Ошибка при обновлении роли пользователя:', error.message);
-                showNotification('Ошибка при обновлении роли пользователя', 'error');
-            }
-        });
-    } else {
-        // текстовое представление роли для остальных пользователей
-        roleElement = document.createElement('span');
-        roleElement.className = 'ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium';
-
-        // определяем цвет в зависимости от роли
-        switch (user.role) {
-            case 'ADMIN':
-                roleElement.className += ' bg-yellow-100 text-yellow-800';
-                roleElement.textContent = 'Администратор';
-                break;
-            case 'USER':
-                roleElement.className += ' bg-emerald-100 text-emerald-800';
-                roleElement.textContent = 'Пользователь';
-                break;
-            case 'GUEST':
-                roleElement.className += ' bg-blue-100 text-blue-800';
-                roleElement.textContent = 'Гость';
-                break;
-            default:
-                roleElement.className += ' bg-rose-100 text-rose-800';
-                roleElement.textContent = 'Неизвестная роль';
-                break;
+        if (response.status === 403 || response.status === 401) {
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('userRole');
+          window.location.href = loginPage;
+          return;
         }
+
+        if (!response.ok) {
+          showNotification('Ошибка при обновлении роли пользователя', 'error');
+          return;
+        }
+
+        showNotification('Данные успешно обновлены', 'success');
+      } catch (error) {
+        console.error('Ошибка при обновлении роли:', error.message);
+        showNotification('Ошибка при обновлении роли', 'error');
+      }
+    });
+  } else {
+    roleElement = document.createElement('span');
+    roleElement.className = 'user-role-badge';
+
+    switch (user.role) {
+      case 'ADMIN':
+        roleElement.classList.add('user-role-admin');
+        roleElement.textContent = 'Администратор';
+        break;
+      case 'USER':
+        roleElement.classList.add('user-role-user');
+        roleElement.textContent = 'Пользователь';
+        break;
+      case 'GUEST':
+        roleElement.classList.add('user-role-guest');
+        roleElement.textContent = 'Гость';
+        break;
+      default:
+        roleElement.classList.add('user-role-default');
+        roleElement.textContent = 'Неизвестная роль';
+        break;
     }
+  }
 
-    // собираем все элементы вместе
-    userContainer.appendChild(userInfoContainer);
-    //userContainer.appendChild(birthdayElement);
-    userContainer.appendChild(roleElement);
+  // --- Сборка карточки ---
+  userContainer.appendChild(userInfoContainer);
+  userContainer.appendChild(roleElement);
 
-    return userContainer;
+  return userContainer;
 }

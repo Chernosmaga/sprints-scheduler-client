@@ -1,66 +1,82 @@
 <div id="current-sprint-content">
   <div class="flex justify-between items-center mb-6">
-    <h2 class="text-2xl font-bold text-gray-800">Текущий спринт</h2>
-
+    <h2 class="section-title">Текущий спринт</h2>
     <div id="sprint-buttons-container" class="flex space-x-3"></div>
+  </div>
 
-    <div
-      id="find-task-modal"
-      class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center"
-    >
-      <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 class="text-lg font-medium mb-4">Найти задачу в SimpleOne</h2>
-        <div class="mb-4">
-          <input
-            type="text"
-            id="task-search-input"
-            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-xs"
-            placeholder="Введите номер CHG"
-          />
-        </div>
-        <div class="flex justify-center space-x-2 mt-8">
-          <button
-            type="button"
-            id="close-modal"
-            class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none"
-          >
-            Отмена
-          </button>
-          <button
-            type="button"
-            id="find-external-task"
-            class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none"
-          >
-            Найти
-          </button>
-        </div>
+  <div id="find-task-modal" class="hidden modal-overlay">
+    <div class="modal-card">
+      <h2 class="modal-title">Найти задачу в SimpleOne</h2>
+      <div class="mb-4">
+        <input
+          type="text"
+          id="task-search-input"
+          class="form-input-no-pics"
+          placeholder="Введите номер CHG"
+        />
+      </div>
+      <div class="flex justify-center space-x-2 mt-8">
+        <button type="button" id="close-modal" class="secondary-button">
+          Отмена
+        </button>
+        <button type="button" id="find-external-task" class="primary-button">
+          Найти
+        </button>
       </div>
     </div>
+  </div>
 
-    <div
-      id="edit-modal"
-      class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50"
-    >
-      <div
-        id="modal-content"
-        class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md transform scale-0 opacity-0"
-      >
-        <h2 id="edit-mode-subject" class="text-base font-medium mb-4"></h2>
+  <div id="edit-modal" class="hidden modal-overlay">
+    <div id="modal-content" class="modal-card wide-modal">
+      <div class="modal-header flex justify-between items-center w-full">
+        <h2 id="edit-mode-subject" class="modal-title"></h2>
+        <h2 id="edit-mode-number" class="modal-title text-right"></h2>
+      </div>
+
+      <div class="grid grid-cols-2 gap-x-8 gap-y-4">
+        <div class="mb-4">
+          <label for="modal-caller" class="form-label">Заявитель</label>
+          <div class="relative">
+            <div class="input-icon">
+              <img
+                src="/icons/user-tag-solid.svg"
+                alt="Заявитель"
+                class="icon"
+                loading="lazy"
+              />
+            </div>
+            <input type="text" id="modal-caller" class="form-input" readonly />
+          </div>
+        </div>
 
         <div class="mb-4">
-          <label
-            for="modal-status"
-            class="block text-xs font-medium text-gray-700 mb-1"
-            >Статус задачи</label
-          >
+          <label for="modal-priority" class="form-label">Приоритет</label>
           <div class="relative">
-            <div
-              class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-            >
+            <div class="input-icon">
+              <img
+                src="/icons/flag-solid.svg"
+                alt="Заявитель"
+                class="icon"
+                loading="lazy"
+              />
+            </div>
+            <input
+              type="text"
+              id="modal-priority"
+              class="form-input"
+              readonly
+            />
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="modal-status" class="form-label">Статус задачи</label>
+          <div class="relative">
+            <div class="input-icon">
               <img
                 src="/icons/chart-simple-solid.svg"
                 alt="Статус задачи"
-                class="w-4 h-4"
+                class="icon"
                 loading="lazy"
               />
             </div>
@@ -68,7 +84,7 @@
               id="modal-status"
               name="status"
               required
-              class="input-focus-effect pl-10 w-full px-2 py-1 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
+              class="form-select"
             >
               <option value=""></option>
               <option>Scheduled</option>
@@ -84,26 +100,22 @@
         </div>
 
         <div class="mb-4">
-          <label
-            for="modal-responsible"
-            class="block text-xs font-medium text-gray-700 mb-1"
+          <label for="modal-responsible" class="form-label"
             >Ответственный</label
           >
           <div class="relative">
-            <div
-              class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-            >
+            <div class="input-icon">
               <img
                 src="/icons/circle-user-solid.svg"
                 alt="Ответственный"
-                class="w-4 h-4"
+                class="icon"
                 loading="lazy"
               />
             </div>
             <select
               id="modal-responsible"
               name="responsible"
-              class="input-focus-effect pl-10 w-full px-2 py-1 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
+              class="form-select"
             >
               <option value=""></option>
               <option>Алеся Беседина</option>
@@ -119,173 +131,102 @@
         </div>
 
         <div class="mb-4">
-          <label
-            for="modal-comment"
-            class="block text-xs font-medium text-gray-700 mb-1"
-            >Комментарий</label
-          >
+          <label for="modal-comment" class="form-label">Комментарий</label>
           <div class="relative">
-            <div
-              class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-            >
+            <div class="input-icon">
               <img
                 src="/icons/comment-solid.svg"
                 alt="Комментарий"
-                class="w-4 h-4"
+                class="icon"
                 loading="lazy"
               />
             </div>
-            <input
-              type="text"
-              id="modal-comment"
-              class="input-focus-effect pl-10 w-full px-2 py-1 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
-            />
+            <input type="text" id="modal-comment" class="form-input" />
           </div>
         </div>
 
         <div class="mb-4">
-          <label
-            for="modal-story-points"
-            class="block text-xs font-medium text-gray-700 mb-1"
+          <label for="modal-story-points" class="form-label"
             >Story Points</label
           >
           <div class="relative">
-            <div
-              class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
-            >
+            <div class="input-icon">
               <img
                 src="/icons/ranking-star-solid.svg"
                 alt="Story Points"
-                class="w-4 h-4"
+                class="icon"
                 loading="lazy"
               />
             </div>
-            <input
-              type="text"
-              id="modal-story-points"
-              class="input-focus-effect pl-10 w-full px-2 py-1 rounded-lg border border-gray-300 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-200 transition duration-200"
-            />
+            <input type="text" id="modal-story-points" class="form-input" />
           </div>
         </div>
+      </div>
 
-        <div class="flex justify-center space-x-2 mt-8">
-          <button
-            type="button"
-            id="cancel-edit"
-            class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-          >
-            Отмена
-          </button>
-          <button
-            type="button"
-            id="delete-edit"
-            class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-          >
-            Удалить задачу
-          </button>
-          <button
-            type="button"
-            id="save-edit"
-            class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-          >
-            Сохранить
-          </button>
-        </div>
+      <div class="flex justify-center space-x-2 mt-8">
+        <button type="button" id="cancel-edit" class="secondary-button">
+          Отмена
+        </button>
+        <button type="button" id="delete-edit" class="danger-button">
+          Удалить задачу
+        </button>
+        <button type="button" id="save-edit" class="success-button">
+          Сохранить
+        </button>
       </div>
     </div>
   </div>
 
-  <div class="mb-8">
-    <div class="bg-white rounded-lg shadow overflow-hidden">
-      <div class="p-6">
-        <div class="mb-4">
-          <div class="inline-block items-center">
-            <h3
-              id="current-sprint-name"
-              class="text-base font-semibold text-gray-800 inline-block"
-            >
-              Спринт
-            </h3>
-            <h3 id="sprint-name-dates" class="text-gray-600 ml-5 inline-block">
-              Даты спринта
-            </h3>
-          </div>
-          <span
-            id="current-sprint-activity"
-            class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 inline-block float-right"
-            >Active</span
-          >
+  <div class="card">
+    <div class="p-6">
+      <div class="mb-4 flex justify-between items-center">
+        <div class="flex items-center gap-4">
+          <h3 id="current-sprint-name" class="card-subtitle">Спринт</h3>
+          <h3 id="sprint-name-dates" class="card-subtitle-secondary text-sm">
+            Даты спринта
+          </h3>
         </div>
-
-        <div class="mb-6">
-          <div class="flex justify-between mb-1">
-            <span class="text-xs font-medium text-gray-700"
-              >Прогресс спринта</span
-            >
-            <span
-              id="sprint-percent-text"
-              class="text-xs font-medium text-gray-700"
-              >0%</span
-            >
-          </div>
-          <div class="w-full bg-gray-200 rounded-full h-2.5">
-            <div
-              id="sprint-progress-bar"
-              class="bg-blue-600 h-2.5 rounded-full"
-              style="width: 0%"
-            ></div>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4 mt-8">
-            <div class="bg-gray-50 p-2 rounded-lg w-full h-20">
-              <h4 class="text-xs font-medium text-gray-500 mb-2">
-                Ответственный
-              </h4>
-              <div
-                id="sprint-responsible-container"
-                class="flex justify-center h-full text-base text-gray-700"
-              ></div>
-            </div>
-            <div class="bg-gray-50 p-2 rounded-lg w-full h-20">
-              <h4 class="text-xs font-medium text-gray-500 mb-2">
-                Всего задач
-              </h4>
-              <div
-                id="tasks-sum-container"
-                class="flex justify-center h-full text-base text-gray-700"
-              ></div>
-            </div>
-            <div class="bg-gray-50 p-2 rounded-lg w-full h-20">
-              <h4 class="text-xs font-medium text-gray-500 mb-2">
-                Оценка сложности
-              </h4>
-              <div
-                id="story-points-sum-container"
-                class="flex justify-center h-full text-base text-gray-700"
-              ></div>
-            </div>
-            <div class="bg-gray-50 p-2 rounded-lg w-full h-20">
-              <h4 class="text-xs font-medium text-gray-500 mb-2">
-                Продолжительность спринта
-              </h4>
-              <div
-                id="sprint-duration-container"
-                class="flex justify-center h-full text-base text-gray-700"
-              ></div>
-            </div>
-          </div>
-        </div>
-
-        <div
-          id="task-table-body"
-          class="bg-white divide-y divide-gray-200"
-        ></div>
-
-        <div
-          id="sprint-charts-container"
-          class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 mt-8"
-        ></div>
+        <span id="current-sprint-activity" class="">Active</span>
       </div>
+
+      <div class="mb-6">
+        <div class="flex justify-between mb-1">
+          <span class="form-label">Прогресс спринта</span>
+          <span id="sprint-percent-text" class="form-label">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div
+            id="sprint-progress-bar"
+            class="progress-fill"
+            style="width: 0%"
+          ></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4 mt-8">
+          <div class="stat-card flex items-center justify-between">
+            <h4 class="stat-card-title">Ответственный</h4>
+            <div id="sprint-responsible-container" class="stat-card-value">
+              —
+            </div>
+          </div>
+          <div class="stat-card flex items-center justify-between">
+            <h4 class="stat-card-title">Всего задач</h4>
+            <div id="tasks-sum-container" class="stat-card-value">—</div>
+          </div>
+          <div class="stat-card flex items-center justify-between">
+            <h4 class="stat-card-title">Оценка сложности</h4>
+            <div id="story-points-sum-container" class="stat-card-value">—</div>
+          </div>
+          <div class="stat-card flex items-center justify-between">
+            <h4 class="stat-card-title">Продолжительность спринта</h4>
+            <div id="sprint-duration-container" class="stat-card-value">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="task-table-body" class="table-container"></div>
+
+      <div id="sprint-charts-container" class="chart-container-grid"></div>
     </div>
   </div>
 </div>

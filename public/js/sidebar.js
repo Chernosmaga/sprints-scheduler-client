@@ -79,6 +79,7 @@ export function setupNavigation(userRole) {
     Object.keys(navLinks).forEach((linkId) => {
         let link = document.getElementById(linkId);
         if (link) {
+            link.classList.add('nav-link'); // Добавляем базовый класс
             link.addEventListener('click', (e) => {
                 e.preventDefault();
 
@@ -99,12 +100,8 @@ export function setupNavigation(userRole) {
                 Object.keys(navLinks).forEach((navLinkId) => {
                     let navLinkElement = document.getElementById(navLinkId);
                     if (navLinkElement) {
-                        navLinkElement.classList.remove('bg-indigo-900', 'text-white');
-                        navLinkElement.classList.add(
-                            'text-indigo-200',
-                            'hover:bg-indigo-700',
-                            'hover:text-white'
-                        );
+                        navLinkElement.classList.remove('active');
+                        navLinkElement.classList.add('nav-link');
                     }
                 });
 
@@ -115,12 +112,8 @@ export function setupNavigation(userRole) {
                 }
 
                 // добавляем активные стили для выбранной ссылки
-                link.classList.remove(
-                    'text-indigo-200',
-                    'hover:bg-indigo-700',
-                    'hover:text-white'
-                );
-                link.classList.add('bg-indigo-900', 'text-white');
+                link.classList.remove('nav-link');
+                link.classList.add('active');
             });
         }
     });
@@ -131,9 +124,6 @@ export function setupSidebar() {
     let mainContent = document.getElementById("main-content");
 
     toggleSidebar.addEventListener("click", () => {
-        // переключаем классы для меню и основного контента
-        //sidebar.classList.toggle("w-14");
-        //mainContent.classList.toggle("ml-150");
         mainContent.classList.toggle("ml-200");
     });
 }
@@ -160,54 +150,41 @@ function initializePageFromUrl(navLinks) {
         Object.keys(navLinks).forEach((navLinkId) => {
             const navLinkElement = document.getElementById(navLinkId);
             if (navLinkElement) {
-                navLinkElement.classList.remove('bg-indigo-900', 'text-white');
-                navLinkElement.classList.add(
-                    'text-indigo-200',
-                    'hover:bg-indigo-700',
-                    'hover:text-white'
-                );
+                navLinkElement.classList.remove('active');
+                navLinkElement.classList.add('nav-link');
             }
         });
         
         if (linkElement) {
-            linkElement.classList.remove(
-                'text-indigo-200',
-                'hover:bg-indigo-700',
-                'hover:text-white'
-            );
-            linkElement.classList.add('bg-indigo-900', 'text-white');
+            linkElement.classList.remove('nav-link');
+            linkElement.classList.add('active');
         }
     } else {
         const defaultLinkId = Object.keys(navLinks)[0];
         const defaultLink = navLinks[defaultLinkId];
         
         document.getElementById(defaultLink.content)?.classList.remove('hidden');
-        document.getElementById(defaultLinkId)?.classList.add('bg-indigo-900', 'text-white');
+        document.getElementById(defaultLinkId)?.classList.add('active');
     }
 }
 
 function createSprintButton() {
-    // создаем элемент <a>
     let button = document.createElement('a');
     button.href = '/create/sprint';
     button.id = 'create-sprint-link';
-    button.className = 'flex items-center px-3 py-2 text-sm font-medium rounded-md text-indigo-200 hover:bg-indigo-700 hover:text-white';
+    button.className = 'create-sprint-btn transition-all';
 
-    // создаем элемент <img> для иконки
     let icon = document.createElement('img');
     icon.src = '/icons/circle-plus-solid.svg';
     icon.alt = 'Создать спринт';
-    icon.className = 'w-4 h-4 mr-3';
+    icon.className = 'nav-icon';
 
-    // создаем элемент <span> для текста
     let text = document.createElement('span');
     text.id = 'create-sprint-btn';
     text.textContent = 'Создать спринт';
 
-    // добавляем иконку и текст внутрь кнопки
     button.appendChild(icon);
     button.appendChild(text);
 
-    // возвращаем готовую кнопку
     return button;
 }

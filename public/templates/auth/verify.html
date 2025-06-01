@@ -3,11 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/styles.css" media="all" />
+    <link rel="stylesheet" href="/css/auth.css" media="all" />
     <title>Подтверждение регистрации</title>
     <link rel="icon" href="/icons/rocket-solid-icon.svg" type="image/x-icon" />
   </head>
-  <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+  <body class="min-h-screen flex items-center justify-center p-4 page-bg">
     <div class="w-full max-w-md">
       <div
         class="text-center mb-8 animate-fade-in"
@@ -21,36 +21,29 @@
             loading="lazy"
           />
         </div>
-        <h1 class="text-3xl font-bold text-gray-800 mb-2">Проверка данных</h1>
-        <p class="text-sm text-gray-600">
+        <h1 class="title-text">Проверка данных</h1>
+        <p class="description-text">
           Буквально секунду, проверяем корректность данных
         </p>
       </div>
 
-      <form
-        class="bg-white rounded-xl shadow-md p-8 animate-fade-in"
-        style="animation-delay: 0.3s"
-      >
+      <form class="form-card">
         <button
           onclick="window.location.href='/account/login'"
           type="submit"
-          class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg shadow-sm transition duration-200 flex items-center justify-center"
+          class="submit-button"
         >
           <span>На главную</span>
         </button>
       </form>
 
-      <div
-        class="mt-8 text-center text-xs text-gray-500 animate-fade-in"
-        style="animation-delay: 0.5s"
-      >
+      <div class="mt-8 text-center footer-text">
         <p>© 2025 Sprint Scheduler X. Все права не защищены.</p>
       </div>
     </div>
-    <div
-      id="notification-container"
-      class="fixed top-4 right-4 space-y-2 w-80"
-    ></div>
+
+    <div id="notification-container" class="notification-container"></div>
+
     <script src="/js/util/main.js"></script>
     <script src="../../config.js"></script>
     <script>
@@ -64,11 +57,9 @@
           let url = new URL(BACKEND_URL + "/api/auth/verify");
           url.searchParams.set("token", token);
 
-          let response = fetch(url, {
-            method: "GET",
+          fetch(url, { method: "GET" }).then(() => {
+            window.location.href = redirectLocation;
           });
-
-          window.location.href = redirectLocation;
         } catch (error) {
           console.error("Ошибка при подтверждении данных:", error);
           showNotification("Ошибка при подтверждении данных", "error");

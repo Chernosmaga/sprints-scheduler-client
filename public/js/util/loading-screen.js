@@ -4,7 +4,7 @@ export function showLoading(container) {
   
     let html = '';
     for (let i = 0; i < 30; i++) {
-      html += `<div class="animate-pulse skeleton h-20 mb-4 w-full"></div>`;
+      html += `<div class="animate-pulse skeleton h-[120px] mb-4 w-full"></div>`;
     }
     taskContainer.innerHTML = html;
 }
