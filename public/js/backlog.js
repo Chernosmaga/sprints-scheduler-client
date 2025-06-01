@@ -440,6 +440,10 @@ async function sendSearchRequest(text) {
 // синхронизация с SimpleOne
 async function synchronizeWithSimpleOne() {
     let token = localStorage.getItem('accessToken');
+    let updateStatusesButton = document.getElementById('update-backlog-btn');
+
+    updateStatusesButton.disabled = true;
+    updateStatusesButton.classList.add('opacity-50', 'cursor-not-allowed');
     showLoading('tasks-container-backlog');
 
     try {
@@ -479,6 +483,8 @@ async function synchronizeWithSimpleOne() {
         initializeTaskCounters();
         initializeSearch();
         showNotification('Успешная синхронизация', 'success');
+        updateStatusesButton.disabled = false;
+        updateStatusesButton.classList.remove('opacity-50', 'cursor-not-allowed');
     } catch (error) {
         hideLoadingScreen('backlog-loading-screen');
         console.error('Ошибка при синхронизации задач:', error);
@@ -492,7 +498,7 @@ function createTaskElement(task) {
 
     // контейнер задачи
     let taskItem = document.createElement('div');
-    taskItem.className = 'task-item task-container';
+    taskItem.className = 'task-item p-4 rounded-lg transition-all duration-300';
 
     if (document.body.classList.contains('dark-theme')) {
         taskItem.classList.add('dark-mode');

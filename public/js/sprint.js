@@ -193,6 +193,10 @@ export async function renderTasksForSprint() {
 export async function synchronizeTasksWithSimpleOne() {
     let token = localStorage.getItem('accessToken');
     let currentSprintId = localStorage.getItem('currentSprintId');
+    let updateStatusesButton = document.getElementById('update-sprint-statuses-btn');
+
+    updateStatusesButton.disabled = true;
+    updateStatusesButton.classList.add('opacity-50', 'cursor-not-allowed');
 
     showLoading('task-table-body');
     try {
@@ -232,6 +236,8 @@ export async function synchronizeTasksWithSimpleOne() {
         });
 
         showNotification('Статусы обновлены!', 'success');
+        updateStatusesButton.disabled = false;
+        updateStatusesButton.classList.remove('opacity-50', 'cursor-not-allowed');
     } catch (error) {
         console.error('Ошибка при обновлении статусов:', error);
         showNotification('Ошибка при обновлении статусов', 'error');

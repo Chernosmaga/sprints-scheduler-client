@@ -992,8 +992,7 @@ tbody td {
 }
 
 /* стили карточек задач */
-.task-item,
-.task-container {
+.task-item {
   --color-link: var(--color-link-task)
 
   padding: 1rem;
@@ -1005,8 +1004,7 @@ tbody td {
   transition: all 0.3s ease;
 }
 
-.task-item:hover,
-.task-container:hover {
+.task-item:hover {
   background-color: var(--color-bg-hover-task);
   border-color: var(--color-border-hover-task);
 }
