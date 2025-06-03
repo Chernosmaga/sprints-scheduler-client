@@ -3,6 +3,12 @@ import { showNotification } from '../util/notification.js';
 const BACKEND_URL = window.appConfig.BACKEND_URL;
 const redirectLocation = '/account/login';
 
+window.addEventListener("DOMContentLoaded", () => {
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-theme");
+    }
+});
+
 document.getElementById('save-new-password').addEventListener('click', function (e) {
     e.preventDefault();
     let password = document.getElementById('new-user-password');

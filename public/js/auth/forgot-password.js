@@ -2,6 +2,12 @@ import { showNotification } from '../util/notification.js';
 
 const BACKEND_URL = window.appConfig.BACKEND_URL;
 
+window.addEventListener("DOMContentLoaded", () => {
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-theme");
+    }
+});
+
 document.querySelector('form').addEventListener('reset-password-button', function (e) {
     e.preventDefault();
     let email = document.getElementById('user-email').value;

@@ -29,7 +29,7 @@ export function renderCreateUserButton() {
     buttonContainer.innerHTML = `
   <button
     type='button'
-    class='mt-9 px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 h-10 whitespace-nowrap'
+    class='primary-button focus:outline-none focus:ring-2 focus:ring-offset-2'
     id='create-user-button'
   >
     <i class='fas fa-plus mr-2'></i>
@@ -77,7 +77,7 @@ document.getElementById('create-user-form')?.addEventListener('submit', function
     } else if (!surname) {
         showNotification('Поле с фамилией пользователя обзательно для заполнения', 'error');
         return;
-    }else if (!email) {
+    } else if (!email) {
         showNotification('Поле с электронной почтой обзательно для заполнения', 'error');
         return;
     } else if (!birthday) {
@@ -241,7 +241,6 @@ function createUserElement(user) {
   let userContainer = document.createElement('div');
   userContainer.className = 'user-card';
 
-  // --- Левая часть: фото + имя/почта ---
   let userInfoContainer = document.createElement('div');
   userInfoContainer.className = 'user-info-container';
 
@@ -267,12 +266,10 @@ function createUserElement(user) {
   userInfoContainer.appendChild(photoElement);
   userInfoContainer.appendChild(infoContainer);
 
-  // --- Правая часть: роль ---
 
   let roleElement;
 
   if (userRole === 'ADMIN') {
-    // Выпадающий список для администратора
     roleElement = document.createElement('select');
     roleElement.className = 'user-role-select';
 
@@ -353,7 +350,6 @@ function createUserElement(user) {
     }
   }
 
-  // --- Сборка карточки ---
   userContainer.appendChild(userInfoContainer);
   userContainer.appendChild(roleElement);
 

@@ -3,6 +3,12 @@ import { showNotification } from '../util/notification.js';
 const BACKEND_URL = window.appConfig.BACKEND_URL;
 const redirectLocation = '/account/create/confirm';
 
+window.addEventListener("DOMContentLoaded", () => {
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-theme");
+    }
+});
+
 document.addEventListener('DOMContentLoaded', function () {
     // предзаполняем поля формы
     document.getElementById('create-account-user-name').value = localStorage.getItem('userName');

@@ -36,7 +36,7 @@ export function createButton(buttonData) {
     // создаем элемент кнопки
     const button = document.createElement('button');
     button.id = buttonData.id;
-    button.className = 'primary-button flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2';
+    button.className = 'primary-button flex items-center focus:outline-none focus:ring-2 focus:ring-offset-2';
 
     // добавляем иконку
     const img = document.createElement('img');

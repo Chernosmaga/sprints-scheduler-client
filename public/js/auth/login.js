@@ -3,6 +3,12 @@ import { showNotification } from '../util/notification.js';
 const BACKEND_URL = window.appConfig.BACKEND_URL;
 const mainPage = '/current/sprint';
 
+window.addEventListener("DOMContentLoaded", () => {
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-theme");
+    }
+});
+
 // получение данных из формы для входа
 document.getElementById('login-sing-in').addEventListener('click', function (e) {
     e.preventDefault();
