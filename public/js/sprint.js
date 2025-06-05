@@ -139,56 +139,6 @@ function createCharts(sprint) {
     chartsContainer.innerHTML = chartsHTML;
 }
 
-/*
-// функция для отрисовки всех задач
-export async function renderTasksForSprint() {
-    let token = localStorage.getItem('accessToken');
-    let currentSprintId = localStorage.getItem('currentSprintId');
-
-    try {
-        let url = new URL(BACKEND_URL + '/api/v1/sprints/' + currentSprintId);
-        let response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`
-            }
-        });
-
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
-
-        if (!response.ok) {
-            showNotification('Ошибка при получении спринта', 'error');
-            return;
-        }
-
-        let data = await response.json();
-        renderSprintData(data);
-
-        let tasks = data.tasks; // извлекаем массив задач
-        let taskContainer = document.getElementById('task-table-body');
-
-        // очищаем контейнер перед добавлением новых задач
-        taskContainer.innerHTML = '';
-
-        // создаем элементы для каждой задачи
-        tasks.forEach((task) => {
-            let taskElement = renderTasks(task);
-            taskContainer.appendChild(taskElement);
-        });
-
-        createCharts(data);
-    } catch (error) {
-        console.error('Ошибка при получении спринта:', error);
-        showNotification('Ошибка при получении спринта', 'error');
-    }
-}
-*/
-
 // функция для синхронизации с SimpleOne
 export async function synchronizeTasksWithSimpleOne() {
     let token = localStorage.getItem('accessToken');
@@ -288,7 +238,7 @@ function renderTasks(task) {
 
   if (task.isProject === true) {
     let projectIcon = document.createElement('img');
-    projectIcon.src = '/icons/rocket-solid-icon.svg';
+    projectIcon.src = '/icons/star-solid.svg';
     projectIcon.alt = 'Проект';
     projectIcon.className = 'w-4 h-4 mr-2';
     leftHeader.appendChild(projectIcon);
@@ -399,7 +349,7 @@ function createDetail(iconSrc, alt, text) {
 
 // Функция для применения темы к уже созданным элементам
 export function applyThemeToElements() {
-  const taskItems = document.querySelectorAll('.task-item');
+  let taskItems = document.querySelectorAll('.task-item');
   taskItems.forEach(item => {
     if (document.body.classList.contains('dark-theme')) {
       item.classList.add('dark-mode');
@@ -556,14 +506,14 @@ function openEditModal(taskItem) {
     });
     let priority = priorityDiv ? priorityDiv.querySelector('span').textContent.trim() : null;
 
-    const taskLink = `<a href="${taskUrl}" target="_blank" rel="noopener noreferrer" class="task-link">${taskNumber}</a>`;
+    let taskLink = `<a href="${taskUrl}" target="_blank" rel="noopener noreferrer" class="task-link">${taskNumber}</a>`;
 
-    const editModeNumber = document.getElementById('edit-mode-number');
+    let editModeNumber = document.getElementById('edit-mode-number');
     if (editModeNumber) {
         editModeNumber.innerHTML = taskLink;
     }
 
-    const editModeSubject = document.getElementById('edit-mode-subject');
+    let editModeSubject = document.getElementById('edit-mode-subject');
     if (editModeSubject) {
         editModeSubject.textContent = subject;
     }

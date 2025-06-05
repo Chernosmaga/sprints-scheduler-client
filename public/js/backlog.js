@@ -91,7 +91,7 @@ function renderCheckboxSelectAll() {
     let checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.id = 'select-all-checkbox';
-    checkbox.className = 'form-checkbox h-4 w-4';
+    checkbox.className = 'task-checkbox h-4 w-4';
 
     let label = document.createElement('span');
     label.textContent = 'Выбрать все';
@@ -339,41 +339,6 @@ async function addTasksToSprint(tasks) {
     }
 }
 
-/*
-// функция для отрисовки всех задач (неактуальна, так как запрос на отрисовку выполняется в методе fetchFilteredTasks)
-export async function renderTasks() {
-    try {
-        let url = BACKEND_URL + '/api/v1/tasks?page=' + currentPage + '&size=' + pageSize;
-        let response = await fetch(url);
-        if (!response.ok) {
-            showNotification('Ошибка при получении задач', 'error');
-        }
-
-        let data = await response.json();
-
-        let taskContainer = document.getElementById('tasks-container-backlog');
-        let totalPages = data.totalPages; // общее количество страниц
-        let tasks = data.tasks;
-
-        // очищаем контейнер перед добавлением новых задач
-        taskContainer.innerHTML = '';
-
-        // создаем элементы для каждой задачи
-        tasks.forEach((task) => {
-            let taskElement = createTaskElement(task);
-            taskContainer.appendChild(taskElement);
-        });
-
-        updatePagination(currentPage, totalPages);
-        initializeTaskCounters();
-        initializeSearch();
-    } catch (error) {
-        console.error('Ошибка при получении задач:', error);
-        showNotification('Ошибка при получении задач', 'error');
-    }
-}
-*/
-
 // поиск задач (вызывается при загрузке страницы)
 function initializeSearch() {
     let searchInput = document.getElementById('search-input');
@@ -556,7 +521,7 @@ function createTaskElement(task) {
     detailsWrapper.appendChild(taskNumber);
 
     // Добавляем иконки и текстовые элементы с новыми классами
-    const addDetail = (iconSrc, altText, text, additionalClass = '') => {
+    let addDetail = (iconSrc, altText, text, additionalClass = '') => {
         let icon = document.createElement('img');
         icon.src = iconSrc;
         icon.alt = altText;

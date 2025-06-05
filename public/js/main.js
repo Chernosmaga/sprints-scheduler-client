@@ -31,7 +31,7 @@ function updateTheme() {
         }
     }
 
-    // Восстановление состояния темы при загрузке
+    // восстановление состояния темы при загрузке
     window.addEventListener("DOMContentLoaded", () => {
         if (localStorage.getItem("theme") === "dark") {
             document.body.classList.add("dark-theme");

@@ -3,45 +3,57 @@ import { showNotification } from '../util/notification.js';
 const BACKEND_URL = window.appConfig.BACKEND_URL;
 const mainPage = '/current/sprint';
 
-window.addEventListener("DOMContentLoaded", () => {
-    if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark-theme");
+document.getElementById('login-toggle-password').addEventListener('click', function() {
+    let eyeIcon = document.getElementById('eye-icon');
+    let passwordInput = document.getElementById('login-user-password');
+
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.src = '/icons/eye-slash-solid.svg';
+        eyeIcon.alt = 'Скрыть пароль';
+    } else {
+        passwordInput.type = 'password';
+        eyeIcon.src = '/icons/eye-solid.svg';
+        eyeIcon.alt = 'Показать пароль';
     }
 });
 
 // получение данных из формы для входа
-document.getElementById('login-sing-in').addEventListener('click', function (e) {
+document.getElementById('login-sing-in').addEventListener('click', function(e) {
     e.preventDefault();
-    let isError = false;
     let email = document.getElementById('login-user-email');
     let password = document.getElementById('login-user-password');
-    let emailErrorElement = document.getElementById('login-email-error');
-    let passwordErrorElement = document.getElementById('login-password-error');
+    let emailError = document.getElementById('login-email-error');
+    let passwordError = document.getElementById('login-password-error');
+    
+    let isValid = true;
 
-    if (!email.value.trim()) {
+    let emailValue = email.value.trim();
+    if (!emailValue) {
         email.classList.add('error');
-        emailErrorElement.classList.remove('hidden');
-        isError = true;
+        emailError.classList.remove('hidden');
+        isValid = false;
     } else {
         email.classList.remove('error');
-        emailErrorElement.classList.add('hidden');
+        emailError.classList.add('hidden');
     }
 
-    if (!password.value.trim()) {
+    let passwordValue = password.value.trim();
+    if (!passwordValue) {
         password.classList.add('error');
-        passwordErrorElement.classList.remove('hidden');
-        isError = true;
+        passwordError.classList.remove('hidden');
+        isValid = false;
     } else {
         password.classList.remove('error');
-        passwordErrorElement.classList.add('hidden');
+        passwordError.classList.add('hidden');
     }
 
-    if (isError === true) {
+    if (!isValid) {
         showNotification('Поле обязательно для заполнения', 'error');
         return;
     }
 
-    loginUser(email.value, password.value);
+    loginUser(emailValue, passwordValue);
 });
 
 async function loginUser(userEmail, userPassword) {

@@ -3,9 +3,18 @@ import { showNotification } from '../util/notification.js';
 const BACKEND_URL = window.appConfig.BACKEND_URL;
 const redirectLocation = '/account/login';
 
-window.addEventListener("DOMContentLoaded", () => {
-    if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark-theme");
+document.getElementById('toggle-set-password').addEventListener('click', function() {
+    let eyeIcon = document.getElementById('eye-icon');
+    let passwordInput = document.getElementById('set-user-password');
+
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        eyeIcon.src = '/icons/eye-slash-solid.svg';
+        eyeIcon.alt = 'Скрыть пароль';
+    } else {
+        passwordInput.type = 'password';
+        eyeIcon.src = '/icons/eye-solid.svg';
+        eyeIcon.alt = 'Показать пароль';
     }
 });
 
@@ -16,26 +25,16 @@ document.getElementById('set-password').addEventListener('click', function (e) {
     let urlParams = new URLSearchParams(window.location.search);
     let token = urlParams.get('token');
 
-    let togglePasswordButton = document.getElementById('toggle-set-password');
-    let eyeIcon = document.getElementById('eye-icon');
-
-    // обработчик клика на кнопку
-    togglePasswordButton.addEventListener('click', function () {
-        if (passwordInput.type === 'password') {
-            // показать пароль
-            passwordInput.type = 'text';
-            eyeIcon.src = '/icons/eye-slash-solid.svg';
-        } else {
-            // скрыть пароль
-            passwordInput.type = 'password';
-            eyeIcon.src = '/icons/eye-solid.svg';
-        }
-    });
-
     if (!password.value.trim()) {
         password.classList.add('error');
         passwordErrorElement.classList.remove('hidden');
         showNotification('Поле обязательно для заполнения', 'error');
+        return;
+    } else if (password.value.length < 8) {
+        password.classList.add('error'); 
+        passwordErrorElement.classList.remove('hidden');
+        showNotification('Пароль должен содержать больше 8 символов', 'error');
+        return;
     } else {
         password.classList.remove('error');
         passwordErrorElement.classList.add('hidden');

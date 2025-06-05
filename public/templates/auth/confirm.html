@@ -3,15 +3,120 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/auth.css" media="all" />
     <title>Подтверждение регистрации</title>
     <link rel="icon" href="/icons/rocket-solid-icon.svg" type="image/x-icon" />
+    <style>
+      :root {
+        --color-bg-page: #f3f4f6;
+        --color-bg-form: #ffffff;
+        --color-title: #111827;
+        --color-description: #4b5563;
+        --color-footer: #9ca3af;
+
+        --color-button: #4f46e5;
+        --color-button-hover: #3730a3;
+        --color-text-button: #ffffff;
+      }
+
+      .dark-theme {
+        --color-bg-page: #111827;
+        --color-bg-form: #1f2937;
+        --color-title: #f9fafb;
+        --color-description: #d1d5db;
+        --color-footer: #9ca3af;
+
+        --color-button: #6366f1;
+        --color-button-hover: #4f46e5;
+        --color-text-button: #ffffff;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        background-color: var(--color-bg-page);
+        font-family: sans-serif;
+      }
+
+      .title-text {
+        font-size: 1.875rem;
+        font-weight: 700;
+        color: var(--color-title);
+        margin-bottom: 0.5rem;
+      }
+
+      .description-text {
+        font-size: 1rem;
+        color: var(--color-description);
+        margin-bottom: 2rem;
+      }
+
+      .form-card {
+        background-color: var(--color-bg-form);
+        border-radius: 1rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+        max-width: 28rem;
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .submit-button {
+        width: 100%;
+        background-color: var(--color-button);
+        color: var(--color-text-button);
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.2s ease;
+      }
+
+      .submit-button:hover {
+        background-color: var(--color-button-hover);
+      }
+
+      .footer-text {
+        font-size: 0.875rem;
+        color: var(--color-footer);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .animate-fade-in {
+        animation: fadeIn 0.6s ease-out forwards;
+      }
+
+      .notification-container {
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        z-index: 50;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 20rem;
+      }
+    </style>
   </head>
   <body class="min-h-screen flex items-center justify-center p-4 page-bg">
     <div class="w-full max-w-md">
       <div
         class="text-center mb-8 animate-fade-in"
-        style="animation-delay: 0.1s"
+        style="animation-delay: 0.6s"
       >
         <div class="mx-auto w-20 h-20 flex items-center justify-center mb-4">
           <img
@@ -19,6 +124,7 @@
             alt="Иконка"
             class="w-17 h-17"
             loading="lazy"
+            fetchpriority="low"
           />
         </div>
         <h1 class="title-text">Последний этап</h1>
@@ -45,6 +151,18 @@
 
     <div id="notification-container" class="notification-container"></div>
 
+    <link
+      rel="stylesheet"
+      href="/css/auth.css"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript><link rel="stylesheet" href="/css/auth.css" /></noscript>
+    <script>
+      if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark-theme");
+      }
+    </script>
     <script src="/js/util/main.js"></script>
     <script src="../../config.js"></script>
   </body>

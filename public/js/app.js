@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
         teamSettings: document.getElementById("team-settings-content"),
     };
 
-    let token = localStorage.getItem('accessToken');
+    const token = localStorage.getItem('accessToken');
     if (!token) {
         window.location.href = '/account/login';
     }
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
         Object.values(pages).forEach((page) => page.classList.add("hidden"));
 
         // показываем выбранную страницу
-        const selectedPage = pages[pageId];
+        let selectedPage = pages[pageId];
         if (selectedPage) {
             selectedPage.classList.remove("hidden");
             // загружаем данные для страницы (если они еще не загружены)
@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // функция для инициализации страницы на основе URL
     function initializePageFromUrl(pages) {
-        const pathToPageId = {
+        let pathToPageId = {
             "/current/sprint": "currentSprint",
             "/backlog": "backlog",
             "/history": "history",
@@ -157,8 +157,8 @@ document.addEventListener("DOMContentLoaded", () => {
             "/team/settings": "teamSettings"
         };
 
-        const currentPath = window.location.pathname;
-        const pageId = pathToPageId[currentPath];
+        let currentPath = window.location.pathname;
+        let pageId = pathToPageId[currentPath];
 
         if (pageId) {
             showPage(pageId);

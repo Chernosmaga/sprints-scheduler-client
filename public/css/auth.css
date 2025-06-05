@@ -24,7 +24,7 @@
 
   /* уведомления */
   --color-notification-bg: #f0f0f0;
-  --color-notification-text: #e5e7eb;
+  --color-notification-text: #ffffff;
 }
 
 .dark-theme {
@@ -52,7 +52,7 @@
 
   /* уведомления */
   --color-notification-bg: #1f2937;
-  --color-notification-text: #f9fafb;
+  --color-notification-text: #ffffff;
 }
 
 .description-text {
@@ -117,11 +117,6 @@
   animation: fadeIn 0.6s ease-out forwards;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 .page-bg {
   background-color: var(--color-bg-page);
 }
@@ -175,7 +170,7 @@
   padding-bottom: 0.5rem;
   border-radius: 0.5rem;
   border: 1px solid var(--color-input-border);
-  background-color: #ffffff;
+  background-color: var(--color-input-bg);
   transition: all 0.2s ease;
 }
 
@@ -188,10 +183,20 @@
   box-shadow: 0 0 0 3px var(--color-input-focus-ring);
 }
 
+.input-field.error {
+  border-color: var(--color-bg-error);
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
 .input-error {
-  color: var(--color-error);
-  font-size: 0.75rem;
+  color: var(--color-bg-error);
+  font-size: 0.875rem;
   margin-top: 0.25rem;
+  display: none;
+}
+
+.input-error.visible {
+  display: block;
 }
 
 .checkbox-input {

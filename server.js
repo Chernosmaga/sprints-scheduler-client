@@ -10,8 +10,15 @@ const PORT = process.env.PORT;
 app.use(express.json());
 app.use(cors());
 
-// раздача статических файлов из папки 'public'
-app.use(express.static(path.join(__dirname, 'public')));
+// раздача статических файлов из папки 'public' и кэширование данных
+app.use(express.static(path.join(__dirname, 'public'), {
+  maxAge: '1y',
+  setHeaders: (res, path) => {
+    if (path.match(/\.(js|css|png|svg|jpg|jpeg|gif|ico|woff2)$/)) {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    }
+  }
+}));
 
 app.get('/config.js', (req, res) => {
     res.type('application/javascript');

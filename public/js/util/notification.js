@@ -13,17 +13,17 @@ export function showNotification(message, type = 'success') {
     }
 
     // создаем контейнер уведомления
-    var notification = document.createElement('div');
+    let notification = document.createElement('div');
     notification.className = `notification ${type}`;
 
     // создаем элемент изображения
-    var icon = document.createElement('img');
+    let icon = document.createElement('img');
     icon.src = iconPath; // устанавливаем путь к изображению
     icon.alt = 'Уведомление'; // альтернативный текст
     icon.className = 'notification-icon'; // добавляем класс для стилизации
 
     // создаем элемент для текста
-    var text = document.createElement('span');
+    let text = document.createElement('span');
     text.textContent = message;
 
     // добавляем иконку и текст в контейнер уведомления

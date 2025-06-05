@@ -41,7 +41,7 @@
 
       <div class="grid grid-cols-2 gap-x-8 gap-y-4">
         <div class="mb-4">
-          <label for="create-user-name" class="form-label">Имя</label>
+          <label for="create-user-name" class="input-label">Имя</label>
           <div class="relative">
             <div class="input-icon">
               <img
@@ -58,11 +58,12 @@
               required
               placeholder="Иван"
             />
+            <p id="create-user-name-error" class="input-error"></p>
           </div>
         </div>
 
         <div class="mb-4">
-          <label for="create-user-surname" class="form-label">Фамилия</label>
+          <label for="create-user-surname" class="input-label">Фамилия</label>
           <div class="relative">
             <div class="input-icon">
               <img
@@ -79,11 +80,12 @@
               required
               placeholder="Иванов"
             />
+            <p id="create-user-surname-error" class="input-error"></p>
           </div>
         </div>
 
         <div class="mb-4">
-          <label for="create-user-email" class="form-label"
+          <label for="create-user-email" class="input-label"
             >Электронная почта</label
           >
           <div class="relative">
@@ -102,11 +104,12 @@
               placeholder="email@fmlogistic.com"
               required
             />
+            <p id="create-user-email-error" class="input-error"></p>
           </div>
         </div>
 
         <div class="mb-4">
-          <label for="create-user-role" class="form-label"
+          <label for="create-user-role" class="input-label"
             >Роль пользователя</label
           >
           <div class="relative">
@@ -117,6 +120,7 @@
                 class="icon"
                 loading="lazy"
               />
+              <p id="create-user-role-error" class="input-error"></p>
             </div>
             <select
               id="create-user-role"
@@ -133,7 +137,7 @@
         </div>
 
         <div class="mb-4">
-          <label for="create-user-birthday" class="form-label"
+          <label for="create-user-birthday" class="input-label"
             >Дата рождения</label
           >
           <div class="relative">
@@ -144,6 +148,7 @@
                 class="icon"
                 loading="lazy"
               />
+              <p id="create-user-birthday-error" class="input-error"></p>
             </div>
             <input
               type="date"
@@ -155,7 +160,7 @@
         </div>
 
         <div class="mb-4">
-          <label for="create-user-external-id" class="form-label"
+          <label for="create-user-external-id" class="input-label"
             >Идентификатор группы</label
           >
           <div class="relative">
@@ -173,11 +178,12 @@
               class="form-input"
               placeholder="Идентификатор группы SimpleOne"
             />
+            <p id="create-user-group-id-error" class="input-error"></p>
           </div>
         </div>
 
         <div class="mb-4">
-          <label for="create-user-group-name" class="form-label"
+          <label for="create-user-group-name" class="input-label"
             >Название группы</label
           >
           <div class="relative">
@@ -195,6 +201,7 @@
               class="form-input"
               placeholder="RUCH - IPI Developers"
             />
+            <p id="create-user-group-name-error" class="input-error"></p>
           </div>
         </div>
       </div>
@@ -203,7 +210,13 @@
         <button type="button" id="cancel-modal-btn" class="secondary-button">
           Отменить
         </button>
-        <button type="submit" class="primary-button">Сохранить</button>
+        <button
+          id="create-user-submit-button"
+          type="submit"
+          class="primary-button"
+        >
+          Сохранить
+        </button>
       </div>
     </form>
   </div>

@@ -83,7 +83,7 @@ export function setupNavigation(userRole) {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
 
-                const selectedLink = navLinks[linkId];
+                let selectedLink = navLinks[linkId];
 
                 // обновляем URL
                 window.history.pushState({}, '', selectedLink.path);
@@ -129,26 +129,26 @@ export function setupSidebar() {
 }
 
 function initializePageFromUrl(navLinks) {
-    const currentPath = window.location.pathname;
+    let currentPath = window.location.pathname;
     
-    const activeLink = Object.entries(navLinks).find(([_, link]) => 
+    let activeLink = Object.entries(navLinks).find(([_, link]) => 
         link.path === currentPath
     );
     
     if (activeLink) {
-        const [linkId, linkData] = activeLink;
-        const linkElement = document.getElementById(linkId);
+        let [linkId, linkData] = activeLink;
+        let linkElement = document.getElementById(linkId);
         
         Object.values(navLinks).forEach((navItem) => {
-            const contentElement = document.getElementById(navItem.content);
+            let contentElement = document.getElementById(navItem.content);
             if (contentElement) contentElement.classList.add('hidden');
         });
         
-        const selectedContent = document.getElementById(linkData.content);
+        let selectedContent = document.getElementById(linkData.content);
         if (selectedContent) selectedContent.classList.remove('hidden');
         
         Object.keys(navLinks).forEach((navLinkId) => {
-            const navLinkElement = document.getElementById(navLinkId);
+            let navLinkElement = document.getElementById(navLinkId);
             if (navLinkElement) {
                 navLinkElement.classList.remove('active');
                 navLinkElement.classList.add('nav-link');
@@ -160,8 +160,8 @@ function initializePageFromUrl(navLinks) {
             linkElement.classList.add('active');
         }
     } else {
-        const defaultLinkId = Object.keys(navLinks)[0];
-        const defaultLink = navLinks[defaultLinkId];
+        let defaultLinkId = Object.keys(navLinks)[0];
+        let defaultLink = navLinks[defaultLinkId];
         
         document.getElementById(defaultLink.content)?.classList.remove('hidden');
         document.getElementById(defaultLinkId)?.classList.add('active');

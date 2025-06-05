@@ -3,12 +3,6 @@ import { showNotification } from '../util/notification.js';
 const BACKEND_URL = window.appConfig.BACKEND_URL;
 const redirectLocation = '/account/create/confirm';
 
-window.addEventListener("DOMContentLoaded", () => {
-    if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark-theme");
-    }
-});
-
 document.addEventListener('DOMContentLoaded', function () {
     // предзаполняем поля формы
     document.getElementById('create-account-user-name').value = localStorage.getItem('userName');
@@ -48,7 +42,6 @@ document.getElementById('create-account-sign-up').addEventListener('click', func
     let password = document.getElementById('create-account-user-password');
 
     checkInputFields(name, surname, birthday, email, password);
-    createUserAccount(name.value, surname.value, birthday.value, email.value, password.value);
 });
 
 async function createUserAccount(userName, userSurname, userBirthday, userEmail, userPassword) {
@@ -100,7 +93,7 @@ function checkInputFields(name, surname, birthday, email, password) {
     }
 
     if (!surname.value.trim()) {
-        surnameErrorElement.classList.add('error');
+        surname.classList.add('error');
         surnameErrorElement.classList.remove('hidden');
         isError = true;
     } else {
@@ -121,6 +114,11 @@ function checkInputFields(name, surname, birthday, email, password) {
         email.classList.add('error');
         emailErrorElement.classList.remove('hidden');
         isError = true;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        email.classList.add('error');
+        emailErrorElement.classList.remove('hidden');
+        showNotification('Введите корректный email', 'error');
+        isError = true;
     } else {
         email.classList.remove('error');
         emailErrorElement.classList.add('hidden');
@@ -130,12 +128,20 @@ function checkInputFields(name, surname, birthday, email, password) {
         password.classList.add('error');
         passwordErrorElement.classList.remove('hidden');
         isError = true;
+    } else if (passwordValue.length < 8) {
+        password.classList.add('error'); 
+        passwordErrorElement.classList.remove('hidden');
+        showNotification('Пароль должен содержать больше 8 символов', 'error');
+        isError = true;
     } else {
         password.classList.remove('error');
         passwordErrorElement.classList.add('hidden');
     }
-
+        
     if (isError === true) {
         showNotification('Поле обязательно для заполнения', 'error');
+        return;
     }
+
+    createUserAccount(name.value, surname.value, birthday.value, email.value, password.value);
 }

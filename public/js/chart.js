@@ -7,7 +7,7 @@ let assigneeChart;
 let storyPointsChart;
 let clientsChart;
 let authorsChart;
-let colors = [
+const colors = [
   "#6C7A89", "#A8D8B9", "#F4E3B5", "#D0E6A5", "#B3CDE0", "#F0CFC2", "#C8BFE7",
   "#9DBEBB", "#E8D5E6", "#FFDAB9", "#BFD8B0", "#F2F2F2", "#C4D7B2", "#D3B8C9",
   "#AEC6CF", "#7F8C8D", "#BDC3C7", "#A29BFE", "#FFC67D", "#81ECEC", "#FF9F80",

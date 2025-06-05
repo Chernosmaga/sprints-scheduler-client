@@ -61,53 +61,111 @@ export function closeCreateUserModal() {
 }
 
 // Обработка отправки формы
-document.getElementById('create-user-form')?.addEventListener('submit', function (e) {
+document.getElementById('create-user-submit-button').addEventListener('click', function(e) {
     e.preventDefault();
-    let name = document.getElementById('create-user-name').value.trim();
-    let surname = document.getElementById('create-user-surname').value.trim();
-    let email = document.getElementById('create-user-email').value.trim();
-    let birthday = document.getElementById('create-user-birthday').value;
-    let externalId = document.getElementById('create-user-external-id').value;
-    let groupName = document.getElementById('create-user-group-name').value;
-    let role = document.getElementById('create-user-role').value;
+    let name = document.getElementById('create-user-name');
+    let surname = document.getElementById('create-user-surname');
+    let email = document.getElementById('create-user-email');
+    let birthday = document.getElementById('create-user-birthday');
+    let externalId = document.getElementById('create-user-external-id');
+    let groupName = document.getElementById('create-user-group-name');
+    let role = document.getElementById('create-user-role');
 
-    if (!name) {
-        showNotification('Поле с именем пользователя обзательно для заполнения', 'error');
-        return;
-    } else if (!surname) {
-        showNotification('Поле с фамилией пользователя обзательно для заполнения', 'error');
-        return;
-    } else if (!email) {
-        showNotification('Поле с электронной почтой обзательно для заполнения', 'error');
-        return;
-    } else if (!birthday) {
-        showNotification('Поле с датой рождения обзательно для заполнения', 'error');
-        return;
-    } else if (!role) {
-        showNotification('Поле с ролью пользователя обзательно для заполнения', 'error');
+    console.log(name);
+
+    let nameErrorElement = document.getElementById('create-user-name-error');
+    let surnameErrorElement = document.getElementById('create-user-surname-error');
+    let emailErrorElement = document.getElementById('create-user-email-error');
+    let birthdayErrorElement = document.getElementById('create-user-birthday-error');
+    let roleErrorElement = document.getElementById('create-user-role-error');
+    let groupIdErrorElement = document.getElementById('create-user-group-id-error');
+    let groupNameErrorElement = document.getElementById('create-user-group-name-error');
+
+    [nameErrorElement, surnameErrorElement, emailErrorElement, birthdayErrorElement, 
+     roleErrorElement, groupIdErrorElement, groupNameErrorElement].forEach(el => {
+        el.classList.add('hidden');
+    });
+    
+    [name, surname, email, birthday, externalId, groupName, role].forEach(el => {
+        el.classList.remove('error');
+    });
+
+    let isValid = true;
+
+    if (!name.value.trim()) {
+        name.classList.add('error');
+        nameErrorElement.classList.remove('hidden');
+        isValid = false;
+    }
+    
+    if (!surname.value.trim()) {
+        surname.classList.add('error');
+        surnameErrorElement.classList.remove('hidden');
+        isValid = false;
+    }
+
+    let emailValue = email.value.trim();
+    if (!emailValue) {
+        email.classList.add('error');
+        emailErrorElement.classList.remove('hidden');
+        isValid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
+        email.classList.add('error');
+        emailErrorElement.classList.remove('hidden');
+        showNotification('Введите корректный email', 'error');
+        isValid = false;
+    }
+
+    if (!birthday.value) {
+        birthday.classList.add('error');
+        birthdayErrorElement.classList.remove('hidden');
+        isValid = false;
+    }
+
+    if (!role.value) {
+        role.classList.add('error');
+        roleErrorElement.classList.remove('hidden');
+        isValid = false;
+    }
+
+    if (!externalId.value.trim()) {
+        externalId.classList.add('error');
+        groupIdErrorElement.classList.remove('hidden');
+        isValid = false;
+    }
+
+    if (!groupName.value.trim()) {
+        groupName.classList.add('error');
+        groupNameErrorElement.classList.remove('hidden');
+        isValid = false;
+    }
+
+    if (!isValid) {
+        showNotification('Пожалуйста, заполните все обязательные поля', 'error');
         return;
     }
 
-    switch(role) {
+    let roleValue;
+    switch(role.value) {
         case 'Пользователь':
-            role = 'USER';
+            roleValue = 'USER';
             break;
         case 'Администратор':
-            role = 'ADMIN';
+            roleValue = 'ADMIN';
             break;
         default:
-            role = 'GUEST';
+            roleValue = 'GUEST';
             break;
     }
 
     let userJSON = {
-        name: name,
-        surname: surname,
-        email: email,
-        role: role,
-        birthday: birthday,
-        externalGroupId: externalId,
-        externalGroupName: groupName
+        name: name.value.trim(),
+        surname: surname.value.trim(),
+        email: email.value.trim(),
+        role: roleValue,
+        birthday: birthday.value,
+        externalGroupId: externalId.value.trim(),
+        externalGroupName: groupName.value.trim()
     };
     
     let token = localStorage.getItem('accessToken');
@@ -273,7 +331,7 @@ function createUserElement(user) {
     roleElement = document.createElement('select');
     roleElement.className = 'user-role-select';
 
-    const roles = [
+    let roles = [
       { value: 'ADMIN', label: 'Администратор' },
       { value: 'USER', label: 'Пользователь' },
       { value: 'GUEST', label: 'Гость' },
@@ -288,18 +346,18 @@ function createUserElement(user) {
     });
 
     roleElement.addEventListener('change', async event => {
-      const newRole = event.target.value;
+      let newRole = event.target.value;
 
-      const userJSON = {
+      let userJSON = {
         id: user.id,
         role: newRole
       };
 
-      const token = localStorage.getItem('accessToken');
+      let token = localStorage.getItem('accessToken');
 
       try {
-        const url = new URL(BACKEND_URL + '/api/v1/users/update/role');
-        const response = await fetch(url, {
+        let url = new URL(BACKEND_URL + '/api/v1/users/update/role');
+        let response = await fetch(url, {
           method: 'PUT',
           headers: {
             'Authorization': `Bearer ${token}`,

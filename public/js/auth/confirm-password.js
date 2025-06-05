@@ -3,12 +3,6 @@ import { showNotification } from '../util/notification.js';
 const BACKEND_URL = window.appConfig.BACKEND_URL;
 const redirectLocation = '/account/login';
 
-window.addEventListener("DOMContentLoaded", () => {
-    if (localStorage.getItem("theme") === "dark") {
-        document.body.classList.add("dark-theme");
-    }
-});
-
 document.getElementById('save-new-password').addEventListener('click', function (e) {
     e.preventDefault();
     let password = document.getElementById('new-user-password');
@@ -36,6 +30,12 @@ document.getElementById('save-new-password').addEventListener('click', function 
         password.classList.add('error');
         passwordErrorElement.classList.remove('hidden');
         showNotification('Поле обязательно для заполнения', 'error');
+        return;
+    } else if (passwordValue.length < 8) {
+        password.classList.add('error');
+        passwordErrorElement.classList.remove('hidden');
+        showNotification('Пароль должен содержать больше 8 символов', 'error');
+        return;
     } else {
         password.classList.remove('error');
         passwordErrorElement.classList.add('hidden');
