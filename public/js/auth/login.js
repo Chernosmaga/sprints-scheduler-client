@@ -33,6 +33,11 @@ document.getElementById('login-sing-in').addEventListener('click', function(e) {
         email.classList.add('error');
         emailError.classList.remove('hidden');
         isValid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)) {
+        email.classList.add('error');
+        emailErrorElement.classList.remove('hidden');
+        showNotification('Введите корректный email', 'error');
+        return;
     } else {
         email.classList.remove('error');
         emailError.classList.add('hidden');

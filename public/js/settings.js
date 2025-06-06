@@ -76,6 +76,7 @@ async function uploadPhotoToServer(file) {
     }
 
     showNotification("Все супер, фото обновлено", "success");
+    fetchUserData();
 }
 
 export async function fetchUserData() {
