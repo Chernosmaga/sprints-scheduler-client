@@ -105,25 +105,25 @@ function createSprintDto() {
     let sprintStartDate = document.getElementById('start-date');
     let sprintEndDate = document.getElementById('end-date');
     let selectedTasks = [];
+    let today = new Date();
+    let formattedToday = formatDate(today);
+    let endDate = new Date();
+    endDate.setDate(endDate.getDate() + 14); // добавляем 14 дней
+    let formattedEndDate = formatDate(endDate);
 
     // установка значений по умолчанию, если они не заполнены
     if (!sprintStartDate.value) {
-        let today = new Date();
-        let formattedToday = formatDate(today);
         sprintStartDate.value = formattedToday; // текущая дата
     }
 
     if (!sprintEndDate.value) {
-        let endDate = new Date();
-        endDate.setDate(endDate.getDate() + 14); // добавляем 14 дней
-        let formattedEndDate = formatDate(endDate);
         sprintEndDate.value = formattedEndDate;
     }
 
     // проверка названия спринта
     let sprintName = sprintNameInput.value.trim();
     if (!sprintName) {
-        sprintName = 'Спринт'; // название по умолчанию
+        sprintName = 'Спринт ' + formattedToday + ' ' + formattedEndDate; // название по умолчанию
         sprintNameInput.value = sprintName; // обновляем значение поля
     }
 
