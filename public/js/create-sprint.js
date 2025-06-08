@@ -8,7 +8,9 @@ const SIMPLE_ONE_URL = window.appConfig.SIMPLE_ONE_URL;
 export async function sendSprintToCreate() {
     let sprintDto = createSprintDto();
     let token = localStorage.getItem('accessToken');
-
+    document.getElementById("skeleton-loader").classList.remove("hidden");
+    document.getElementById("create-sprint-content").classList.add("hidden");
+    
     try {
         let response = await fetch(BACKEND_URL + '/api/v1/sprints', {
             method: 'POST',
@@ -28,12 +30,16 @@ export async function sendSprintToCreate() {
 
         if (response.ok) {
             showNotification('Спринт успешно создан', 'success');
+            document.getElementById("skeleton-loader").classList.add("hidden");
+            document.getElementById("create-sprint-content").classList.remove("hidden");
         } else {
             showNotification('Ошибка при создании спринта', 'error');
         }
     } catch (error) {
         console.error('Ошибка при создании спринта:', error);
         showNotification('Ошибка при создании спринта', 'error');
+        document.getElementById("skeleton-loader").classList.add("hidden");
+        document.getElementById("create-sprint-content").classList.remove("hidden");
     }
 
     // инициализация: отрисовываем задачи
