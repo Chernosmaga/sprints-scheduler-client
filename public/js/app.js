@@ -5,6 +5,7 @@ import * as CreateSprint from "../js/create-sprint.js";
 import * as History from "../js/history.js";
 import * as Sidebar from "../js/sidebar.js";
 import * as Team from "../js/team.js";
+import * as Util from "../js/util/util.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     // инициализация страниц
@@ -173,15 +174,16 @@ document.addEventListener("DOMContentLoaded", () => {
         window.history.pushState({}, "", path);
         showPage(pageId);
     }
-
+    
     // обработка события popstate (например, нажатие кнопки "Назад" в браузере)
     window.addEventListener("popstate", () => {
         initializePageFromUrl(pages);
     });
+    
+    Util.initializeLoadMoreButton();
 
     // нажатие на кнопку получения задач на спринт
     getCurrentSprintData.addEventListener("click", () => {
-        //Sprint.renderTasksForSprint();
         Sprint.loadSprintData();
     });
 

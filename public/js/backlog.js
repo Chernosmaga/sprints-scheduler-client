@@ -1,6 +1,6 @@
 import { showNotification } from '../js/util/notification.js';
 import { createButton } from '../js/util/util.js';
-import { showLoading } from '../js/util/loading-screen.js';
+import { showFirstLoadingBacklogTasks, showLoadingBacklogTasks, hideLoadingBacklogTasks } from '../js/util/loading-screen.js';
 
 const BACKEND_URL = window.appConfig.BACKEND_URL;
 const SIMPLE_ONE_URL = window.appConfig.SIMPLE_ONE_URL;
@@ -9,9 +9,10 @@ let statusFilter;
 let priorityFilter;
 let totalTasksCount;
 let selectedTasksCount;
+let currentSearchQuery = null;
 let totalPages = 0;
-let currentPage = 0; // текущая страница (начинается с 0)
-const pageSize = 100; // размер страницы
+let loadedPages = 0;
+const pageSize = 10;
 
 // маппинг приоритетов
 const priorityMapping = {
@@ -25,7 +26,6 @@ const updateBacklog = {
     icon: '/icons/arrows-rotate-solid.svg',
     alt: 'Обновить бэклог',
     text: 'Обновить бэклог',
-    onClick: () => console.log('Обновить бэклог'),
 };
 
 const addToSprint = {
@@ -33,19 +33,23 @@ const addToSprint = {
     icon: '/icons/plus-solid.svg',
     alt: 'Добавить в спринт',
     text: 'Добавить в спринт',
-    onClick: () => console.log('Добавить в спринт'),
+};
+
+const loadMoreTasks = {
+    id: 'load-more-tasks-button',
+    icon: '/icons/plus-solid.svg',
+    alt: 'Загрузить ещё',
+    text: 'Загрузить ещё',
 };
 
 export function loadBacklogData() {
     let userRole = localStorage.getItem('userRole');
     let addToSprintButtonContainer = document.getElementById('add-to-sprint-button-container');
     let updateBacklogButtonContainer = document.getElementById('update-backlog-button-container');
+    let loadMoreTasksContainer = document.getElementById("load-more-tasks-button-container");
     // инициализация фильтров
     statusFilter = document.getElementById('backlog-status-filter');
     priorityFilter = document.getElementById('backlog-priority-filter');
-
-    let prevPageButton = document.getElementById('backlog-prev-page');
-    let nextPageButton = document.getElementById('backlog-next-page');
 
     if (userRole === 'ADMIN' || userRole === 'USER') {
         renderCheckboxSelectAll();
@@ -54,16 +58,19 @@ export function loadBacklogData() {
     // отрисовка задач при первом запросе
     fetchFilteredTasks();
 
-    // добавляем обработчики событий для кнопок пагинации
-    prevPageButton.addEventListener('click', () => changePage(-1));
-    nextPageButton.addEventListener('click', () => changePage(1));
-
     // добавляем обработчики событий для фильтров
     statusFilter.addEventListener('change', filterTasks);
     priorityFilter.addEventListener('change', filterTasks);
 
     addToSprintButtonContainer.innerHTML = '';
     updateBacklogButtonContainer.innerHTML = '';
+
+    loadMoreTasksContainer.appendChild(createButton(loadMoreTasks));
+    
+    // функция для подгрузки следующей порции задач
+    document.getElementById('load-more-tasks-button').addEventListener('click', () => {
+        loadMoreTasksForPage();
+    });
 
     if (userRole === 'ADMIN' || userRole === 'USER') {
         // отрисовываем кнопки
@@ -75,10 +82,15 @@ export function loadBacklogData() {
             synchronizeWithSimpleOne();
         });
 
-        document.getElementById('add-to-sprint').addEventListener('click', (e) => {
+        document.getElementById('add-to-sprint').addEventListener('click', () => {
             saveSelectedTasks();
         });
     }
+}
+
+function loadMoreTasksForPage() {
+    loadedPages++;
+    fetchFilteredTasks();
 }
 
 function renderCheckboxSelectAll() {
@@ -104,110 +116,78 @@ function renderCheckboxSelectAll() {
     selectAllContainer.appendChild(checkboxWrapper);
 }
 
-export function filterTasks() {
-    resetCounters();
-    let prevPageButton = document.getElementById('backlog-prev-page');
-    let nextPageButton = document.getElementById('backlog-next-page');
-    let pageInfo = document.getElementById('backlog-page-info');
-
-    // получаем текущие значения фильтров
-    let selectedStatus = statusFilter.value;
-    let selectedPriority = priorityFilter.value;
-
-    // вызываем функцию для фильтрации задач
+export function filterTasks(reset = true) {
+    if (reset) {
+        currentSearchQuery = null;
+        resetTasks();
+    }
     fetchFilteredTasks();
-    updateCounters();
 }
 
-// функция для сброса переменных, если добавлено условие фильтрации
-function resetCounters() {
+function resetTasks() {
+    loadedPages = 0;
+
+    // обнуляем счётчики
     totalTasksCount = 0;
     selectedTasksCount = 0;
-    currentPage = 0;
-    totalPages = 0;
 
-    // обнуляем отображаемые значения в DOM
+    // очищаем DOM задач
+    let tasksContainer = document.getElementById('tasks-container-backlog');
+    tasksContainer.innerHTML = '';
+
+    // обнуляем счётчики в интерфейсе
     document.getElementById('total-count').textContent = '0';
     document.getElementById('selected-count').textContent = '0';
+
+    // показываем кнопку "Загрузить ещё"
+    let loadMoreButton = document.getElementById('load-more-tasks-button');
+    if (loadMoreButton) {
+        loadMoreButton.disabled = false;
+        loadMoreButton.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
 }
 
-// обновление счётчиков для вновь отрисованной страницы
+// обновление счётчиков для всех видимых задач
 function updateCounters() {
-    // получаем все задачи и выбранные задачи
-    let allTasks = document.querySelectorAll('#backlog-tasks .task-item');
-    let selectedTasks = document.querySelectorAll("#backlog-tasks .task-item input[type='checkbox']:checked");
+    let allTasks = document.querySelectorAll('#tasks-container-backlog .task-item');
+    let selectedTasks = document.querySelectorAll("#tasks-container-backlog .task-item input[type='checkbox']:checked");
 
-    // обновляем значения счетчиков
     totalTasksCount = allTasks.length;
     selectedTasksCount = selectedTasks.length;
 
-    // обновляем отображаемые значения в DOM
     document.getElementById('total-count').textContent = totalTasksCount;
     document.getElementById('selected-count').textContent = selectedTasksCount;
-}
-
-function updatePagination(currentPage, totalPages) {
-     let prevButton = document.getElementById('backlog-prev-page');
-     let nextButton = document.getElementById('backlog-next-page');
-     let pageInfo = document.getElementById('backlog-page-info');
-
-     // обновляем текст с информацией о страницах
-     pageInfo.textContent = `Страница ${currentPage + 1} из ${totalPages}`;
-
-     // если всего одна страница, отключаем обе кнопки
-     if (totalPages <= 1) {
-         prevButton.disabled = true;
-         nextButton.disabled = true;
-         return;
-     }
-
-     // включаем или отключаем кнопку 'Предыдущая'
-     prevButton.disabled = currentPage === 0;
-
-     // включаем или отключаем кнопку 'Следующая'
-     nextButton.disabled = currentPage === totalPages - 1;
-}
-
-function changePage(direction) {
-    let pageInfo = document.getElementById('backlog-page-info');
-    let totalPages = parseInt(pageInfo.dataset.totalPages);
-
-    // вычисляем новую страницу
-    currentPage += direction;
-
-    // проверяем границы страниц
-    if (currentPage < 0) {
-        currentPage = 0;
-    } else if (currentPage >= totalPages) {
-        currentPage = totalPages - 1;
-    }
-
-    // загружаем задачи для новой страницы после переключение кнопки
-    fetchFilteredTasks();
 }
 
 async function fetchFilteredTasks() {
     let token = localStorage.getItem('accessToken');
     let userRole = localStorage.getItem('userRole');
 
-    showLoading('tasks-container-backlog');
+    if (loadedPages === 0) {
+        showFirstLoadingBacklogTasks();
+    } else {
+        showLoadingBacklogTasks();
+    }
+
     try {
-        // получаем выбранные значения
-        let status = statusFilter.value === 'Все статусы' ? null : statusFilter.value;
-        let priority = priorityFilter.value;
+        let url;
 
-        // преобразуем приоритет в кодовое значение
-        if (priority && priority !== 'Все приоритеты') {
-            priority = priorityMapping[priority];
+        if (currentSearchQuery) {
+            url = `${BACKEND_URL}/api/v1/tasks/search?keyword=${encodeURIComponent(currentSearchQuery.toLowerCase())}&offset=${loadedPages * pageSize}&size=${pageSize}`;
         } else {
-            priority = null;
+            let status = statusFilter.value === 'Все статусы' ? null : statusFilter.value;
+            let priority = priorityFilter.value;
+
+            if (priority && priority !== 'Все приоритеты') {
+                priority = priorityMapping[priority];
+            } else {
+                priority = null;
+            }
+
+            url = `${BACKEND_URL}/api/v1/tasks/filter?size=${pageSize}&offset=${loadedPages * pageSize}`;
+            if (status) url += `&status=${encodeURIComponent(status)}`;
+            if (priority) url += `&priority=${encodeURIComponent(priority)}`;
         }
-
-        // формируем URL с параметрами фильтрации и пагинации
-        let url = `${BACKEND_URL}/api/v1/tasks/filter?page=${currentPage}&size=${pageSize}`;
-
-        if (status) url += `&status=${encodeURIComponent(status)}`;
-        if (priority) url += `&priority=${encodeURIComponent(priority)}`;
 
         let response = await fetch(url, {
             method: 'GET',
@@ -215,44 +195,65 @@ async function fetchFilteredTasks() {
                 'Authorization': `Bearer ${token}`
             },
         });
-        
+
         if (response.status === 403 || response.status === 401) {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('userRole');
             window.location.href = loginPage;
             return;
         }
-        
+
         if (!response.ok) {
             showNotification('Ошибка при получении задач', 'error');
+            return;
         }
 
         let data = await response.json();
+        let tasks = data.tasks || data;
+        let totalTasks = data.totalElements || data.length;
 
-        let tasks = data.tasks; // список задач на текущей странице
-        let totalPages = data.totalPages; // общее количество страниц
+        totalPages = Math.ceil(totalTasks / pageSize);
 
         let taskContainer = document.getElementById('tasks-container-backlog');
 
-        // очищаем контейнер перед добавлением новых задач
-        taskContainer.innerHTML = '';
+        if (loadedPages === 0) {
+            taskContainer.innerHTML = '';
+        } else {
+            hideLoadingBacklogTasks();
+        }
 
-        // создаем элементы для каждой задачи
         tasks.forEach((task) => {
             let taskElement = createTaskElement(task);
             taskContainer.appendChild(taskElement);
         });
 
-        // обновляем элементы пагинации
-        updatePagination(currentPage, totalPages);
+        updateCounters();
+
+        if (loadedPages >= totalPages - 1) {
+            let loadMoreButton = document.getElementById('load-more-tasks-button');
+            if (loadMoreButton) {
+                loadMoreButton.disabled = true;
+                loadMoreButton.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+        } else {
+            let loadMoreButton = document.getElementById('load-more-tasks-button');
+            if (loadMoreButton) {
+                loadMoreButton.disabled = false;
+                loadMoreButton.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
 
         if (userRole !== 'GUEST') {
             initializeTaskCounters();
         }
         initializeSearch();
+
     } catch (error) {
         console.error('Ошибка при получении задач:', error.message);
         showNotification('Ошибка при получении задач', 'error');
+        if (loadedPages !== 0) {
+            hideLoadingBacklogTasks();
+        }
     }
 }
 
@@ -343,14 +344,24 @@ async function addTasksToSprint(tasks) {
 function initializeSearch() {
     let searchInput = document.getElementById('search-input');
     let taskContainer = document.getElementById('tasks-container-backlog');
-
-    // обработка нажатия Enter
     searchInput.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {
             let query = searchInput.value.trim();
             if (query.length > 0) {
                 sendSearchRequest(query);
             } else {
+                currentSearchQuery = null;
+                loadedPages = 0;
+
+                if (taskContainer) {
+                    taskContainer.innerHTML = '';
+                }
+
+                let loadMoreButton = document.getElementById('load-more-tasks-button');
+                    if (loadMoreButton) {
+                        loadMoreButton.disabled = false;
+                        loadMoreButton.classList.remove('opacity-50', 'cursor-not-allowed');
+                    }
                 fetchFilteredTasks();
             }
         }
@@ -359,11 +370,13 @@ function initializeSearch() {
 
 // функция для отправки запроса на поиск задач
 async function sendSearchRequest(text) {
+    currentSearchQuery = text.trim();
     let token = localStorage.getItem('accessToken');
     let userRole = localStorage.getItem('userRole');
+
     try {
         let url = new URL(BACKEND_URL + '/api/v1/tasks/search');
-        url.searchParams.append('keyword', text.toLowerCase());
+        url.searchParams.append('keyword', currentSearchQuery.toLowerCase());
 
         let response = await fetch(url, {
             method: 'GET',
@@ -384,7 +397,6 @@ async function sendSearchRequest(text) {
         }
 
         let tasks = await response.json();
-
         let taskContainer = document.getElementById('tasks-container-backlog');
         taskContainer.innerHTML = '';
 
@@ -396,6 +408,7 @@ async function sendSearchRequest(text) {
         if (userRole !== 'GUEST') {
             initializeTaskCounters();
         }
+
     } catch (error) {
         console.error('Ошибка при отправке запроса:', error);
         showNotification('Ошибка при поиске задач', 'error');
@@ -409,7 +422,7 @@ async function synchronizeWithSimpleOne() {
 
     updateStatusesButton.disabled = true;
     updateStatusesButton.classList.add('opacity-50', 'cursor-not-allowed');
-    showLoading('tasks-container-backlog');
+    showFirstLoadingBacklogTasks();
 
     try {
         let url = new URL(BACKEND_URL + '/api/v1/tasks/sync/backlog');
@@ -433,13 +446,10 @@ async function synchronizeWithSimpleOne() {
         }
 
         let tasks = await response.json();
-
         let taskContainer = document.getElementById('tasks-container-backlog');
-
-        // очищаем контейнер перед добавлением новых задач
         taskContainer.innerHTML = '';
+        currentSearchQuery = null;
 
-        // создаем элементы для каждой задачи
         tasks.forEach((task) => {
             let taskElement = createTaskElement(task);
             taskContainer.appendChild(taskElement);
@@ -450,8 +460,8 @@ async function synchronizeWithSimpleOne() {
         showNotification('Успешная синхронизация', 'success');
         updateStatusesButton.disabled = false;
         updateStatusesButton.classList.remove('opacity-50', 'cursor-not-allowed');
+
     } catch (error) {
-        hideLoadingScreen('backlog-loading-screen');
         console.error('Ошибка при синхронизации задач:', error);
         showNotification('Ошибка при синхронизации задач', 'error');
     }
@@ -520,7 +530,7 @@ function createTaskElement(task) {
     taskNumber.textContent = task.number;
     detailsWrapper.appendChild(taskNumber);
 
-    // Добавляем иконки и текстовые элементы с новыми классами
+    // добавляем иконки и текстовые элементы с новыми классами
     let addDetail = (iconSrc, altText, text, additionalClass = '') => {
         let icon = document.createElement('img');
         icon.src = iconSrc;

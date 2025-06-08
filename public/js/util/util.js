@@ -55,3 +55,22 @@ export function createButton(buttonData) {
 
     return button;
 }
+
+export function initializeLoadMoreButton() {
+    const backToTopButton = document.getElementById("back-to-top");
+    const mainContainer = document.querySelector('.main-bg');
+
+    const handleScroll = () => {
+        const isScrolled = mainContainer.scrollTop > 300;
+        backToTopButton.style.display = isScrolled ? "block" : "none";
+    };
+
+    mainContainer.addEventListener('scroll', handleScroll, { passive: true });
+
+    backToTopButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        mainContainer.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    handleScroll();
+}

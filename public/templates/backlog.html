@@ -2,7 +2,10 @@
   <div class="flex justify-between items-center mb-6">
     <h2 class="section-title">Бэклог задач</h2>
 
-    <div id="update-backlog-button-container" class="button-group"></div>
+    <div class="flex space-x-3">
+      <div id="update-backlog-button-container" class="button-group"></div>
+      <div id="add-to-sprint-button-container" class="flex space-x-3"></div>
+    </div>
   </div>
 
   <div class="card">
@@ -71,21 +74,8 @@
           Выбрано <span id="selected-count">0</span> из
           <span id="total-count">0</span> задач
         </div>
-        <div id="add-to-sprint-button-container" class="flex space-x-3"></div>
-      </div>
 
-      <div id="backlog-pagination" class="pagination-container">
-        <button id="backlog-prev-page" class="pagination-button prev" disabled>
-          Предыдущая
-        </button>
-
-        <span id="backlog-page-info" class="pagination-info"
-          >Страница 1 из 5</span
-        >
-
-        <button id="backlog-next-page" class="pagination-button next" disabled>
-          Следующая
-        </button>
+        <div id="load-more-tasks-button-container"></div>
       </div>
     </div>
   </div>
