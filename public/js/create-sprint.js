@@ -21,12 +21,7 @@ export async function sendSprintToCreate() {
             body: JSON.stringify(sprintDto),
         });
 
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+        refreshToken(response);
 
         if (response.ok) {
             showNotification('Спринт успешно создан', 'success');
@@ -61,12 +56,7 @@ export async function renderTasks() {
             }
         });
 
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+        refreshToken(response);
 
         if (!response.ok) {
             showNotification('Ошибка при получении задач', 'error');

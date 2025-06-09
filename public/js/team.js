@@ -184,13 +184,8 @@ async function createNewUser(token, userJSON) {
             },
             body: JSON.stringify(userJSON),
         });
-        
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+
+        refreshToken(response);
 
         if (!response.ok) {
             showNotification('Ошибка при сохранении данных', 'error');
@@ -222,12 +217,7 @@ async function sendSearchRequest(text) {
             }
         });
 
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+        refreshToken(response);
         
         if (!response.ok) {
             showNotification('Ошибка при поиске пользователей', 'error');
@@ -264,13 +254,8 @@ export async function renderUserList() {
         });
 
         let data = await response.json();
-        
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+
+        refreshToken(response);
 
         if (!response.ok) {
             showNotification('Ошибка при получении данных', 'error');
@@ -366,12 +351,7 @@ function createUserElement(user) {
           body: JSON.stringify(userJSON)
         });
 
-        if (response.status === 403 || response.status === 401) {
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('userRole');
-          window.location.href = loginPage;
-          return;
-        }
+        refreshToken(response);
 
         if (!response.ok) {
           showNotification('Ошибка при обновлении роли пользователя', 'error');

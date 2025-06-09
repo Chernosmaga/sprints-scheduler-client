@@ -1,5 +1,5 @@
 import { showNotification } from '../js/util/notification.js';
-import { createButton } from '../js/util/util.js';
+import { createButton, refreshToken } from '../js/util/util.js';
 import { showFirstLoadingBacklogTasks, showLoadingBacklogTasks, hideLoadingBacklogTasks } from '../js/util/loading-screen.js';
 
 const BACKEND_URL = window.appConfig.BACKEND_URL;
@@ -196,12 +196,7 @@ async function fetchFilteredTasks() {
             },
         });
 
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+        refreshToken(response);
 
         if (!response.ok) {
             showNotification('Ошибка при получении задач', 'error');
@@ -321,12 +316,7 @@ async function addTasksToSprint(tasks) {
             body: JSON.stringify(tasks)
         });
 
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+        refreshToken(response);
 
         if (!response.ok) {
             showNotification('Ошибка при добавлении задач в спринт', 'error');
@@ -385,12 +375,7 @@ async function sendSearchRequest(text) {
             }
         });
 
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+        refreshToken(response);
 
         if (!response.ok) {
             showNotification('Ошибка при поиске задач', 'error');
@@ -433,12 +418,7 @@ async function synchronizeWithSimpleOne() {
             }
         });
 
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+        refreshToken(response);
 
         if (!response.ok) {
             showNotification('Ошибка при синхронизации задач', 'error');

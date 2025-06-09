@@ -13,6 +13,10 @@ document.addEventListener('DOMContentLoaded', function () {
             if (response.ok) {
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('userRole');
+                localStorage.removeItem('refreshToken');
+                localStorage.removeItem('isRefreshable');
+                localStorage.removeItem('userRole');
+                localStorage.removeItem('theme');
                 localStorage.removeItem('currentSprintId');
                 window.location.href = loginPage;
             } else {

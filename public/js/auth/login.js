@@ -90,10 +90,14 @@ async function loginUser(userEmail, userPassword) {
             return;
         }
 
-        let role = data.userRole;
-        let token = data.accessToken;
-        localStorage.setItem('accessToken', token);
-        localStorage.setItem('userRole', role);
+        localStorage.setItem('accessToken', data.accessToken);
+        localStorage.setItem('userRole', data.userRole);
+        localStorage.setItem('refreshToken', data.refreshToken);
+        if (rememberMeCheckbox.checked) {
+            localStorage.setItem('isRefreshable', true);
+        } else {
+            localStorage.setItem('isRefreshable', false);
+        }
 
         window.location.href = mainPage;
     } catch (error) {

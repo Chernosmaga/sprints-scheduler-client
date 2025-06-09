@@ -23,12 +23,7 @@ export async function renderData() {
             }
         });
 
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+        refreshToken(response);
 
         if (!response.ok) {
             showNotification('Ошибка при получении данных', 'error');
@@ -100,12 +95,7 @@ window.openSprint = async function (sprintId) {
             }
         });
 
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+        refreshToken(response);
 
         if (!response.ok) {
             showNotification('Ошибка при получении спринта', 'error');

@@ -1,3 +1,68 @@
+const BACKEND_URL = window.appConfig.BACKEND_URL;
+const loginPage = '/account/login';
+
+// фугкция для обновления токена пользователя
+export function refreshToken(response) {
+    let accessToken = localStorage.getItem('accessToken');
+    let refreshToken = localStorage.getItem('refreshToken');
+    let isRefreshable = localStorage.getItem('isRefreshable');
+
+    if (response.status === 403 || response.status === 401) {
+        if (isRefreshable) {
+            refreshUserToken(accessToken, refreshToken);
+        } else {
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('userRole');
+            localStorage.removeItem('refreshToken');
+            localStorage.removeItem('isRefreshable');
+            localStorage.removeItem('userRole');
+            localStorage.removeItem('theme');
+            localStorage.removeItem('currentSprintId');
+            window.location.href = loginPage;
+            return;
+        }
+    }
+}
+
+async function refreshUserToken(userAccessToken, userRefreshToken) {
+    let json = {
+        refreshToken: userRefreshToken
+    };
+
+    try {
+        let url = BACKEND_URL + "/api/auth/refresh/token";
+
+        let response = await fetch(url, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${userAccessToken}`
+            },
+            body: JSON.stringify(json),
+        });
+
+        let data = await response.json();
+
+        if (!response.ok) {
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('userRole');
+            localStorage.removeItem('refreshToken');
+            localStorage.removeItem('isRefreshable');
+            localStorage.removeItem('userRole');
+            localStorage.removeItem('theme');
+            localStorage.removeItem('currentSprintId');
+            window.location.href = loginPage;
+            return;
+        } else {
+            localStorage.setItem("accessToken", data.accessToken);
+            localStorage.setItem("refreshToken", data.refreshToken);
+        }
+    } catch (error) {
+        console.error("Ошибка при входе в систему:", error);
+        showNotification("Ошибка при входе в систему", "error");
+    }
+}
+
 // вспомогательная функция для расчета процента выполнения
 export function getProgressPercentage(start, end) {
     let today = new Date(); // текущая дата

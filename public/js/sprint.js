@@ -35,12 +35,7 @@ export async function loadSprintData() {
 
         let sprint = await response.json();
 
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+        refreshToken(response);
 
         if (!response.ok) {
             showNotification('Ошибка при получении спринта', 'error');
@@ -158,12 +153,7 @@ export async function synchronizeTasksWithSimpleOne() {
             }
         });
 
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+        refreshToken(response);
 
         if (!response.ok) {
             showNotification('Ошибка при обновлении статусов', 'error');
@@ -600,12 +590,7 @@ async function sendTaskToSave(taskId, updatedTask) {
             body: JSON.stringify(updatedTask)
         });
 
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+        refreshToken(response);
 
         if (!response.ok) {
             showNotification('Ошибка при сохранении задачи', 'error');
@@ -636,12 +621,7 @@ async function deleteTask(taskId) {
             },
         });
 
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+        refreshToken(response);
 
         if (!response.ok) {
             showNotification('Ошибка при удалении задачи', 'error');
@@ -702,12 +682,7 @@ async function getTaskFromSimpleOne(number) {
             },
         });
 
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+        refreshToken(response);
 
         if (!response.ok) {
             showNotification('Ошибка при отправке запроса в SimpleOne', 'error');

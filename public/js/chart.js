@@ -28,12 +28,7 @@ export async function fetchAuthorsData(sprintId) {
             }
         });
 
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+        refreshToken(response);
 
         if (!response.ok) {
             showNotification('Ошибка при загрузке диаграммы', 'error');
@@ -189,12 +184,7 @@ export async function fetchClientsData(sprintId) {
             }
         });
 
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+        refreshToken(response);
 
         if (!response.ok) {
             showNotification('Ошибка при загрузке диаграммы', 'error');
@@ -285,12 +275,7 @@ export async function fetchStoryPointsData(sprintId) {
             }
         });
 
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+        refreshToken(response);
 
         // проверяем статус ответа
         if (!response.ok) {
@@ -329,12 +314,7 @@ export async function fetchAssigneeData(sprintId) {
             }
         });
 
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+        refreshToken(response);
 
         if (!response.ok) {
             showNotification('Ошибка при загрузке диаграммы', 'error');
@@ -464,12 +444,7 @@ export async function fetchPriorityData(sprintId) {
             }
         });
 
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+        refreshToken(response);
 
         if (!response.ok) {
             showNotification('Ошибка при загрузке диаграммы', 'error');
@@ -561,12 +536,7 @@ export async function fetchStatuses(sprintId) {
             }
         });
 
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+        refreshToken(response);
 
         if (!response.ok) {
             showNotification('Ошибка при загрузке диаграммы', 'error');

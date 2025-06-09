@@ -26,13 +26,8 @@ export async function sendUserDataToSave() {
             },
             body: JSON.stringify(userData),
         });
-        
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+
+        refreshToken(response);
 
         if (!response.ok) {
             showNotification('Ошибка при сохранении данных', 'error');
@@ -62,12 +57,7 @@ async function uploadPhotoToServer(file) {
         body: formData,
     });
 
-    if (response.status === 403 || response.status === 401) {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("userRole");
-        window.location.href = loginPage;
-        return;
-    }
+    refreshToken(response);
 
     if (!response.ok) {
         console.log("Ошибка при загрузке фото", response);
@@ -90,13 +80,8 @@ export async function fetchUserData() {
                 'Authorization': `Bearer ${token}`
             }
         });
-        
-        if (response.status === 403 || response.status === 401) {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('userRole');
-            window.location.href = loginPage;
-            return;
-        }
+
+        refreshToken(response);
         
         if (!response.ok) {
             showNotification('Ошибка при получении данных', 'error');
