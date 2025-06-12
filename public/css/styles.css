@@ -320,12 +320,12 @@ body {
 .nav-link:not(.active):hover {
   background-color: var(--color-sidebar-bg-hover);
   color: var(--color-sidebar-text);
-  transform: scale(1.05);
+  transform: scale(1.03);
   transform-origin: left center;
 }
 
 .create-sprint-btn.active {
-  transform: scale(1.10);
+  transform: scale(1.04);
   background-color: var(--color-sidebar-active-bg);
   color: var(--color-sidebar-text);
   transform-origin: center;
