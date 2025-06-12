@@ -1,6 +1,6 @@
 import { showNotification } from '../util/notification.js';
 
-const BACKEND_URL = window.appConfig.BACKEND_URL;
+let baseUrl = window.location.origin;
 const mainPage = '/current/sprint';
 
 document.getElementById('login-toggle-password').addEventListener('click', function() {
@@ -70,7 +70,7 @@ async function loginUser(userEmail, userPassword) {
     };
 
     try {
-        let url = BACKEND_URL + '/api/auth/login';
+        let url = new URL(`${baseUrl}/api/auth/login`);
 
         let response = await fetch(url, {
             method: 'POST',

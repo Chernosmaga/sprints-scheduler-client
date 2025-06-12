@@ -1,8 +1,8 @@
 import { showNotification } from '../js/util/notification.js';
 import { showCreateSprintLoading } from '../js/util/loading-screen.js';
+import { refreshToken } from '../js/util/util.js';
 
-const loginPage = '/account/login';
-const BACKEND_URL = window.appConfig.BACKEND_URL;
+let baseUrl = window.location.origin;
 const SIMPLE_ONE_URL = window.appConfig.SIMPLE_ONE_URL;
 
 export async function sendSprintToCreate() {
@@ -12,7 +12,7 @@ export async function sendSprintToCreate() {
     document.getElementById("create-sprint-content").classList.add("hidden");
     
     try {
-        let response = await fetch(BACKEND_URL + '/api/v1/sprints', {
+        let response = await fetch(`${baseUrl}/api/v1/sprints`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -48,7 +48,7 @@ export async function renderTasks() {
     showCreateSprintLoading();
 
     try {
-        let url = new URL(BACKEND_URL + '/api/v1/tasks/excluded/sprints/' + currentSprintId);
+        let url = new URL(`${baseUrl}/api/v1/tasks/excluded/sprints/${currentSprintId}`);
         let response = await fetch(url, {
             method: 'GET',
             headers: {

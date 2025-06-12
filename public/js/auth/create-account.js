@@ -1,6 +1,6 @@
 import { showNotification } from '../util/notification.js';
 
-const BACKEND_URL = window.appConfig.BACKEND_URL;
+let baseUrl = window.location.origin;
 const redirectLocation = '/account/create/confirm';
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -54,7 +54,7 @@ async function createUserAccount(userName, userSurname, userBirthday, userEmail,
     };
 
     try {
-        let url = BACKEND_URL + '/api/auth/register';
+        let url = new URL(`${baseUrl}/api/auth/register`);
 
         let response = await fetch(url, {
             method: 'POST',

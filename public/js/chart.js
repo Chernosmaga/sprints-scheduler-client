@@ -1,5 +1,6 @@
-const loginPage = '/account/login';
-const BACKEND_URL = window.appConfig.BACKEND_URL;
+import { refreshToken } from '../js/util/util.js';
+
+let baseUrl = window.location.origin;
 // глобальные переменные для диаграмм
 let statusChart;
 let priorityChart;
@@ -20,7 +21,7 @@ export async function fetchAuthorsData(sprintId) {
     let token = localStorage.getItem('accessToken');
     
     try {
-        let url = new URL(BACKEND_URL + '/api/v1/charts/authors/' + sprintId);
+        let url = new URL(`${baseUrl}/api/v1/charts/authors/${sprintId}`);
         let response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -176,7 +177,7 @@ export async function fetchClientsData(sprintId) {
     let token = localStorage.getItem('accessToken');
 
     try {
-        let url = new URL(BACKEND_URL + '/api/v1/charts/clients/' + sprintId);
+        let url = new URL(`${baseUrl}/api/v1/charts/clients/${sprintId}`);
         let response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -267,7 +268,7 @@ export async function fetchStoryPointsData(sprintId) {
     let token = localStorage.getItem('accessToken');
 
     try {
-        let url = new URL(BACKEND_URL + '/api/v1/charts/points/' + sprintId);
+        let url = new URL(`${baseUrl}/api/v1/charts/points/${sprintId}`);
         let response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -306,7 +307,7 @@ export async function fetchAssigneeData(sprintId) {
     let token = localStorage.getItem('accessToken');
 
     try {
-        let url = new URL(BACKEND_URL + '/api/v1/charts/developers/' + sprintId);
+        let url = new URL(`${baseUrl}/api/v1/charts/developers/${sprintId}`);
         let response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -436,7 +437,7 @@ export async function fetchPriorityData(sprintId) {
     let token = localStorage.getItem('accessToken');
 
     try {
-        let url = new URL(BACKEND_URL + '/api/v1/charts/priorities/' + sprintId);
+        let url = new URL(`${baseUrl}/api/v1/charts/priorities/${sprintId}`);
         let response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -528,7 +529,7 @@ export async function fetchStatuses(sprintId) {
     let token = localStorage.getItem('accessToken');
 
     try {
-        let url = new URL(BACKEND_URL + '/api/v1/charts/statuses/' + sprintId);
+        let url = new URL(`${baseUrl}/api/v1/charts/statuses/${sprintId}`);
         let response = await fetch(url, {
             method: 'GET',
             headers: {

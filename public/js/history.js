@@ -1,11 +1,10 @@
 import { showNotification } from './util/notification.js';
-import { getProgressPercentage, parseDate } from './util/util.js';
+import { getProgressPercentage, parseDate, refreshToken } from './util/util.js';
 import { showHistoryLoading } from '../js/util/loading-screen.js';
 import { getDaysText, loadCharts } from './sprint.js';
 
-const BACKEND_URL = window.appConfig.BACKEND_URL;
+let baseUrl = window.location.origin;
 const SIMPLE_ONE_URL = window.appConfig.SIMPLE_ONE_URL;
-const loginPage = '/account/login';
 let allSprints = [];
 let currentOffset = 0;
 const sprintLimit = 10;
@@ -15,7 +14,7 @@ export async function renderData() {
     showHistoryLoading();
 
     try {
-        let url = `${BACKEND_URL}/api/v1/history/sprints?page=${currentOffset}&size=${sprintLimit}`;
+        let url = new URL(`${baseUrl}/api/v1/history/sprints?page=${currentOffset}&size=${sprintLimit}`);
         let response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -87,7 +86,7 @@ window.openSprint = async function (sprintId) {
         // обновляем URL с sprintId
         updateUrlWithSprintId(sprintId);
 
-        let url = new URL(BACKEND_URL + '/api/v1/sprints/' + sprintId);
+        let url = new URL(`${baseUrl}/api/v1/sprints/${sprintId}`);
         let response = await fetch(url, {
             method: 'GET',
             headers: {

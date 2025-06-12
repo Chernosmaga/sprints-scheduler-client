@@ -2,9 +2,8 @@ import { showNotification } from '../js/util/notification.js';
 import { createButton, refreshToken } from '../js/util/util.js';
 import { showFirstLoadingBacklogTasks, showLoadingBacklogTasks, hideLoadingBacklogTasks } from '../js/util/loading-screen.js';
 
-const BACKEND_URL = window.appConfig.BACKEND_URL;
 const SIMPLE_ONE_URL = window.appConfig.SIMPLE_ONE_URL;
-const loginPage = '/accout/login';
+let baseUrl = window.location.origin;
 let statusFilter;
 let priorityFilter;
 let totalTasksCount;
@@ -173,7 +172,7 @@ async function fetchFilteredTasks() {
         let url;
 
         if (currentSearchQuery) {
-            url = `${BACKEND_URL}/api/v1/tasks/search?keyword=${encodeURIComponent(currentSearchQuery.toLowerCase())}&offset=${loadedPages * pageSize}&size=${pageSize}`;
+            url = `${baseUrl}/api/v1/tasks/search?keyword=${encodeURIComponent(currentSearchQuery.toLowerCase())}`;
         } else {
             let status = statusFilter.value === 'Все статусы' ? null : statusFilter.value;
             let priority = priorityFilter.value;
@@ -184,7 +183,7 @@ async function fetchFilteredTasks() {
                 priority = null;
             }
 
-            url = `${BACKEND_URL}/api/v1/tasks/filter?size=${pageSize}&offset=${loadedPages * pageSize}`;
+            url = `/api/v1/tasks/filter?size=${pageSize}&offset=${loadedPages * pageSize}`;
             if (status) url += `&status=${encodeURIComponent(status)}`;
             if (priority) url += `&priority=${encodeURIComponent(priority)}`;
         }
@@ -270,7 +269,7 @@ export function saveSelectedTasks() {
             let taskItem = checkbox.closest('.task-item');
 
             if (taskItem) {
-                let numberLink = taskItem.querySelector("a[href^='https://fmlogistic.simpleone.ru/record/itsm_change_request/']");
+                let numberLink = taskItem.querySelector("a[href^='" + SIMPLE_ONE_URL + "']");
                 // формируем JSON для задачи
                 let task = {
                     id: taskId,
@@ -306,7 +305,7 @@ async function addTasksToSprint(tasks) {
     let currentSprintId = localStorage.getItem('currentSprintId');
     let token = localStorage.getItem('accessToken');
     try {
-        let url = new URL(BACKEND_URL + '/api/v1/sprints/' + currentSprintId + '/add/tasks');
+        let url = new URL(`${baseUrl}/api/v1/sprints/${currentSprintId}/add/tasks`);
         let response = await fetch(url, {
             method: 'PATCH',
             headers: {
@@ -365,7 +364,7 @@ async function sendSearchRequest(text) {
     let userRole = localStorage.getItem('userRole');
 
     try {
-        let url = new URL(BACKEND_URL + '/api/v1/tasks/search');
+        let url = new URL(`${baseUrl}/api/v1/tasks/search`);
         url.searchParams.append('keyword', currentSearchQuery.toLowerCase());
 
         let response = await fetch(url, {
@@ -410,7 +409,7 @@ async function synchronizeWithSimpleOne() {
     showFirstLoadingBacklogTasks();
 
     try {
-        let url = new URL(BACKEND_URL + '/api/v1/tasks/sync/backlog');
+        let url = new URL(`${baseUrl}/api/v1/tasks/sync/backlog`);
         let response = await fetch(url, {
             method: 'GET',
             headers: {

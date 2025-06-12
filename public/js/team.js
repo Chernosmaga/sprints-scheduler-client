@@ -1,9 +1,8 @@
 import { showNotification } from '../js/util/notification.js';
 import { showUserListLoading } from '../js/util/loading-screen.js';
-import { parseDate } from '../js/util/util.js';
+import { parseDate, refreshToken } from '../js/util/util.js';
 
-const BACKEND_URL = window.appConfig.BACKEND_URL;
-const loginPage = '/account/login';
+let baseUrl = window.location.origin;
 
 // поиск пользователей (вызывается при загрузке страницы)
 export function initializeSearch() {
@@ -70,8 +69,6 @@ document.getElementById('create-user-submit-button').addEventListener('click', f
     let externalId = document.getElementById('create-user-external-id');
     let groupName = document.getElementById('create-user-group-name');
     let role = document.getElementById('create-user-role');
-
-    console.log(name);
 
     let nameErrorElement = document.getElementById('create-user-name-error');
     let surnameErrorElement = document.getElementById('create-user-surname-error');
@@ -169,13 +166,12 @@ document.getElementById('create-user-submit-button').addEventListener('click', f
     };
     
     let token = localStorage.getItem('accessToken');
-    console.log(userJSON);
     createNewUser(token, userJSON);
 });
 
 async function createNewUser(token, userJSON) {
     try {
-        let url = new URL(BACKEND_URL + '/api/v1/users/admin/create');
+        let url = new URL(`${baseUrl}/api/v1/users/admin/create`);
         let response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -207,7 +203,7 @@ async function createNewUser(token, userJSON) {
 async function sendSearchRequest(text) {
     let token = localStorage.getItem('accessToken');
     try {
-        let url = new URL(BACKEND_URL + '/api/v1/users/search');
+        let url = new URL(`${baseUrl}/api/v1/users/search`);
         url.searchParams.append('filter', text.toLowerCase());
 
         let response = await fetch(url, {
@@ -245,7 +241,7 @@ export async function renderUserList() {
     showUserListLoading();
 
     try {
-        let url = new URL(BACKEND_URL + '/api/v1/users');
+        let url = new URL(`${baseUrl}/api/v1/users`);
         let response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -341,7 +337,7 @@ function createUserElement(user) {
       let token = localStorage.getItem('accessToken');
 
       try {
-        let url = new URL(BACKEND_URL + '/api/v1/users/update/role');
+        let url = new URL(`${baseUrl}/api/v1/users/update/role`);
         let response = await fetch(url, {
           method: 'PUT',
           headers: {

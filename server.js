@@ -2,10 +2,11 @@ require('dotenv').config();
 
 const express = require('express');
 const path = require('path');
-
+const proxy = require('./proxy');
 const app = express();
 const cors = require('cors');
 const PORT = process.env.PORT;
+const backendUrl = process.env.BACKEND_URL;
 
 app.use(express.json());
 app.use(cors());
@@ -29,6 +30,8 @@ app.get('/config.js', (req, res) => {
         };
     `);
 });
+
+app.use(proxy(backendUrl));
 
 // маршруты для основных страниц
 app.get('/backlog', (req, res) => {
@@ -93,9 +96,4 @@ app.get('/password/reset/confirm', (req, res) => {
 // обработка ошибок 404
 app.use((req, res) => {
     res.status(404).sendFile(path.join(__dirname, 'public/templates', 'not-found.html'));
-});
-
-// запуск сервера
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
 });

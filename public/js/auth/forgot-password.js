@@ -1,6 +1,6 @@
 import { showNotification } from '../util/notification.js';
 
-const BACKEND_URL = window.appConfig.BACKEND_URL;
+let baseUrl = window.location.origin;
 let canSendAgain = true;
 
 document.getElementById('reset-password-button').addEventListener('click', function (e) {
@@ -44,7 +44,7 @@ async function sendResetPasswordLink(email) {
     textElement.textContent = "Повторная отправка доступна через 60 сек";
 
     try {
-        let url = new URL(BACKEND_URL + '/reset/password/request');
+        let url = new URL(`${baseUrl}/reset/password/request`);
         url.searchParams.append("email", email);
 
         let response = await fetch(url, {

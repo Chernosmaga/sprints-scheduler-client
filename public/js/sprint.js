@@ -1,11 +1,10 @@
 import { showNotification } from '../js/util/notification.js';
-import { getProgressPercentage, parseDate, createButton } from '../js/util/util.js';
+import { getProgressPercentage, parseDate, createButton, refreshToken } from '../js/util/util.js';
 import { showLoading } from '../js/util/loading-screen.js';
 import * as Chart from '../js/chart.js';
 
 const SIMPLE_ONE_URL = window.appConfig.SIMPLE_ONE_URL;
-const BACKEND_URL = window.appConfig.BACKEND_URL;
-const loginPage = '/account/login';
+let baseUrl = window.location.origin;
 const buttonsData = [
     {
         id: 'update-sprint-statuses-btn',
@@ -25,7 +24,7 @@ export async function loadSprintData() {
     let token = localStorage.getItem('accessToken');
     showLoading('task-table-body');
     try {
-        let url = new URL(BACKEND_URL + '/api/v1/sprints/current');
+        let url = new URL(`${baseUrl}/api/v1/sprints/current`);
         let response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -42,13 +41,11 @@ export async function loadSprintData() {
             return;
         }
 
-        // сохраняем id текущего спринта в localStorage
         localStorage.setItem('currentSprintId', sprint.id);
 
         let tasks = sprint.tasks; // извлекаем массив задач
         let taskContainer = document.getElementById('task-table-body');
         
-
         renderSprintData(sprint);
 
         // очищаем контейнер перед добавлением новых задач
@@ -145,7 +142,7 @@ export async function synchronizeTasksWithSimpleOne() {
 
     showLoading('task-table-body');
     try {
-        let url = new URL(BACKEND_URL + '/api/v1/sprints/sync/' + currentSprintId);
+        let url = new URL(`${baseUrl}/api/v1/sprints/sync/${currentSprintId}`);
         let response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -580,7 +577,7 @@ async function sendTaskToSave(taskId, updatedTask) {
     let currentSprintId = localStorage.getItem('currentSprintId');
 
     try {
-        let url = new URL(BACKEND_URL + '/api/v1/tasks/' + taskId + '/sprints/' + currentSprintId);
+        let url = new URL(`${baseUrl}/api/v1/tasks/${taskId}/sprints/${currentSprintId}`);
         let response = await fetch(url, {
             method: 'PATCH',
             headers: {
@@ -612,7 +609,7 @@ async function deleteTask(taskId) {
     let currentSprintId = localStorage.getItem('currentSprintId');
 
     try {
-        let url = new URL(BACKEND_URL + '/api/v1/sprints/' + currentSprintId + '/delete/tasks/' + taskId);
+        let url = new URL(`${baseUrl}/api/v1/sprints/${currentSprintId}/delete/tasks/${taskId}`);
         let response = await fetch(url, {
             method: 'PATCH',
             headers: {
@@ -672,7 +669,7 @@ async function getTaskFromSimpleOne(number) {
     let token = localStorage.getItem('accessToken');
 
     try {
-        let url = new URL(BACKEND_URL + '/api/v1/tasks/import');
+        let url = new URL(`${baseUrl}/api/v1/tasks/import`);
         url.searchParams.append('number', number);
         let response = await fetch(url, {
             method: 'PATCH',

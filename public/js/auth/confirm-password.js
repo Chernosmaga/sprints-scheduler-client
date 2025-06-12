@@ -1,6 +1,6 @@
 import { showNotification } from '../util/notification.js';
 
-const BACKEND_URL = window.appConfig.BACKEND_URL;
+let baseUrl = window.location.origin;
 const redirectLocation = '/account/login';
 
 document.getElementById('save-new-password').addEventListener('click', function (e) {
@@ -45,7 +45,7 @@ document.getElementById('save-new-password').addEventListener('click', function 
 
 async function changeUserPassword(password, token) {
     try {
-        let url = new URL(BACKEND_URL + '/reset/password/confirm');
+        let url = new URL(`${baseUrl}/reset/password/confirm`);
         url.searchParams.append('token', token);
         url.searchParams.append('newPassword', password);
 
