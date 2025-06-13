@@ -97,3 +97,7 @@ app.get('/password/reset/confirm', (req, res) => {
 app.use((req, res) => {
     res.status(404).sendFile(path.join(__dirname, 'public/templates', 'not-found.html'));
 });
+
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
